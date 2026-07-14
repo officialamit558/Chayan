@@ -4,6 +4,7 @@ import type { Metadata } from "next"
 import { prisma } from "@/lib/prisma"
 import { BreadcrumbNav } from "@/components/layout/BreadcrumbNav"
 import { JobDetailContent } from "@/components/jobs/JobDetailContent"
+import { AdBanner } from "@/components/ads/AdBanner"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { formatDate, getBaseUrl } from "@/lib/utils"
@@ -96,6 +97,8 @@ export default async function ApplyJobPage({ params }: { params: Promise<{ slug:
         className="mb-6"
       />
 
+      <AdBanner format="horizontal" className="mb-8" />
+
       <JobDetailContent
         title={job.title}
         department={job.department.name}
@@ -120,6 +123,8 @@ export default async function ApplyJobPage({ params }: { params: Promise<{ slug:
         lastDate={job.lastDate?.toISOString() || null}
         slug={job.slug}
       />
+
+      <AdBanner format="horizontal" className="mt-8" />
 
       {relatedJobs.length > 0 && (
         <section className="mt-12">

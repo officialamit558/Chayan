@@ -19,20 +19,25 @@ export default function HomePage() {
       <QuickLinks />
       <AdBanner format="horizontal" />
       <LatestJobs />
+      <AdBanner format="horizontal" />
       <div className="container mx-auto px-4">
         <div className="grid gap-8 lg:grid-cols-[1fr_320px]">
           <div className="space-y-16">
             <LatestResults />
+            <AdBanner format="horizontal" />
             <LatestAdmitCards />
           </div>
           <div className="space-y-8">
             <TrendingNotifications />
+            <AdBanner format="rectangle" />
           </div>
         </div>
       </div>
       <JobsByQualification />
+      <AdBanner format="horizontal" />
       <JobsByState />
       <JobsByDepartment />
+      <AdBanner format="horizontal" />
       <PopularExams />
       <FAQ />
       <Newsletter />

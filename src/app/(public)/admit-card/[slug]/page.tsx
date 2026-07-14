@@ -4,6 +4,7 @@ import type { Metadata } from "next"
 import { prisma } from "@/lib/prisma"
 import { formatDate, getBaseUrl } from "@/lib/utils"
 import { BreadcrumbNav } from "@/components/layout/BreadcrumbNav"
+import { AdBanner } from "@/components/ads/AdBanner"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -69,6 +70,8 @@ export default async function AdmitCardDetailPage({ params }: { params: Promise<
         className="mb-6"
       />
 
+      <AdBanner format="horizontal" className="mb-8" />
+
       <Card className="mb-8">
         <CardHeader>
           <div className="mb-2 flex flex-wrap items-center gap-2">
@@ -113,6 +116,8 @@ export default async function AdmitCardDetailPage({ params }: { params: Promise<
           )}
         </CardContent>
       </Card>
+
+      <AdBanner format="horizontal" />
 
       {relatedCards.length > 0 && (
         <section>
