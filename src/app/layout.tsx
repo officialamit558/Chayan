@@ -4,6 +4,7 @@ import "./globals.css"
 import { Providers } from "@/components/layout/Providers"
 import { Header } from "@/components/layout/Header"
 import { Footer } from "@/components/layout/Footer"
+import { CookieConsent } from "@/components/layout/CookieConsent"
 import { siteConfig } from "@/lib/constants"
 
 const inter = Inter({ subsets: ["latin"] })
@@ -86,6 +87,7 @@ export default function RootLayout({
             <main className="flex-1">{children}</main>
             <Footer />
           </div>
+          <CookieConsent />
         </Providers>
       </body>
     </html>
