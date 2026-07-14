@@ -30,15 +30,6 @@ npm run dev
 # Open http://localhost:3000
 ```
 
-### Default Admin
-
-| Field | Value |
-|-------|-------|
-| Email | `admin@chayan.com` |
-| Password | `Admin@123` |
-
----
-
 ## Tech Stack
 
 ### Frontend
