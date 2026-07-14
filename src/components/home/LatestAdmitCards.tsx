@@ -1,0 +1,164 @@
+"use client"
+
+import { useState, useEffect } from "react"
+import Link from "next/link"
+import { motion } from "framer-motion"
+import { ArrowRight, Download, Calendar, Building2 } from "lucide-react"
+import { cn, formatDate } from "@/lib/utils"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent } from "@/components/ui/card"
+import { Skeleton } from "@/components/ui/skeleton"
+
+interface AdmitCard {
+  id: string
+  title: string
+  department: string
+  examDate?: string
+  downloadUrl?: string
+  slug: string
+}
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.08 },
+  },
+}
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.4 } },
+}
+
+export function LatestAdmitCards() {
+  const [admitCards, setAdmitCards] = useState<AdmitCard[]>([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    fetch("/api/admit-cards?limit=4")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success) {
+          setAdmitCards(
+            data.data.map((item: Record<string, unknown>) => ({
+              id: item.id as string,
+              title: item.title as string,
+              department: (item.department as { name: string })?.name ?? "",
+              examDate: item.examDate as string | undefined,
+              downloadUrl: item.downloadUrl as string | undefined,
+              slug: item.slug as string,
+            }))
+          )
+        }
+      })
+      .catch(() => {})
+      .finally(() => setLoading(false))
+  }, [])
+
+  return (
+    <section className={cn("py-16")}>
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="mb-8 flex items-center justify-between">
+          <div>
+            <h2 className="text-2xl font-bold text-gray-900 sm:text-3xl">
+              Latest Admit Cards
+            </h2>
+            <p className="mt-1 text-sm text-gray-600">
+              Download your examination hall tickets
+            </p>
+          </div>
+          <Link
+            href="/admit-cards"
+            className="group hidden items-center gap-1 text-sm font-medium text-blue-600 hover:text-blue-700 sm:flex"
+          >
+            View All
+            <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+          </Link>
+        </div>
+
+        {loading ? (
+          <div className="grid gap-5 sm:grid-cols-2">
+            {Array.from({ length: 4 }).map((_, i) => (
+              <Card key={i} className="border-gray-200">
+                <CardContent className="p-5">
+                  <Skeleton className="mb-3 h-5 w-3/4" />
+                  <Skeleton className="mb-3 h-4 w-1/2" />
+                  <div className="flex items-center justify-between">
+                    <Skeleton className="h-4 w-28" />
+                    <Skeleton className="h-9 w-36" />
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        ) : admitCards.length === 0 ? (
+          <div className="py-12 text-center">
+            <p className="text-gray-500">No admit cards released yet.</p>
+          </div>
+        ) : (
+          <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-50px" }}
+            className="grid gap-5 sm:grid-cols-2"
+          >
+            {admitCards.map((card) => (
+              <motion.div key={card.id} variants={itemVariants}>
+                <Card className="group border-gray-200 transition-all hover:border-blue-300 hover:shadow-md">
+                  <CardContent className="p-5">
+                    <Link href={`/admit-card/${card.slug}`}>
+                      <h3 className="mb-2 text-base font-semibold text-gray-900 line-clamp-2 transition-colors group-hover:text-blue-700">
+                        {card.title}
+                      </h3>
+                    </Link>
+                    <div className="mb-3 flex items-center gap-2 text-sm text-gray-600">
+                      <Building2 className="h-4 w-4 text-gray-400" />
+                      <span>{card.department}</span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      {card.examDate ? (
+                        <div className="flex items-center gap-1.5 text-sm text-gray-600">
+                          <Calendar className="h-4 w-4 text-gray-400" />
+                          <span>Exam: {formatDate(card.examDate)}</span>
+                        </div>
+                      ) : (
+                        <div />
+                      )}
+                      {card.downloadUrl ? (
+                        <Button size="sm" className="gap-1.5" asChild>
+                          <a href={card.downloadUrl} target="_blank" rel="noopener noreferrer">
+                            <Download className="h-4 w-4" />
+                            Download Admit Card
+                          </a>
+                        </Button>
+                      ) : (
+                        <Button size="sm" className="gap-1.5" asChild>
+                          <Link href={`/admit-card/${card.slug}`}>
+                            <Download className="h-4 w-4" />
+                            Download Admit Card
+                          </Link>
+                        </Button>
+                      )}
+                    </div>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            ))}
+          </motion.div>
+        )}
+
+        <div className="mt-6 text-center sm:hidden">
+          <Link
+            href="/admit-cards"
+            className="inline-flex items-center gap-1 text-sm font-medium text-blue-600 hover:text-blue-700"
+          >
+            View All Admit Cards
+            <ArrowRight className="h-4 w-4" />
+          </Link>
+        </div>
+      </div>
+    </section>
+  )
+}
