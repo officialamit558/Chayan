@@ -1,7 +1,7 @@
 import { prisma } from "@/lib/prisma"
 
 export default async function sitemap() {
-  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"
+  const baseUrl = (process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000").replace(/\/+$/, "")
 
   let jobs: { slug: string; updatedAt: Date }[] = []
   let results: { slug: string; createdAt: Date }[] = []

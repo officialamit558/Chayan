@@ -53,6 +53,10 @@ export function debounce<T extends (...args: Parameters<T>) => void>(
   }
 }
 
+export function getBaseUrl(): string {
+  return (process.env.NEXT_PUBLIC_APP_URL || "https://chayan.in").replace(/\/+$/, "")
+}
+
 export function generateSEO({
   title,
   description,
@@ -68,7 +72,7 @@ export function generateSEO({
   publishedTime?: string
   type?: "website" | "article"
 }) {
-  const siteUrl = process.env.NEXT_PUBLIC_APP_URL || "https://chayan.in"
+  const siteUrl = getBaseUrl()
   const fullUrl = url ? `${siteUrl}${url.startsWith("/") ? url : `/${url}`}` : siteUrl
   const ogImage = image || `${siteUrl}/og.png`
 
@@ -95,8 +99,7 @@ export function generateSEO({
 }
 
 export function absoluteUrl(path: string): string {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"
-  return `${baseUrl}${path.startsWith("/") ? path : `/${path}`}`
+  return `${getBaseUrl()}${path.startsWith("/") ? path : `/${path}`}`
 }
 
 export function createJsonLD<T>(data: T): string {

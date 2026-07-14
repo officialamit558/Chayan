@@ -1,7 +1,7 @@
 import { prisma } from "@/lib/prisma"
 
 export async function GET() {
-  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"
+  const baseUrl = (process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000").replace(/\/+$/, "")
 
   const jobs = await prisma.job.findMany({
     where: { status: "ACTIVE" },
