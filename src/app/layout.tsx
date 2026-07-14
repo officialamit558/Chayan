@@ -4,21 +4,24 @@ import "./globals.css"
 import { Providers } from "@/components/layout/Providers"
 import { Header } from "@/components/layout/Header"
 import { Footer } from "@/components/layout/Footer"
+import { siteConfig } from "@/lib/constants"
 
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
   title: {
-    default: "Chayan - Latest Government Jobs, Results, Admit Cards",
-    template: "%s | Chayan"
+    default: `${siteConfig.name} - Latest Government Jobs, Results, Admit Cards`,
+    template: `%s | ${siteConfig.name}`
   },
-  description: "select right. serve right. — Your trusted government job portal. Latest notifications, results, admit cards, answer keys and more.",
+  description: siteConfig.description,
   keywords: ["government jobs", "sarkari jobs", "govt jobs", "jobs in india", "sarkari result", "upcoming jobs"],
-  authors: [{ name: "Chayan" }],
+  authors: [{ name: siteConfig.name }],
+  metadataBase: new URL(siteConfig.url),
   openGraph: {
     type: "website",
     locale: "en_IN",
-    siteName: "Chayan"
+    siteName: siteConfig.name,
+    url: siteConfig.url,
   }
 }
 

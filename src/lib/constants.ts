@@ -1,8 +1,8 @@
 export const siteConfig = {
   name: "Chayan",
   description: "select right. serve right. — Your trusted government job portal. Latest notifications, results, admit cards, answer keys and more.",
-  url: process.env.NEXT_PUBLIC_SITE_URL || "https://chayan.in",
-  ogImage: `${process.env.NEXT_PUBLIC_SITE_URL || "https://chayan.in"}/og.png`,
+  url: process.env.NEXT_PUBLIC_APP_URL || "https://chayan.in",
+  ogImage: `${process.env.NEXT_PUBLIC_APP_URL || "https://chayan.in"}/og.png`,
   links: {
     twitter: "https://twitter.com/chayan",
     facebook: "https://facebook.com/chayan",

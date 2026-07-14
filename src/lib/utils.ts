@@ -68,7 +68,7 @@ export function generateSEO({
   publishedTime?: string
   type?: "website" | "article"
 }) {
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://sarkarijobportal.com"
+  const siteUrl = process.env.NEXT_PUBLIC_APP_URL || "https://chayan.in"
   const fullUrl = url ? `${siteUrl}${url.startsWith("/") ? url : `/${url}`}` : siteUrl
   const ogImage = image || `${siteUrl}/og.png`
 
