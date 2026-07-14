@@ -1,3 +1,8 @@
+export const adsenseConfig = {
+  publisherId: process.env.NEXT_PUBLIC_ADSENSE_PUBLISHER_ID || "",
+  enabled: !!process.env.NEXT_PUBLIC_ADSENSE_PUBLISHER_ID,
+}
+
 export const siteConfig = {
   name: "Chayan",
   description: "select right. serve right. — Your trusted government job portal. Latest notifications, results, admit cards, answer keys and more.",

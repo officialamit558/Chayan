@@ -5,7 +5,7 @@ import { Providers } from "@/components/layout/Providers"
 import { Header } from "@/components/layout/Header"
 import { Footer } from "@/components/layout/Footer"
 import { CookieConsent } from "@/components/layout/CookieConsent"
-import { siteConfig } from "@/lib/constants"
+import { siteConfig, adsenseConfig } from "@/lib/constants"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -88,6 +88,13 @@ export default function RootLayout({
             <Footer />
           </div>
           <CookieConsent />
+          {adsenseConfig.enabled && (
+            <script
+              async
+              src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${adsenseConfig.publisherId}`}
+              crossOrigin="anonymous"
+            />
+          )}
         </Providers>
       </body>
     </html>

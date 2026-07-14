@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Pagination } from "@/components/ui/pagination"
 import { JobCard, JobCardSkeleton } from "@/components/home/JobCard"
+import { AdBanner } from "@/components/ads/AdBanner"
 
 interface FilterOption {
   id: string
@@ -204,6 +205,8 @@ export function JobsClient() {
             <option value="UPCOMING">Upcoming</option>
           </select>
         </div>
+
+        <AdBanner format="horizontal" />
 
         {loading ? (
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">

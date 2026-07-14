@@ -10,12 +10,14 @@ import { JobsByDepartment } from "@/components/home/JobsByDepartment"
 import { PopularExams } from "@/components/home/PopularExams"
 import { FAQ } from "@/components/home/FAQ"
 import { Newsletter } from "@/components/layout/Newsletter"
+import { AdBanner } from "@/components/ads/AdBanner"
 
 export default function HomePage() {
   return (
     <>
       <HeroSection />
       <QuickLinks />
+      <AdBanner format="horizontal" />
       <LatestJobs />
       <div className="container mx-auto px-4">
         <div className="grid gap-8 lg:grid-cols-[1fr_320px]">
