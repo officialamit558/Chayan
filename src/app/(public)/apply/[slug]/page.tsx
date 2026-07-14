@@ -6,7 +6,7 @@ import { BreadcrumbNav } from "@/components/layout/BreadcrumbNav"
 import { JobDetailContent } from "@/components/jobs/JobDetailContent"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { formatDate } from "@/lib/utils"
+import { formatDate, getBaseUrl } from "@/lib/utils"
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params
@@ -17,9 +17,13 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
   if (!job) return { title: "Job Not Found" }
 
+  const baseUrl = getBaseUrl()
+
   return {
     title: job.title,
     description: `${job.title} - ${job.department.name} | ${job.totalVacancies ? `${job.totalVacancies} vacancies` : ""} | Apply before ${job.lastDate ? formatDate(job.lastDate) : "N/A"}`,
+    alternates: { canonical: `${baseUrl}/apply/${job.slug}` },
+    twitter: { card: "summary_large_image", title: `${job.title} | Chayan`, description: `${job.department.name} - ${job.location || "All India"} | ${job.salary || "As per norms"}` },
     openGraph: {
       title: job.title,
       description: `Department: ${job.department.name} | Location: ${job.location || "All India"} | Salary: ${job.salary || "As per norms"}`,
@@ -48,6 +52,16 @@ export default async function ApplyJobPage({ params }: { params: Promise<{ slug:
     include: { department: true },
   })
 
+  const breadCrumbLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: getBaseUrl() },
+      { "@type": "ListItem", position: 2, name: "Jobs", item: `${getBaseUrl()}/jobs` },
+      { "@type": "ListItem", position: 3, name: job.title, item: `${getBaseUrl()}/apply/${job.slug}` },
+    ],
+  }
+
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "JobPosting",
@@ -71,6 +85,7 @@ export default async function ApplyJobPage({ params }: { params: Promise<{ slug:
 
   return (
     <div className="container mx-auto max-w-4xl px-4 py-8">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadCrumbLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
       <BreadcrumbNav

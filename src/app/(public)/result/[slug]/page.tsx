@@ -2,7 +2,7 @@ import { notFound } from "next/navigation"
 import Link from "next/link"
 import type { Metadata } from "next"
 import { prisma } from "@/lib/prisma"
-import { formatDate } from "@/lib/utils"
+import { formatDate, getBaseUrl } from "@/lib/utils"
 import { BreadcrumbNav } from "@/components/layout/BreadcrumbNav"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -18,9 +18,13 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
   if (!result) return { title: "Result Not Found" }
 
+  const baseUrl = getBaseUrl()
+
   return {
     title: result.title,
     description: `${result.title} - ${result.department.name}${result.resultDate ? ` | Result Date: ${formatDate(result.resultDate)}` : ""}${result.description ? ` | ${result.description}` : ""}`,
+    alternates: { canonical: `${baseUrl}/result/${result.slug}` },
+    twitter: { card: "summary_large_image", title: `${result.title} | Chayan`, description: `${result.department.name} - ${result.resultDate ? `Result: ${formatDate(result.resultDate)}` : ""}` },
   }
 }
 
@@ -44,6 +48,16 @@ export default async function ResultDetailPage({ params }: { params: Promise<{ s
     include: { department: true },
   })
 
+  const breadCrumbLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: getBaseUrl() },
+      { "@type": "ListItem", position: 2, name: "Results", item: `${getBaseUrl()}/results` },
+      { "@type": "ListItem", position: 3, name: result.title, item: `${getBaseUrl()}/result/${result.slug}` },
+    ],
+  }
+
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Article",
@@ -55,6 +69,7 @@ export default async function ResultDetailPage({ params }: { params: Promise<{ s
 
   return (
     <div className="container mx-auto max-w-4xl px-4 py-8">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadCrumbLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
       <BreadcrumbNav

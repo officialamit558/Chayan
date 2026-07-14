@@ -30,9 +30,12 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { slug } = await params
   const category = await getCategory(slug)
   if (!category) return { title: "Category Not Found" }
+  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://chayanjobs.com"
   return {
     title: `${category.name} Jobs`,
     description: `Browse latest ${category.name} government jobs. Find current openings, notifications, and application details for ${category.name} positions.`,
+    alternates: { canonical: `${baseUrl}/category/${slug}` },
+    twitter: { card: "summary_large_image", title: `${category.name} Jobs | Chayan`, description: `Browse latest ${category.name} government jobs across India.` },
   }
 }
 

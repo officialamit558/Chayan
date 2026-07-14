@@ -2,7 +2,7 @@ import { notFound } from "next/navigation"
 import Link from "next/link"
 import type { Metadata } from "next"
 import { prisma } from "@/lib/prisma"
-import { formatDate } from "@/lib/utils"
+import { formatDate, getBaseUrl } from "@/lib/utils"
 import { BreadcrumbNav } from "@/components/layout/BreadcrumbNav"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -18,9 +18,13 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
   if (!answerKey) return { title: "Answer Key Not Found" }
 
+  const baseUrl = getBaseUrl()
+
   return {
     title: answerKey.title,
     description: `${answerKey.title} - ${answerKey.department.name}${answerKey.description ? ` | ${answerKey.description}` : ""}`,
+    alternates: { canonical: `${baseUrl}/answer-key/${answerKey.slug}` },
+    twitter: { card: "summary_large_image", title: `${answerKey.title} | Chayan`, description: `${answerKey.department.name} - Download answer key` },
   }
 }
 
@@ -44,8 +48,19 @@ export default async function AnswerKeyDetailPage({ params }: { params: Promise<
     include: { department: true },
   })
 
+  const breadCrumbLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: getBaseUrl() },
+      { "@type": "ListItem", position: 2, name: "Answer Keys", item: `${getBaseUrl()}/answer-keys` },
+      { "@type": "ListItem", position: 3, name: answerKey.title, item: `${getBaseUrl()}/answer-key/${answerKey.slug}` },
+    ],
+  }
+
   return (
     <div className="container mx-auto max-w-4xl px-4 py-8">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadCrumbLd) }} />
       <BreadcrumbNav
         segments={[
           { label: "Answer Keys", href: "/answer-keys" },

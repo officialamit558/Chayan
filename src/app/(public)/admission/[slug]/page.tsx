@@ -2,7 +2,7 @@ import { notFound } from "next/navigation"
 import Link from "next/link"
 import type { Metadata } from "next"
 import { prisma } from "@/lib/prisma"
-import { formatDate } from "@/lib/utils"
+import { formatDate, getBaseUrl } from "@/lib/utils"
 import { BreadcrumbNav } from "@/components/layout/BreadcrumbNav"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -18,9 +18,13 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
   if (!admission) return { title: "Admission Not Found" }
 
+  const baseUrl = getBaseUrl()
+
   return {
     title: admission.title,
     description: `${admission.title} - ${admission.department.name}${admission.startDate ? ` | Apply from: ${formatDate(admission.startDate)}` : ""}${admission.lastDate ? ` to ${formatDate(admission.lastDate)}` : ""}`,
+    alternates: { canonical: `${baseUrl}/admission/${admission.slug}` },
+    twitter: { card: "summary_large_image", title: `${admission.title} | Chayan`, description: `${admission.department.name} - ${admission.lastDate ? `Last date: ${formatDate(admission.lastDate)}` : ""}` },
   }
 }
 
@@ -44,8 +48,19 @@ export default async function AdmissionDetailPage({ params }: { params: Promise<
     include: { department: true },
   })
 
+  const breadCrumbLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: getBaseUrl() },
+      { "@type": "ListItem", position: 2, name: "Admissions", item: `${getBaseUrl()}/admissions` },
+      { "@type": "ListItem", position: 3, name: admission.title, item: `${getBaseUrl()}/admission/${admission.slug}` },
+    ],
+  }
+
   return (
     <div className="container mx-auto max-w-4xl px-4 py-8">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadCrumbLd) }} />
       <BreadcrumbNav
         segments={[
           { label: "Admissions", href: "/admissions" },

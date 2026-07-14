@@ -2,7 +2,7 @@ import { notFound } from "next/navigation"
 import Link from "next/link"
 import type { Metadata } from "next"
 import { prisma } from "@/lib/prisma"
-import { formatDate } from "@/lib/utils"
+import { formatDate, getBaseUrl } from "@/lib/utils"
 import { BreadcrumbNav } from "@/components/layout/BreadcrumbNav"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -18,9 +18,13 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
   if (!syllabus) return { title: "Syllabus Not Found" }
 
+  const baseUrl = getBaseUrl()
+
   return {
     title: syllabus.title,
     description: `${syllabus.title} - ${syllabus.department.name}${syllabus.subjects ? ` | Subjects: ${syllabus.subjects}` : ""}${syllabus.description ? ` | ${syllabus.description}` : ""}`,
+    alternates: { canonical: `${baseUrl}/syllabus/${syllabus.slug}` },
+    twitter: { card: "summary_large_image", title: `${syllabus.title} | Chayan`, description: `${syllabus.department.name} - ${syllabus.subjects ? `Subjects: ${syllabus.subjects}` : "Download syllabus"}` },
   }
 }
 
@@ -44,8 +48,19 @@ export default async function SyllabusDetailPage({ params }: { params: Promise<{
     include: { department: true },
   })
 
+  const breadCrumbLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: getBaseUrl() },
+      { "@type": "ListItem", position: 2, name: "Syllabus", item: `${getBaseUrl()}/syllabus` },
+      { "@type": "ListItem", position: 3, name: syllabus.title, item: `${getBaseUrl()}/syllabus/${syllabus.slug}` },
+    ],
+  }
+
   return (
     <div className="container mx-auto max-w-4xl px-4 py-8">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadCrumbLd) }} />
       <BreadcrumbNav
         segments={[
           { label: "Syllabus", href: "/syllabus" },

@@ -2,7 +2,7 @@ import { notFound } from "next/navigation"
 import Link from "next/link"
 import type { Metadata } from "next"
 import { prisma } from "@/lib/prisma"
-import { formatDate } from "@/lib/utils"
+import { formatDate, getBaseUrl } from "@/lib/utils"
 import { BreadcrumbNav } from "@/components/layout/BreadcrumbNav"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -18,9 +18,13 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
   if (!admitCard) return { title: "Admit Card Not Found" }
 
+  const baseUrl = getBaseUrl()
+
   return {
     title: admitCard.title,
     description: `${admitCard.title} - ${admitCard.department.name}${admitCard.examDate ? ` | Exam Date: ${formatDate(admitCard.examDate)}` : ""}${admitCard.description ? ` | ${admitCard.description}` : ""}`,
+    alternates: { canonical: `${baseUrl}/admit-card/${admitCard.slug}` },
+    twitter: { card: "summary_large_image", title: `${admitCard.title} | Chayan`, description: `${admitCard.department.name}${admitCard.examDate ? ` - Exam: ${formatDate(admitCard.examDate)}` : ""}` },
   }
 }
 
@@ -44,8 +48,19 @@ export default async function AdmitCardDetailPage({ params }: { params: Promise<
     include: { department: true },
   })
 
+  const breadCrumbLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: getBaseUrl() },
+      { "@type": "ListItem", position: 2, name: "Admit Cards", item: `${getBaseUrl()}/admit-cards` },
+      { "@type": "ListItem", position: 3, name: admitCard.title, item: `${getBaseUrl()}/admit-card/${admitCard.slug}` },
+    ],
+  }
+
   return (
     <div className="container mx-auto max-w-4xl px-4 py-8">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadCrumbLd) }} />
       <BreadcrumbNav
         segments={[
           { label: "Admit Cards", href: "/admit-cards" },
