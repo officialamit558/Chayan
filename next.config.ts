@@ -1,7 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  output: process.env.NODE_ENV === "production" ? "standalone" : undefined,
+  output: process.env.DOCKER === "true" ? "standalone" : undefined,
   images: {
     remotePatterns: [
       {
