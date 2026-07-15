@@ -9,6 +9,7 @@ async function main() {
   await prisma.comment.deleteMany();
   await prisma.bookmark.deleteMany();
   await prisma.log.deleteMany();
+  await prisma.newsletter.deleteMany();
   await prisma.blogPost.deleteMany();
   await prisma.answerKey.deleteMany();
   await prisma.admitCard.deleteMany();
