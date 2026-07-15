@@ -17,46 +17,66 @@ export default async function Image() {
           justifyContent: "center",
           width: "100%",
           height: "100%",
-          background: "linear-gradient(135deg, #0f172a 0%, #1e3a5f 50%, #0d9488 100%)",
-          color: "white",
+          background: "#ffffff",
           fontFamily: "system-ui, sans-serif",
+          position: "relative",
+          overflow: "hidden",
         }}
       >
         <div
           style={{
             display: "flex",
             alignItems: "center",
-            gap: 20,
-            marginBottom: 20,
+            gap: 32,
           }}
         >
           <div
             style={{
-              width: 80,
-              height: 80,
-              borderRadius: 16,
-              background: "#0d9488",
+              width: 140,
+              height: 140,
+              borderRadius: 28,
+              background: "#0f766e",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              fontSize: 40,
-              fontWeight: 700,
+              position: "relative",
+              overflow: "hidden",
             }}
           >
-            C
+            <svg
+              width="100"
+              height="100"
+              viewBox="0 0 172 174"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              style={{ position: "absolute", inset: 0, margin: "auto" }}
+            >
+              <path
+                d="M32 108L58 134L112 68"
+                stroke="white"
+                strokeWidth="12"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
           </div>
-          <div style={{ fontSize: 64, fontWeight: 800, letterSpacing: -2 }}>Chayan</div>
-        </div>
-        <div style={{ fontSize: 28, color: "#cbd5e1", marginBottom: 12 }}>
-          select right. serve right.
+          <div style={{ display: "flex", flexDirection: "column" }}>
+            <div style={{ fontSize: 72, fontWeight: 500, color: "#0b0b0b", letterSpacing: -1 }}>
+              Chayan
+            </div>
+            <div style={{ fontSize: 20, fontWeight: 400, color: "#52514e", marginTop: 4 }}>
+              select right. serve right.
+            </div>
+          </div>
         </div>
         <div
           style={{
-            fontSize: 22,
-            color: "#94a3b8",
+            fontSize: 18,
+            color: "#64748b",
             textAlign: "center",
-            maxWidth: 700,
-            lineHeight: 1.4,
+            maxWidth: 600,
+            lineHeight: 1.5,
+            marginTop: 40,
           }}
         >
           Your trusted government job portal — Latest notifications, results, admit cards, answer keys and more
