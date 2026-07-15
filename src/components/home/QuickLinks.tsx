@@ -1,7 +1,4 @@
-"use client"
-
 import Link from "next/link"
-import { motion } from "framer-motion"
 import {
   Briefcase,
   FileText,
@@ -67,19 +64,6 @@ const links: QuickLink[] = [
   },
 ]
 
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.1 },
-  },
-}
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.4 } },
-}
-
 export function QuickLinks({ className }: { className?: string }) {
   return (
     <section className={cn("py-16", className)}>
@@ -93,15 +77,9 @@ export function QuickLinks({ className }: { className?: string }) {
           </p>
         </div>
 
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-50px" }}
-          className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3"
-        >
+        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {links.map((link) => (
-            <motion.div key={link.title} variants={itemVariants}>
+            <div key={link.title} className="animate-fade-in-up">
               <Link href={link.href} className="group block">
                 <Card className="overflow-hidden border-gray-200 transition-all duration-300 hover:border-transparent hover:shadow-xl">
                   <CardContent className="relative p-0">
@@ -125,9 +103,9 @@ export function QuickLinks({ className }: { className?: string }) {
                   </CardContent>
                 </Card>
               </Link>
-            </motion.div>
+            </div>
           ))}
-        </motion.div>
+        </div>
       </div>
     </section>
   )

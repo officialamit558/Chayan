@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react"
 import Link from "next/link"
-import { motion } from "framer-motion"
 import { ArrowRight, Download, Calendar, Building2 } from "lucide-react"
 import { cn, formatDate } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
@@ -16,19 +15,6 @@ interface Result {
   resultDate: string
   pdfUrl?: string
   slug: string
-}
-
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.08 },
-  },
-}
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.4 } },
 }
 
 export function LatestResults() {
@@ -97,15 +83,9 @@ export function LatestResults() {
             <p className="text-gray-500">No results published yet.</p>
           </div>
         ) : (
-          <motion.div
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-50px" }}
-            className="grid gap-5 sm:grid-cols-2"
-          >
+          <div className="grid gap-5 sm:grid-cols-2">
             {results.map((result) => (
-              <motion.div key={result.id} variants={itemVariants}>
+              <div key={result.id}>
                 <Card className="group border-gray-200 transition-all hover:border-blue-300 hover:shadow-md">
                   <CardContent className="p-5">
                     <Link href={`/result/${result.slug}`}>
@@ -133,9 +113,9 @@ export function LatestResults() {
                     </div>
                   </CardContent>
                 </Card>
-              </motion.div>
+              </div>
             ))}
-          </motion.div>
+          </div>
         )}
 
         <div className="mt-6 text-center sm:hidden">

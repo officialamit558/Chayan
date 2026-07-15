@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useMemo } from "react"
 import Link from "next/link"
-import { motion } from "framer-motion"
 import { Calendar, MapPin, Users, Building2, ArrowRight } from "lucide-react"
 import { cn, formatDate } from "@/lib/utils"
 import { Card, CardContent } from "@/components/ui/card"
@@ -191,11 +190,8 @@ export function JobsByQualification({ className }: { className?: string }) {
             {filteredJobs.length === 0 ? (
               <p className="py-12 text-center text-gray-500">No jobs found for this qualification.</p>
             ) : (
-              <motion.div
+              <div
                 key={selectedQual}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3 }}
                 className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4"
               >
                 {filteredJobs.slice(0, 4).map((job) => (
@@ -235,7 +231,7 @@ export function JobsByQualification({ className }: { className?: string }) {
                     </Card>
                   </Link>
                 ))}
-              </motion.div>
+              </div>
             )}
 
             {qualifications.length > 0 && (

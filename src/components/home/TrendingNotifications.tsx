@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react"
 import Link from "next/link"
-import { motion } from "framer-motion"
 import { Flame, Eye, Calendar, ArrowRight } from "lucide-react"
 import { cn, formatDate } from "@/lib/utils"
 import { Badge } from "@/components/ui/badge"
@@ -87,24 +86,9 @@ export function TrendingNotifications() {
             <p className="text-gray-500">No trending notifications right now.</p>
           </div>
         ) : (
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={{
-              hidden: { opacity: 0 },
-              visible: { transition: { staggerChildren: 0.05 } },
-            }}
-            className="space-y-2"
-          >
+          <div className="space-y-2">
             {notifications.slice(0, 5).map((item, index) => (
-              <motion.div
-                key={item.id}
-                variants={{
-                  hidden: { opacity: 0, x: -15 },
-                  visible: { opacity: 1, x: 0, transition: { duration: 0.25 } },
-                }}
-              >
+              <div key={item.id}>
                 <Link href="/notifications" className="block">
                   <Card className="border-gray-200 transition-all hover:border-orange-200 hover:shadow-sm">
                     <CardContent className="flex items-center gap-3 p-3">
@@ -131,9 +115,9 @@ export function TrendingNotifications() {
                     </CardContent>
                   </Card>
                 </Link>
-              </motion.div>
+              </div>
             ))}
-          </motion.div>
+          </div>
         )}
       </div>
     </section>

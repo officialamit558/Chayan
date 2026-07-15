@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useMemo } from "react"
 import Link from "next/link"
-import { motion } from "framer-motion"
 import { ArrowRight, Building2 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Card, CardContent } from "@/components/ui/card"
@@ -162,21 +161,11 @@ export function JobsByDepartment({ className }: { className?: string }) {
           </div>
         ) : (
           <>
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ staggerChildren: 0.06 }}
-              className="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
-            >
+            <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
               {departments.map((dept) => {
                 const count = deptJobMap.get(dept.id)?.length || 0
                 return (
-                  <motion.div
-                    key={dept.id}
-                    initial={{ opacity: 0, y: 15 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.35 }}
-                  >
+                  <div key={dept.id}>
                     <Link
                       href={`/jobs?departmentId=${dept.id}`}
                       className="group block"
@@ -199,10 +188,10 @@ export function JobsByDepartment({ className }: { className?: string }) {
                         </CardContent>
                       </Card>
                     </Link>
-                  </motion.div>
+                  </div>
                 )
               })}
-            </motion.div>
+            </div>
 
             {departments.length === 0 && !loading && (
               <p className="py-12 text-center text-gray-500">No departments available.</p>

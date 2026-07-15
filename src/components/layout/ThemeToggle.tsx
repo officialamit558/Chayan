@@ -3,7 +3,6 @@
 import * as React from "react"
 import { useTheme } from "next-themes"
 import { Moon, Sun, Laptop } from "lucide-react"
-import { motion, AnimatePresence } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
@@ -33,29 +32,9 @@ export function ThemeToggle() {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" size="icon" className="relative">
-          <AnimatePresence mode="wait">
-            {theme === "dark" ? (
-              <motion.div
-                key="moon"
-                initial={{ rotate: -90, opacity: 0 }}
-                animate={{ rotate: 0, opacity: 1 }}
-                exit={{ rotate: 90, opacity: 0 }}
-                transition={{ duration: 0.2 }}
-              >
-                <Moon className="h-5 w-5" />
-              </motion.div>
-            ) : (
-              <motion.div
-                key="sun"
-                initial={{ rotate: -90, opacity: 0 }}
-                animate={{ rotate: 0, opacity: 1 }}
-                exit={{ rotate: 90, opacity: 0 }}
-                transition={{ duration: 0.2 }}
-              >
-                <Sun className="h-5 w-5" />
-              </motion.div>
-            )}
-          </AnimatePresence>
+          <span className="transition-transform duration-200">
+            {theme === "dark" ? <Moon className="h-5 w-5" /> : <Sun className="h-5 w-5" />}
+          </span>
           <span className="sr-only">Toggle theme</span>
         </Button>
       </DropdownMenuTrigger>

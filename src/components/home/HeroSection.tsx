@@ -1,7 +1,6 @@
 "use client"
 
 import { useState, useEffect, useRef } from "react"
-import { motion, useInView } from "framer-motion"
 import { Search, Briefcase, FileText, Award, Users, TrendingUp } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -16,11 +15,26 @@ interface CounterProps {
 
 function CountUp({ end, suffix = "", duration = 2, label, icon }: CounterProps) {
   const ref = useRef<HTMLDivElement>(null)
-  const isInView = useInView(ref, { once: true })
   const [count, setCount] = useState(0)
+  const [hasStarted, setHasStarted] = useState(false)
 
   useEffect(() => {
-    if (!isInView) return
+    const el = ref.current
+    if (!el || hasStarted) return
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setHasStarted(true)
+          observer.disconnect()
+        }
+      }
+    )
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [hasStarted])
+
+  useEffect(() => {
+    if (!hasStarted) return
     let startTime: number | null = null
     const step = (timestamp: number) => {
       if (!startTime) startTime = timestamp
@@ -30,7 +44,7 @@ function CountUp({ end, suffix = "", duration = 2, label, icon }: CounterProps) 
       if (progress < 1) requestAnimationFrame(step)
     }
     requestAnimationFrame(step)
-  }, [isInView, end, duration])
+  }, [hasStarted, end, duration])
 
   return (
     <div ref={ref} className="flex flex-col items-center gap-1.5">
@@ -70,30 +84,21 @@ export function HeroSection() {
 
       <div className="relative mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-4xl text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-          >
-            <h1 className="mb-4 text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-6xl">
+          <div>
+            <h1 className="mb-4 animate-fade-in-up text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-6xl">
               Your Gateway to{" "}
               <span className="bg-gradient-to-r from-yellow-200 to-yellow-400 bg-clip-text text-transparent">
                 Government Jobs
               </span>{" "}
               in India
             </h1>
-            <p className="mx-auto mb-8 max-w-2xl text-lg text-blue-100 sm:text-xl">
+            <p className="mx-auto mb-8 max-w-2xl animate-fade-in-up text-lg text-blue-100 sm:text-xl" style={{ animationDelay: "0.1s" }}>
               Find the latest government job notifications, exam results, admit cards, and more. 
               Your one-stop destination for Sarkari Naukri updates.
             </p>
-          </motion.div>
+          </div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="mx-auto mb-12 max-w-2xl"
-          >
+          <div className="mx-auto mb-12 max-w-2xl animate-fade-in-up" style={{ animationDelay: "0.2s" }}>
             <form onSubmit={handleSearch} className="flex items-center gap-2">
               <div className="relative flex-1">
                 <Search className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-400" />
@@ -113,30 +118,20 @@ export function HeroSection() {
                 Search
               </Button>
             </form>
-          </motion.div>
+          </div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            className="mb-10 grid grid-cols-2 gap-6 sm:grid-cols-4"
-          >
+          <div className="mb-10 grid animate-fade-in-up grid-cols-2 gap-6 sm:grid-cols-4" style={{ animationDelay: "0.3s" }}>
             {stats.map((stat) => (
               <CountUp key={stat.label} {...stat} />
             ))}
-          </motion.div>
+          </div>
 
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.6, delay: 0.6 }}
-            className="flex items-center justify-center gap-2 text-blue-200"
-          >
+          <div className="flex animate-fade-in-up items-center justify-center gap-2 text-blue-200" style={{ animationDelay: "0.4s" }}>
             <Users className="h-4 w-4" />
             <span className="text-sm">
               Trusted by millions of job seekers across India
             </span>
-          </motion.div>
+          </div>
         </div>
       </div>
 

@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useMemo } from "react"
 import Link from "next/link"
-import { motion } from "framer-motion"
 import { MapPin, ArrowRight, Calendar, Users, Building2 } from "lucide-react"
 import { cn, formatDate } from "@/lib/utils"
 import { Card, CardContent } from "@/components/ui/card"
@@ -175,11 +174,8 @@ export function JobsByState({ className }: { className?: string }) {
             )}
 
             {selectedState && (
-              <motion.div
+              <div
                 key={selectedState.id}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3 }}
                 className="mt-8"
               >
                 <div className="mb-4 flex items-center justify-between">
@@ -227,7 +223,7 @@ export function JobsByState({ className }: { className?: string }) {
                     ))}
                   </div>
                 )}
-              </motion.div>
+              </div>
             )}
 
             <div className="mt-8 text-center">

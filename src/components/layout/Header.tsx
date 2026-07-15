@@ -4,7 +4,6 @@ import * as React from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { useSession, signOut } from "next-auth/react"
-import { motion } from "framer-motion"
 import {
   Search,
   User,
@@ -65,17 +64,7 @@ export function Header() {
           <div className="relative flex items-center mx-auto max-w-7xl px-4 py-1.5">
             <Megaphone className="h-4 w-4 shrink-0 text-yellow-300 mr-2" />
             <div className="overflow-hidden flex-1">
-              <motion.div
-                className="flex whitespace-nowrap"
-                animate={{ x: ["0%", "-50%"] }}
-                transition={{
-                  x: {
-                    repeat: Infinity,
-                    duration: 30,
-                    ease: "linear",
-                  },
-                }}
-              >
+              <div className="flex animate-ticker whitespace-nowrap">
                 <div className="flex gap-8 shrink-0">
                   {tickerItems.map((item, i) => (
                     <span
@@ -96,7 +85,7 @@ export function Header() {
                     </span>
                   ))}
                 </div>
-              </motion.div>
+              </div>
             </div>
           </div>
         </div>
@@ -127,10 +116,7 @@ export function Header() {
                   >
                     {link.title}
                     {isActive && (
-                      <motion.span
-                        layoutId="activeNav"
-                        className="absolute bottom-0 left-2 right-2 h-0.5 bg-blue-600 dark:bg-blue-400 rounded-full"
-                      />
+                      <span className="absolute bottom-0 left-2 right-2 h-0.5 bg-blue-600 dark:bg-blue-400 rounded-full" />
                     )}
                   </Link>
                 )

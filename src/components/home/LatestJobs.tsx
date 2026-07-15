@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react"
 import Link from "next/link"
-import { motion } from "framer-motion"
 import { ArrowRight, ChevronDown, ChevronUp } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
@@ -23,19 +22,6 @@ interface Job {
 
 interface LatestJobsProps {
   className?: string
-}
-
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.08 },
-  },
-}
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.4 } },
 }
 
 export function LatestJobs({ className }: LatestJobsProps) {
@@ -97,19 +83,13 @@ export function LatestJobs({ className }: LatestJobsProps) {
             ))}
           </div>
         ) : (
-          <motion.div
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-50px" }}
-            className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
-          >
+          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {displayedJobs.map((job) => (
-              <motion.div key={job.id} variants={itemVariants}>
+              <div key={job.id}>
                 <JobCard {...job} />
-              </motion.div>
+              </div>
             ))}
-          </motion.div>
+          </div>
         )}
 
         {jobs.length > 4 && (

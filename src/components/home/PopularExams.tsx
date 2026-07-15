@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react"
 import Link from "next/link"
-import { motion } from "framer-motion"
 import { Calendar, ArrowRight, ExternalLink, BookOpen } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Badge } from "@/components/ui/badge"
@@ -110,12 +109,8 @@ export function PopularExams({ className }: { className?: string }) {
           <div className="overflow-x-auto pb-4">
             <div className="flex gap-5" style={{ minWidth: "max-content" }}>
               {exams.map((exam, index) => (
-                <motion.div
+                <div
                   key={exam.id}
-                  initial={{ opacity: 0, x: 30 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.4, delay: index * 0.08 }}
                   className="w-72 shrink-0"
                 >
                   <Link href={`/jobs?categoryId=${exam.categoryId}`} className="group block">
@@ -141,7 +136,7 @@ export function PopularExams({ className }: { className?: string }) {
                       </CardContent>
                     </Card>
                   </Link>
-                </motion.div>
+                </div>
               ))}
             </div>
           </div>

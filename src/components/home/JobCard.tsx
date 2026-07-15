@@ -2,7 +2,6 @@
 
 import { useState } from "react"
 import Link from "next/link"
-import { motion } from "framer-motion"
 import {
   Calendar,
   MapPin,
@@ -82,10 +81,7 @@ export function JobCard({
   }
 
   return (
-    <motion.div
-      whileHover={{ y: -4 }}
-      transition={{ type: "spring", stiffness: 300, damping: 20 }}
-    >
+    <div>
       <Link href={`/apply/${slug}`} className="block">
         <Card
           className={cn(
@@ -172,7 +168,7 @@ export function JobCard({
           </CardContent>
         </Card>
       </Link>
-    </motion.div>
+    </div>
   )
 }
 
