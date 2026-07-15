@@ -90,6 +90,12 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ slu
           )}
         </header>
 
+        {post.image && (
+          <div className="mb-8 overflow-hidden rounded-lg">
+            <img src={post.image} alt={post.title} className="w-full object-cover max-h-96" />
+          </div>
+        )}
+
         {post.excerpt && (
           <p className="mb-6 text-lg text-gray-600 leading-relaxed">{post.excerpt}</p>
         )}

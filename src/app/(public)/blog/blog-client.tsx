@@ -148,6 +148,11 @@ export function BlogClient() {
                             </span>
                           )}
                         </div>
+                        {post.image && (
+                          <div className="mb-3 -mx-6 -mt-4 overflow-hidden">
+                            <img src={post.image} alt={post.title} className="h-40 w-full object-cover" />
+                          </div>
+                        )}
                         <CardTitle className="text-lg leading-snug">{post.title}</CardTitle>
                       </CardHeader>
                       <CardContent>

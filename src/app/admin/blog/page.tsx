@@ -26,11 +26,12 @@ import {
 import { Pagination } from "@/components/ui/pagination"
 import { toast } from "@/components/ui/toast"
 import { formatDate, slugify } from "@/lib/utils"
-import { Plus, Pencil, Trash2, Search, Eye, EyeOff } from "lucide-react"
+import { ImageUpload } from "@/components/admin/ImageUpload"
+import { Plus, Pencil, Trash2, Search, Eye, EyeOff, Image } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
 
 interface BlogItem {
-  id: string; title: string; slug: string; excerpt: string | null; author: string | null; tags: string | null; published: boolean; views: number; createdAt: string
+  id: string; title: string; slug: string; excerpt: string | null; author: string | null; image: string | null; tags: string | null; published: boolean; views: number; createdAt: string
 }
 
 export default function AdminBlog() {
@@ -93,7 +94,7 @@ export default function AdminBlog() {
       excerpt: post.excerpt,
       content: null,
       author: post.author,
-      image: null,
+      image: post.image,
       tags: post.tags,
       published: post.published,
     })
@@ -149,7 +150,12 @@ export default function AdminBlog() {
                         exit={{ opacity: 0, y: -10 }}
                         className="border-b border-gray-200 transition-colors hover:bg-gray-50"
                       >
-                        <TableCell className="max-w-[300px] truncate font-medium">{post.title}</TableCell>
+                        <TableCell className="max-w-[300px] truncate font-medium">
+                          <div className="flex items-center gap-2">
+                            {post.image && <Image className="h-4 w-4 shrink-0 text-gray-400" />}
+                            <span className="truncate">{post.title}</span>
+                          </div>
+                        </TableCell>
                         <TableCell>{post.author || "Chayan"}</TableCell>
                         <TableCell>
                           {post.published ? (
@@ -212,6 +218,15 @@ export default function AdminBlog() {
                   <FormItem><FormLabel>Tags (comma separated)</FormLabel><FormControl><Input {...field} value={field.value || ""} onChange={(e) => field.onChange(e.target.value || null)} placeholder="exam-tips, ssc, govt-jobs" /></FormControl><FormMessage /></FormItem>
                 )} />
               </div>
+              <FormField control={form.control} name="image" render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Featured Image</FormLabel>
+                  <FormControl>
+                    <ImageUpload value={field.value} onChange={field.onChange} folder="chayan/blog" />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )} />
               <FormField control={form.control} name="excerpt" render={({ field }) => (
                 <FormItem><FormLabel>Excerpt (short summary)</FormLabel><FormControl><Textarea {...field} value={field.value || ""} onChange={(e) => field.onChange(e.target.value || null)} rows={2} /></FormControl><FormMessage /></FormItem>
               )} />
