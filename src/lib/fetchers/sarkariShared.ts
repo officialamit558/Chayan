@@ -47,7 +47,7 @@ export function extractJobLinks(html: string): { title: string; url: string }[] 
 
   const links: { title: string; url: string }[] = []
   const seen = new Set<string>()
-  const regex = /<a\s+href="(https?:\/\/sarkariresult\.com\.cm[^"]+)"[^>]*>([^<]+)<\/a>/gi
+  const regex = /<a\s[^>]*href="(https?:\/\/sarkariresult\.com\.cm[^"]+)"[^>]*>([^<]+)<\/a>/gi
   let match
 
   while ((match = regex.exec(html)) !== null) {
@@ -62,7 +62,6 @@ export function extractJobLinks(html: string): { title: string; url: string }[] 
     if (isSkippedPath || isSkippedTitle) continue
     if (title.length < 10) continue
     if (seen.has(url)) continue
-    if (/\d{4}/.test(title) === false) continue
 
     seen.add(url)
     links.push({ title, url })
