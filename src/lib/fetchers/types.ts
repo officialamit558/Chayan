@@ -10,6 +10,20 @@ export interface FetchedJob {
   notificationUrl?: string
   sourceUrl: string
   publishedAt: Date
+  category?: string
+  state?: string
+  advertisementNo?: string
+  ageLimit?: string
+  ageRelaxation?: string
+  education?: string
+  selectionProcess?: string
+  applicationFee?: string
+  importantDates?: Record<string, string>
+  documentsRequired?: string
+  howToApply?: string
+  officialWebsite?: string
+  experience?: string
+  startDate?: string
 }
 
 export interface FetchResult {

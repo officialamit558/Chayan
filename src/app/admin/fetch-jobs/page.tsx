@@ -25,7 +25,7 @@ export default function FetchJobsPage() {
       const res = await fetch("/api/admin/fetch-jobs", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(all ? {} : { source: "govtjobsblog.in" }),
+        body: JSON.stringify(all ? {} : { source: "sarkariresult.com.cm" }),
       })
       const data = await res.json()
       if (!res.ok) throw new Error(data.error || "Failed")
@@ -46,7 +46,7 @@ export default function FetchJobsPage() {
 
       <div className="flex gap-4">
         <Button onClick={() => handleFetch(false)} disabled={loading}>
-          {loading ? "Importing..." : "Import from govtjobsblog.in"}
+          {loading ? "Importing..." : "Import from sarkariresult.com.cm"}
         </Button>
         <Button onClick={() => handleFetch(true)} disabled={loading} variant="outline">
           {loading ? "Importing..." : "Import All Sources"}

@@ -1,10 +1,10 @@
 import { FetcherSource, FetchResult, FetchedJob } from "./types"
-import { govtJobsBlogSource } from "./sources/govtJobsBlog"
+import { sarkariResultSource } from "./sources/sarkariResult"
 import { prisma } from "@/lib/prisma"
 import { ensureDepartment, ensureCategory, ensureState, slugify, parseLastDate } from "./utils"
 
 const sources: Record<string, FetcherSource> = {
-  [govtJobsBlogSource.name]: govtJobsBlogSource,
+  [sarkariResultSource.name]: sarkariResultSource,
 }
 
 export function getAvailableSources(): string[] {
@@ -34,9 +34,12 @@ export async function importFromSource(sourceName: string): Promise<FetchResult>
         }
 
         const departmentId = await ensureDepartment(job.organization || "General")
-        const categoryId = await ensureCategory(job.organization || "General")
-        const stateId = job.location ? await ensureState(job.location) : undefined
-        const lastDate = job.lastDate ? parseLastDate(job.lastDate) : undefined
+        const categoryId = job.category
+          ? await ensureCategory(job.category)
+          : await ensureCategory(job.organization || "General")
+        const stateId = job.state ? await ensureState(job.state) : job.location ? await ensureState(job.location) : undefined
+        const lastDate = job.lastDate ? parseLastDateString(job.lastDate) : undefined
+        const startDate = job.startDate ? parseLastDateString(job.startDate) : undefined
 
         await prisma.job.create({
           data: {
@@ -45,13 +48,24 @@ export async function importFromSource(sourceName: string): Promise<FetchResult>
             departmentId,
             categoryId,
             stateId,
-            totalVacancies: job.totalVacancies,
-            salary: job.salary,
-            location: job.location,
-            education: job.qualification,
-            lastDate: lastDate,
-            applyLink: job.notificationUrl || job.sourceUrl,
-            officialNotification: job.notificationUrl,
+            advertisementNo: job.advertisementNo || undefined,
+            totalVacancies: job.totalVacancies || undefined,
+            salary: job.salary || undefined,
+            location: job.location || undefined,
+            ageLimit: job.ageLimit || undefined,
+            ageRelaxation: job.ageRelaxation || undefined,
+            education: job.education || job.qualification || undefined,
+            selectionProcess: job.selectionProcess || undefined,
+            applicationFee: job.applicationFee || undefined,
+            importantDates: job.importantDates || undefined,
+            documentsRequired: job.documentsRequired || undefined,
+            howToApply: job.howToApply || undefined,
+            officialNotification: job.notificationUrl || undefined,
+            officialWebsite: job.officialWebsite || undefined,
+            applyLink: job.applyLink || job.notificationUrl || job.sourceUrl,
+            experience: job.experience || undefined,
+            startDate,
+            lastDate,
             status: lastDate && lastDate < new Date() ? "EXPIRED" : "ACTIVE",
           },
         })
@@ -73,4 +87,19 @@ export async function importAllSources(): Promise<FetchResult[]> {
     results.push(await importFromSource(name))
   }
   return results
+}
+
+function parseLastDateString(text: string): Date | undefined {
+  const months: Record<string, number> = {
+    january: 0, february: 1, march: 2, april: 3, may: 4, june: 5,
+    july: 6, august: 7, september: 8, october: 9, november: 10, december: 11,
+  }
+
+  const m = text.match(/(\d{1,2})\s+(January|February|March|April|May|June|July|August|September|October|November|December)\s+(\d{4})/i)
+  if (m) {
+    const d = new Date(parseInt(m[3]), months[m[2].toLowerCase()], parseInt(m[1]))
+    if (!isNaN(d.getTime())) return d
+  }
+
+  return parseLastDate(text)
 }
