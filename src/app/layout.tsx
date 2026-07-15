@@ -1,6 +1,7 @@
 import type { Metadata } from "next"
 import { Inter } from "next/font/google"
 import "./globals.css"
+import { Suspense } from "react"
 import { Providers } from "@/components/layout/Providers"
 import { Header } from "@/components/layout/Header"
 import { Footer } from "@/components/layout/Footer"
@@ -96,7 +97,9 @@ export default function RootLayout({
               crossOrigin="anonymous"
             />
           )}
-          <GoogleAnalytics />
+          <Suspense fallback={null}>
+            <GoogleAnalytics />
+          </Suspense>
         </Providers>
       </body>
     </html>
