@@ -38,3 +38,11 @@ export interface FetcherSource {
   name: string
   fetch(): Promise<FetchedJob[]>
 }
+
+export interface ImportConfig {
+  id: string
+  label: string
+  description: string
+  listingUrl: string
+  icon: string
+}

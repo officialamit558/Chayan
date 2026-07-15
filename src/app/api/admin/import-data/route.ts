@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server"
 import { auth } from "@/lib/auth"
-import { importFromSource, getAvailableSources, importAllSources } from "@/lib/fetchers/registry"
+import { importByType, importAllTypes } from "@/lib/fetchers/registry"
 
 async function checkAdmin(): Promise<NextResponse | null> {
   const session = await auth()
@@ -15,23 +15,14 @@ export async function POST(req: NextRequest) {
   if (unauthorized) return unauthorized
 
   const body = await req.json().catch(() => ({}))
-  const sourceName = body.source as string | undefined
+  const type = body.type as string | undefined
 
   let result
-  if (sourceName) {
-    result = [await importFromSource(sourceName)]
+  if (type) {
+    result = [await importByType(type)]
   } else {
-    result = await importAllSources()
+    result = await importAllTypes()
   }
 
   return NextResponse.json({ success: true, results: result })
-}
-
-export async function GET() {
-  const unauthorized = await checkAdmin()
-  if (unauthorized) return unauthorized
-
-  return NextResponse.json({
-    sources: getAvailableSources(),
-  })
 }

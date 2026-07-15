@@ -35,7 +35,7 @@ const sidebarLinks = [
   { href: "/admin/users", label: "Users", icon: Users },
   { href: "/admin/analytics", label: "Analytics", icon: BarChart3 },
   { href: "/admin/blog", label: "Blog", icon: Newspaper },
-  { href: "/admin/fetch-jobs", label: "Import Jobs", icon: Briefcase },
+  { href: "/admin/import-data", label: "Import Data", icon: Briefcase },
   { href: "/admin/logs", label: "Logs", icon: List },
 ]
 
