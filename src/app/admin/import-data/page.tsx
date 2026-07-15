@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { Briefcase, IdCard, FileText, GraduationCap, Book, Loader2, CheckCircle2, XCircle } from "lucide-react"
+import { Briefcase, IdCard, FileText, GraduationCap, Book, Key, Loader2, CheckCircle2, XCircle } from "lucide-react"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -29,9 +29,10 @@ const importers: ImportConfig[] = [
   { id: "results", label: "Result Fetcher", description: "Exam results and answer keys", icon: "FileText", listingUrl: "https://sarkariresult.com.cm/result/" },
   { id: "admissions", label: "Admission Fetcher", description: "Admission notifications and applications", icon: "GraduationCap", listingUrl: "https://sarkariresult.com.cm/admission/" },
   { id: "syllabus", label: "Syllabus Fetcher", description: "Exam syllabus and patterns", icon: "Book", listingUrl: "https://sarkariresult.com.cm/syllabus/" },
+  { id: "answer-keys", label: "Answer Key Fetcher", description: "Exam answer keys and solutions", icon: "Key", listingUrl: "https://sarkariresult.com.cm/answer-key/" },
 ]
 
-const iconMap: Record<string, React.ElementType> = { Briefcase, IdCard, FileText, GraduationCap, Book }
+const iconMap: Record<string, React.ElementType> = { Briefcase, IdCard, FileText, GraduationCap, Book, Key }
 
 export default function ImportDataPage() {
   const [loading, setLoading] = useState<string | null>(null)

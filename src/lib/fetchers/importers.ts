@@ -47,6 +47,13 @@ export const importConfigs: ImportConfig[] = [
     listingUrl: "https://sarkariresult.com.cm/syllabus/",
     icon: "Book",
   },
+  {
+    id: "answer-keys",
+    label: "Answer Key Fetcher",
+    description: "Exam answer keys and solutions",
+    listingUrl: "https://sarkariresult.com.cm/answer-key/",
+    icon: "Key",
+  },
 ]
 
 async function fetchAndParsePages(listingUrl: string, maxJobs = MAX_JOBS): Promise<{ text: string; url: string }[]> {
@@ -321,6 +328,50 @@ export async function importSyllabus(): Promise<FetchResult> {
   }
 
   return { source: "Syllabus", success: errors.length === 0, imported, skipped, errors }
+}
+
+export async function importAnswerKeys(): Promise<FetchResult> {
+  const errors: string[] = []
+  let imported = 0, skipped = 0
+
+  try {
+    const pages = await fetchAndParsePages("https://sarkariresult.com.cm/answer-key/")
+
+    for (const { text, url } of pages) {
+      try {
+        const title = parseTitle(text)
+        if (!title) continue
+
+        const slug = slugify(title + "-answer-key").slice(0, 100)
+        if (await prisma.answerKey.findUnique({ where: { slug } })) { skipped++; continue }
+        if (await prisma.answerKey.findFirst({ where: { pdfUrl: url } })) { skipped++; continue }
+
+        const desc = parseDescription(text)
+        const org = parseOrganization(desc) || title
+        const { category } = parseCategoryAndState(title, desc)
+        const links = parseImportantLinks(text)
+
+        const departmentId = await ensureDepartment(org)
+        const categoryId = category ? await ensureCategory(category) : await ensureCategory(org)
+
+        await prisma.answerKey.create({
+          data: {
+            title, slug, departmentId, categoryId,
+            description: desc || undefined,
+            pdfUrl: links.notificationUrl || url,
+            status: "PUBLISHED",
+          },
+        })
+        imported++
+      } catch (e) {
+        errors.push(`Answer key import error: ${e instanceof Error ? e.message : "Unknown"}`)
+      }
+    }
+  } catch (e) {
+    errors.push(`Fetch error: ${e instanceof Error ? e.message : "Unknown"}`)
+  }
+
+  return { source: "Answer Keys", success: errors.length === 0, imported, skipped, errors }
 }
 
 function parseLastDateString(text: string): Date | undefined {

@@ -1,4 +1,4 @@
-import { importJobs, importAdmitCards, importResults, importAdmissions, importSyllabus, importConfigs } from "./importers"
+import { importJobs, importAdmitCards, importResults, importAdmissions, importSyllabus, importAnswerKeys, importConfigs } from "./importers"
 import type { FetchResult, ImportConfig } from "./types"
 
 export { importConfigs }
@@ -10,6 +10,7 @@ const importers: Record<string, () => Promise<FetchResult>> = {
   results: importResults,
   admissions: importAdmissions,
   syllabus: importSyllabus,
+  "answer-keys": importAnswerKeys,
 }
 
 export function getAvailableImporters(): string[] {
