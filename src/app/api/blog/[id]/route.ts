@@ -36,11 +36,11 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
       data: {
         title,
         slug,
-        excerpt: excerpt || null,
-        content: content || null,
-        author: author || null,
-        image: image || null,
-        tags: tags || null,
+        ...(excerpt !== undefined && excerpt !== null ? { excerpt } : {}),
+        ...(content !== undefined && content !== null ? { content } : {}),
+        ...(author !== undefined && author !== null ? { author } : {}),
+        ...(image !== undefined && image !== null ? { image } : {}),
+        ...(tags !== undefined && tags !== null ? { tags } : {}),
         published,
       },
     })
