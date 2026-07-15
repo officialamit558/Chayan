@@ -12,10 +12,12 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
 
     const { id } = await params
     const body = await request.json()
-    const parsed = blogPostSchema.safeParse(body)
-    if (!parsed.success) {
-      return NextResponse.json({ success: false, error: parsed.error.errors[0].message }, { status: 400 })
+    const validation = blogPostSchema.safeParse(body)
+    if (!validation.success) {
+      return NextResponse.json({ success: false, error: validation.error.issues[0].message }, { status: 400 })
     }
+
+    const { title, slug, excerpt, content, author, image, tags, published } = validation.data
 
     const existing = await prisma.blogPost.findUnique({ where: { id } })
     if (!existing) {
@@ -23,7 +25,7 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
     }
 
     const slugPost = await prisma.blogPost.findFirst({
-      where: { slug: parsed.data.slug, id: { not: id } },
+      where: { slug, id: { not: id } },
     })
     if (slugPost) {
       return NextResponse.json({ success: false, error: "A post with this slug already exists" }, { status: 409 })
@@ -32,14 +34,14 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
     const post = await prisma.blogPost.update({
       where: { id },
       data: {
-        title: parsed.data.title,
-        slug: parsed.data.slug,
-        excerpt: parsed.data.excerpt || null,
-        content: parsed.data.content || null,
-        author: parsed.data.author || null,
-        image: parsed.data.image || null,
-        tags: parsed.data.tags || null,
-        published: parsed.data.published,
+        title,
+        slug,
+        excerpt: excerpt || null,
+        content: content || null,
+        author: author || null,
+        image: image || null,
+        tags: tags || null,
+        published,
       },
     })
 
