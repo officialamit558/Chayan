@@ -62,3 +62,5 @@ Desktop.ini
 # logs
 logs/
 *.log
+report.json
+lighthouse-perf.json
