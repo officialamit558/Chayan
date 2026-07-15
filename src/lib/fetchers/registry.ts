@@ -27,10 +27,26 @@ export async function importFromSource(sourceName: string): Promise<FetchResult>
     for (const job of fetched) {
       try {
         const slug = slugify(job.title).slice(0, 100)
-        const existing = await prisma.job.findUnique({ where: { slug } })
-        if (existing) {
+        const existingBySlug = await prisma.job.findUnique({ where: { slug } })
+        if (existingBySlug) {
           skipped++
           continue
+        }
+
+        const jobUrl = job.sourceUrl || job.notificationUrl
+        if (jobUrl) {
+          const existingByUrl = await prisma.job.findFirst({
+            where: {
+              OR: [
+                { officialNotification: jobUrl },
+                { applyLink: jobUrl },
+              ],
+            },
+          })
+          if (existingByUrl) {
+            skipped++
+            continue
+          }
         }
 
         const departmentId = await ensureDepartment(job.organization || "General")
