@@ -61,14 +61,16 @@ export const sarkariJobsSource: FetcherSource = {
 
   async fetch(): Promise<FetchedJob[]> {
     const listingHtml = await fetchHtml(LISTING_URL)
-    const jobLinks = extractJobLinks(listingHtml)
+    if (!listingHtml) return []
 
+    const jobLinks = extractJobLinks(listingHtml)
     const batch = jobLinks.slice(0, MAX_JOBS)
     const jobs: FetchedJob[] = []
 
     for (const link of batch) {
       try {
         const html = await fetchHtml(link.url)
+        if (!html) continue
         const text = stripHtml(html)
         const job = parseJobPage(text, link.url)
         if (job) jobs.push(job)

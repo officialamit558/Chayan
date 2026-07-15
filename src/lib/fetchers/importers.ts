@@ -58,6 +58,8 @@ export const importConfigs: ImportConfig[] = [
 
 async function fetchAndParsePages(listingUrl: string, maxJobs = MAX_JOBS): Promise<{ text: string; url: string }[]> {
   const listingHtml = await fetchHtml(listingUrl)
+  if (!listingHtml) return []
+
   const jobLinks = extractJobLinks(listingHtml)
   const batch = jobLinks.slice(0, maxJobs)
   const pages: { text: string; url: string }[] = []
@@ -65,6 +67,7 @@ async function fetchAndParsePages(listingUrl: string, maxJobs = MAX_JOBS): Promi
   for (const link of batch) {
     try {
       const html = await fetchHtml(link.url)
+      if (!html) continue
       const text = stripHtml(html)
       pages.push({ text, url: link.url })
     } catch (e) {

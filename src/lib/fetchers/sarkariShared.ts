@@ -1,9 +1,13 @@
 const USER_AGENT = "Mozilla/5.0 (compatible; ChayanBot/1.0)"
 
-export async function fetchHtml(url: string): Promise<string> {
-  const res = await fetch(url, { headers: { "User-Agent": USER_AGENT } })
-  if (!res.ok) throw new Error(`HTTP ${res.status}: ${url}`)
-  return res.text()
+export async function fetchHtml(url: string): Promise<string | null> {
+  try {
+    const res = await fetch(url, { headers: { "User-Agent": USER_AGENT }, signal: AbortSignal.timeout(15000) })
+    if (!res.ok) return null
+    return res.text()
+  } catch {
+    return null
+  }
 }
 
 export function decodeEntities(text: string): string {
@@ -29,17 +33,17 @@ export function stripHtml(html: string): string {
 }
 
 export function extractJobLinks(html: string): { title: string; url: string }[] {
-  const skipPaths = new Set([
-    "/", "/latest-jobs/", "/admit-card/", "/result/", "/admission/",
+  const skipPathPrefixes = [
+    "/latest-jobs/", "/admit-card/", "/result/", "/admission/",
     "/syllabus/", "/answer-key/", "/contact/", "/privacy-policy/",
-    "/disclaimer/", "/latest-posts/",
-  ])
-  const skipTitles = new Set([
+    "/disclaimer/", "/latest-posts/", "/sarkari-result-",
+  ]
+  const skipTitlePrefixes = [
     "Skip to content", "Home", "Latest Job", "Admit Card", "Result",
     "Admission", "Syllabus", "Answer Key", "Contact Us", "Privacy Policy",
-    "Disclaimer", "Sarkari Result", "SarkariResult.com.cm",
-    "Connect With Us", "Download SarkariResult App Now",
-  ])
+    "Disclaimer", "Sarkari Result", "SarkariResult", "Connect With Us",
+    "Download SarkariResult", "Let", "Let\u2019s", "Search",
+  ]
 
   const links: { title: string; url: string }[] = []
   const seen = new Set<string>()
@@ -52,10 +56,13 @@ export function extractJobLinks(html: string): { title: string; url: string }[] 
     const title = decodeEntities(rawTitle).trim()
     const path = new URL(url).pathname
 
-    if (skipPaths.has(path)) continue
-    if (skipTitles.has(title)) continue
+    const isSkippedPath = skipPathPrefixes.some(p => path === p || path.startsWith(p))
+    const isSkippedTitle = skipTitlePrefixes.some(p => title.startsWith(p))
+
+    if (isSkippedPath || isSkippedTitle) continue
     if (title.length < 10) continue
     if (seen.has(url)) continue
+    if (/\d{4}/.test(title) === false) continue
 
     seen.add(url)
     links.push({ title, url })
