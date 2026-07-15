@@ -1,6 +1,5 @@
-# Chayan — Government Jobs Portal
-
-> **select right. serve right.**
+# Chayan
+**select right. serve right.**
 
 A production-ready government jobs portal built with Next.js 15, React 19, TypeScript, Tailwind CSS v4, Prisma, PostgreSQL, and NextAuth v5. Designed for high traffic, Google SEO, and AdSense monetization.
 
