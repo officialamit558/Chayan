@@ -9,6 +9,7 @@ async function main() {
   await prisma.comment.deleteMany();
   await prisma.bookmark.deleteMany();
   await prisma.log.deleteMany();
+  await prisma.blogPost.deleteMany();
   await prisma.answerKey.deleteMany();
   await prisma.admitCard.deleteMany();
   await prisma.result.deleteMany();
@@ -797,6 +798,70 @@ async function main() {
       { jobId: job12!.id, views: 6500, date: daysAgo(2) },
     ],
   });
+
+  const blogPosts = [
+    {
+      title: "How to Prepare for SSC CGL 2026 – A Complete Guide",
+      slug: "how-to-prepare-for-ssc-cgl-2026",
+      excerpt: "A step-by-step guide to cracking SSC CGL 2026. Learn about the exam pattern, syllabus, best books, and study strategies to score high in Tier 1 and Tier 2.",
+      content: "<h2>Overview of SSC CGL 2026</h2><p>The Staff Selection Commission (SSC) conducts the Combined Graduate Level (CGL) examination every year to recruit candidates for various Group B and Group C posts in government ministries and departments. SSC CGL 2026 is expected to be one of the most competitive exams with over 25 lakh applicants.</p><h2>Exam Pattern</h2><p>SSC CGL 2026 will be conducted in four tiers:<br/>Tier 1: Computer-Based Examination (objective)<br/>Tier 2: Computer-Based Examination (advanced level)<br/>Tier 3: Descriptive Paper<br/>Tier 4: Skill Test / Computer Proficiency Test</p><h2>Preparation Strategy</h2><p>Start your preparation at least 6 months before the exam. Focus on understanding the basics first, then move to advanced topics. Practice previous year papers and take mock tests regularly to improve speed and accuracy.</p><h2>Recommended Books</h2><ul><li>Quantitative Aptitude – R.S. Aggarwal</li><li>English – SP Bakshi</li><li>Reasoning – R.S. Aggarwal</li><li>General Awareness – Lucent's GK</li></ul>",
+      author: "Chayan Expert",
+      tags: "ssc-cgl, exam-preparation, govt-jobs, competitive-exams",
+      published: true,
+    },
+    {
+      title: "Top 10 Government Exams in India You Should Know About",
+      slug: "top-10-government-exams-in-india",
+      excerpt: "Discover the most popular government exams in India including UPSC, SSC, Banking, Railways, and State PSC exams. Know the eligibility, exam pattern, and key dates.",
+      content: "<h2>1. UPSC Civil Services Examination</h2><p>The most prestigious exam in India, conducted by the Union Public Service Commission. It selects officers for IAS, IPS, IFS, and other central services.</p><h2>2. SSC CGL</h2><p>The Staff Selection Commission Combined Graduate Level exam recruits for various Group B and Group C posts across government departments.</p><h2>3. Banking Exams (IBPS PO, IBPS Clerk, SBI PO)</h2><p>IBPS and SBI conduct exams for probationary officers and clerical positions in public sector banks.</p><h2>4. Railway Recruitment Board (RRB) Exams</h2><p>RRB conducts exams for various technical and non-technical positions in Indian Railways.</p><h2>5. State Public Service Commission (PSC) Exams</h2><p>Each state has its own PSC that conducts exams for state government services.</p><h2>6. Defence Exams (NDA, CDS, AFCAT)</h2><p>For those interested in joining the Indian Armed Forces.</p><h2>7. Teaching Exams (CTET, UGC NET, State TET)</h2><p>For those looking to build a career in teaching at various levels.</p><h2>8. SSC CHSL</h2><p>For 10+2 pass candidates, conducted by Staff Selection Commission.</p><h2>9. Insurance Exams</h2><p>LIC, NIACL, and other insurance companies conduct exams for officers and assistants.</p><h2>10. Group B & C Departmental Exams</h2><p>Various government departments conduct their own exams for specific positions.</p>",
+      author: "Chayan Team",
+      tags: "govt-exams, upsc, ssc, banking, railways, career-guidance",
+      published: true,
+    },
+    {
+      title: "How to Apply for Government Jobs Online – Step by Step Guide",
+      slug: "how-to-apply-for-government-jobs-online",
+      excerpt: "Learn the complete process of applying for government jobs online. From registration to document upload and fee payment, we cover everything you need to know.",
+      content: "<h2>Step 1: Find the Right Job Notification</h2><p>Visit Chayan regularly to get the latest government job notifications. We curate jobs from all official sources so you never miss an opportunity.</p><h2>Step 2: Check Eligibility</h2><p>Before applying, carefully check the eligibility criteria including educational qualification, age limit, and experience requirements.</p><h2>Step 3: Register on the Official Portal</h2><p>Most government recruitment portals require you to create an account. Use a valid email ID and phone number for registration.</p><h2>Step 4: Fill the Application Form</h2><p>Enter your personal details, educational qualifications, work experience, and other required information carefully.</p><h2>Step 5: Upload Documents</h2><p>Upload scanned copies of your photograph, signature, educational certificates, and other required documents in the specified format.</p><h2>Step 6: Pay Application Fee</h2><p>Pay the application fee online through debit card, credit card, net banking, or UPI. Some candidates may be eligible for fee exemption.</p><h2>Step 7: Submit and Print</h2><p>After submission, take a printout of the application form and fee receipt for future reference.</p>",
+      author: "Chayan Expert",
+      tags: "application-guide, how-to-apply, govt-jobs, job-application",
+      published: true,
+    },
+    {
+      title: "SSC CHSL 2026 – Exam Dates, Pattern, and Preparation Tips",
+      slug: "ssc-chsl-2026-exam-dates-pattern-preparation",
+      excerpt: "Everything you need to know about SSC CHSL 2026 – important dates, exam pattern, syllabus, and expert preparation tips to crack the exam.",
+      content: "<h2>SSC CHSL 2026 Overview</h2><p>The Staff Selection Commission conducts the Combined Higher Secondary Level (CHSL) exam for recruitment to posts like Lower Division Clerk (LDC), Junior Secretariat Assistant (JSA), Postal Assistant (PA), and Data Entry Operator (DEO).</p><h2>Important Dates</h2><p>While official dates are yet to be announced, based on previous trends: Tier 1 exam is expected in March-April 2026, and Tier 2 in June-July 2026.</p><h2>Exam Pattern</h2><p>Tier 1: Computer-Based Exam (100 questions, 100 marks, 60 minutes)<br/>Tier 2: Descriptive Paper (letter writing and essay)<br/>Tier 3: Skill Test / Typing Test</p><h2>Preparation Strategy</h2><p>Focus on General Intelligence, English Language, Quantitative Aptitude, and General Awareness. Practice mock tests daily and revise current affairs regularly.</p>",
+      author: "Chayan Team",
+      tags: "ssc-chsl, exam-dates, preparation, govt-jobs",
+      published: true,
+    },
+    {
+      title: "Common Mistakes to Avoid While Applying for Government Jobs",
+      slug: "common-mistakes-govt-job-applications",
+      excerpt: "Avoid these common mistakes that lead to application rejection – wrong document format, incorrect details, missing deadlines, and more.",
+      content: "<h2>1. Applying at the Last Minute</h2><p>Server congestion is common during the last few days. Apply at least 3-4 days before the deadline to avoid technical issues.</p><h2>2. Incorrect Document Uploads</h2><p>Upload documents in the specified format (PDF/JPG) and size. Many applications get rejected due to blurry photos or large file sizes.</p><h2>3. Wrong Personal Details</h2><p>Double-check your name, date of birth, and contact information. Minor errors can lead to rejection during document verification.</p><h2>4. Ignoring Eligibility Criteria</h2><p>Don't apply for a job if you don't meet the educational or age requirements. It wastes your time and application fee.</p><h2>5. Not Keeping a Printout</h2><p>Always save and print the application confirmation. You'll need it for future reference.</p>",
+      author: "Chayan Expert",
+      tags: "application-tips, common-mistakes, govt-jobs, job-application",
+      published: true,
+    },
+    {
+      title: "Government Job Salary Structure – Pay Matrix Explained",
+      slug: "government-job-salary-structure-pay-matrix",
+      excerpt: "Understand the 7th Pay Commission pay matrix and salary structure for various government job levels. Learn about basic pay, allowances, deductions, and in-hand salary.",
+      content: "<h2>What is the Pay Matrix?</h2><p>The 7th Central Pay Commission introduced a simplified pay matrix for central government employees. It replaced the earlier system of pay bands and grade pay.</p><h2>Pay Levels</h2><p>The pay matrix has 18 levels (Level 1 to Level 18). Entry-level positions typically start at Level 3 to Level 10.</p><h2>Components of Salary</h2><ul><li>Basic Pay – The fixed component based on pay level</li><li>Dearness Allowance (DA) – Revised quarterly based on inflation</li><li>House Rent Allowance (HRA) – Varies by city category (X, Y, Z)</li><li>Transport Allowance – For commuting expenses</li><li>Medical Allowance – For healthcare expenses</li></ul><h2>Example: SSC CGL Salary</h2><p>An SSC CGL officer at Level 7 gets a basic pay of approximately Rs. 44,900. With allowances, the gross salary is around Rs. 55,000-60,000 per month.</p>",
+      author: "Chayan Team",
+      tags: "salary, pay-matrix, 7th-pay-commission, govt-job-benefits",
+      published: true,
+    },
+  ]
+
+  for (const post of blogPosts) {
+    const existing = await prisma.blogPost.findUnique({ where: { slug: post.slug } })
+    if (!existing) {
+      await prisma.blogPost.create({ data: post })
+    }
+  }
 
   console.log('Database seeded successfully!');
 }

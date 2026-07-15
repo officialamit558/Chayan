@@ -9,6 +9,7 @@ export default async function sitemap() {
   let answerKeys: { slug: string; createdAt: Date }[] = []
   let admissions: { slug: string; createdAt: Date }[] = []
   let syllabi: { slug: string; createdAt: Date }[] = []
+  let blogPosts: { slug: string; updatedAt: Date }[] = []
   let categories: { slug: string }[] = []
 
   try {
@@ -19,6 +20,7 @@ export default async function sitemap() {
       prisma.answerKey.findMany({ select: { slug: true, createdAt: true } }),
       prisma.admission.findMany({ select: { slug: true, createdAt: true } }),
       prisma.syllabus.findMany({ select: { slug: true, createdAt: true } }),
+      prisma.blogPost.findMany({ where: { published: true }, select: { slug: true, updatedAt: true } }),
       prisma.category.findMany({ select: { slug: true } }),
     ])
     jobs = data[0]
@@ -27,7 +29,8 @@ export default async function sitemap() {
     answerKeys = data[3]
     admissions = data[4]
     syllabi = data[5]
-    categories = data[6]
+    blogPosts = data[6]
+    categories = data[7]
   } catch {
     // Database unavailable during build, return static pages only
   }
@@ -35,6 +38,7 @@ export default async function sitemap() {
   const staticPages = [
     { url: baseUrl, lastModified: new Date(), changeFrequency: "hourly" as const, priority: 1 },
     { url: `${baseUrl}/notifications`, lastModified: new Date(), changeFrequency: "daily" as const, priority: 0.8 },
+    { url: `${baseUrl}/blog`, lastModified: new Date(), changeFrequency: "daily" as const, priority: 0.8 },
     { url: `${baseUrl}/sitemap`, lastModified: new Date(), changeFrequency: "weekly" as const, priority: 0.3 },
   ]
 
@@ -80,6 +84,13 @@ export default async function sitemap() {
     priority: 0.6,
   }))
 
+  const blogPages = blogPosts.map((post) => ({
+    url: `${baseUrl}/blog/${post.slug}`,
+    lastModified: post.updatedAt,
+    changeFrequency: "monthly" as const,
+    priority: 0.7,
+  }))
+
   const categoryPages = categories.map((cat) => ({
     url: `${baseUrl}/category/${cat.slug}`,
     lastModified: new Date(),
@@ -95,6 +106,7 @@ export default async function sitemap() {
     ...answerKeyPages,
     ...admissionPages,
     ...syllabusPages,
+    ...blogPages,
     ...categoryPages,
   ]
 }

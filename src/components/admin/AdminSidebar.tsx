@@ -19,6 +19,7 @@ import {
   ChevronLeft,
   ChevronRight,
   X,
+  Newspaper,
 } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
 
@@ -33,6 +34,7 @@ const sidebarLinks = [
   { href: "/admin/categories", label: "Categories", icon: Folder },
   { href: "/admin/users", label: "Users", icon: Users },
   { href: "/admin/analytics", label: "Analytics", icon: BarChart3 },
+  { href: "/admin/blog", label: "Blog", icon: Newspaper },
   { href: "/admin/logs", label: "Logs", icon: List },
 ]
 

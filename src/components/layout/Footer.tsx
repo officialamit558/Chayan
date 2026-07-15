@@ -35,6 +35,7 @@ const importantLinks = [
   { label: "Editorial Policy", href: "/editorial-policy" },
   { label: "Copyright Policy", href: "/copyright" },
   { label: "DMCA", href: "/dmca" },
+  { label: "Blog", href: "/blog" },
   { label: "Contact Us", href: "/contact" },
   { label: "About Us", href: "/about" },
   { label: "Sitemap", href: "/sitemap" },

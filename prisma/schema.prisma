@@ -348,6 +348,25 @@ model Log {
   @@index([createdAt])
 }
 
+model BlogPost {
+  id        String   @id @default(cuid())
+  title     String
+  slug      String   @unique
+  excerpt   String?
+  content   String?
+  author    String   @default("Chayan Team")
+  image     String?
+  tags      String?
+  published Boolean  @default(false)
+  views     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([slug])
+  @@index([published])
+  @@index([createdAt])
+}
+
 model JobView {
   id     String   @id @default(cuid())
   jobId  String

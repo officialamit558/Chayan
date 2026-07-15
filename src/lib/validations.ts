@@ -162,4 +162,17 @@ export type NotificationInput = z.infer<typeof notificationSchema>
 export type CommentInput = z.infer<typeof commentSchema>
 export type ProfileInput = z.infer<typeof profileSchema>
 export type BookmarkInput = z.infer<typeof bookmarkSchema>
+export const blogPostSchema = z.object({
+  title: z.string().min(1, "Title is required"),
+  slug: z.string().min(1, "Slug is required"),
+  excerpt: z.string().nullable().optional(),
+  content: z.string().nullable().optional(),
+  author: z.string().nullable().optional(),
+  image: z.string().nullable().optional(),
+  tags: z.string().nullable().optional(),
+  published: z.boolean().default(false),
+})
+
+export type BlogPostInput = z.infer<typeof blogPostSchema>
+
 export type SearchInput = z.infer<typeof searchSchema>

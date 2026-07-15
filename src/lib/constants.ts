@@ -24,6 +24,7 @@ export const mainNav = [
   { title: "Admissions", href: "/admissions" },
   { title: "Syllabus", href: "/syllabus" },
   { title: "Notifications", href: "/notifications" },
+  { title: "Blog", href: "/blog" },
 ]
 
 export const footerLinks = [
