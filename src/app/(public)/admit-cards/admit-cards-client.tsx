@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from "react"
 import { motion } from "framer-motion"
 import Link from "next/link"
 import { Search, AlertCircle, Calendar, Download, FileText, X } from "lucide-react"
+import { BookmarkButton } from "@/components/layout/BookmarkButton"
 import { formatDate } from "@/lib/utils"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
@@ -157,7 +158,8 @@ export function AdmitCardsClient() {
                           </span>
                         )}
                       </div>
-                      <div className="flex gap-2">
+                      <div className="flex items-center gap-2">
+                        <BookmarkButton admitCardId={item.id} variant="ghost" />
                         <Button asChild variant="default" size="sm">
                           <Link href={`/admit-card/${item.slug}`}>
                             <FileText className="mr-1 h-4 w-4" />

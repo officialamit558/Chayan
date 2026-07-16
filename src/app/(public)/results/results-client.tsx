@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from "react"
 import { motion } from "framer-motion"
 import Link from "next/link"
 import { Search, Loader2, AlertCircle, Calendar, Download, FileText, X } from "lucide-react"
+import { BookmarkButton } from "@/components/layout/BookmarkButton"
 import { formatDate } from "@/lib/utils"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
@@ -160,7 +161,8 @@ export function ResultsClient() {
                           </span>
                         )}
                       </div>
-                      <div className="flex gap-2">
+                      <div className="flex items-center gap-2">
+                        <BookmarkButton resultId={result.id} variant="ghost" />
                         <Button asChild variant="default" size="sm">
                           <Link href={`/result/${result.slug}`}>
                             <FileText className="mr-1 h-4 w-4" />

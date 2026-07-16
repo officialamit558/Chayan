@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react"
 import Link from "next/link"
 import { ArrowRight, Download, Calendar, Building2 } from "lucide-react"
+import { BookmarkButton } from "@/components/layout/BookmarkButton"
 import { cn, formatDate } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
@@ -102,14 +103,17 @@ export function LatestResults() {
                         <Calendar className="h-4 w-4 text-gray-400" />
                         <span>{formatDate(result.resultDate)}</span>
                       </div>
-                      {result.pdfUrl ? (
-                        <Button size="sm" variant="outline" className="gap-1.5" asChild>
-                          <a href={result.pdfUrl} target="_blank" rel="noopener noreferrer">
-                            <Download className="h-4 w-4" />
-                            Download PDF
-                          </a>
-                        </Button>
-                      ) : null}
+                      <div className="flex items-center gap-1">
+                        <BookmarkButton resultId={result.id} variant="ghost" />
+                        {result.pdfUrl ? (
+                          <Button size="sm" variant="outline" className="gap-1.5" asChild>
+                            <a href={result.pdfUrl} target="_blank" rel="noopener noreferrer">
+                              <Download className="h-4 w-4" />
+                              Download PDF
+                            </a>
+                          </Button>
+                        ) : null}
+                      </div>
                     </div>
                   </CardContent>
                 </Card>

@@ -9,6 +9,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { FileText } from "lucide-react"
+import { BookmarkButton } from "@/components/layout/BookmarkButton"
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params
@@ -119,14 +120,17 @@ export default async function ResultDetailPage({ params }: { params: Promise<{ s
             )}
           </div>
 
-          {result.pdfUrl && (
-            <Button asChild>
-              <a href={result.pdfUrl} target="_blank" rel="noopener noreferrer">
-                <FileText className="mr-2 h-4 w-4" />
-                Download Result PDF
-              </a>
-            </Button>
-          )}
+          <div className="flex items-center gap-3">
+            <BookmarkButton resultId={result.id} variant="outline" />
+            {result.pdfUrl && (
+              <Button asChild>
+                <a href={result.pdfUrl} target="_blank" rel="noopener noreferrer">
+                  <FileText className="mr-2 h-4 w-4" />
+                  Download Result PDF
+                </a>
+              </Button>
+            )}
+          </div>
         </CardContent>
       </Card>
 

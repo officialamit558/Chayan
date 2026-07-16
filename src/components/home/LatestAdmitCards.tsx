@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react"
 import Link from "next/link"
 import { ArrowRight, Download, Calendar, Building2 } from "lucide-react"
+import { BookmarkButton } from "@/components/layout/BookmarkButton"
 import { cn, formatDate } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
@@ -106,21 +107,24 @@ export function LatestAdmitCards() {
                       ) : (
                         <div />
                       )}
-                      {card.downloadUrl ? (
-                        <Button size="sm" className="gap-1.5" asChild>
-                          <a href={card.downloadUrl} target="_blank" rel="noopener noreferrer">
-                            <Download className="h-4 w-4" />
-                            Download Admit Card
-                          </a>
-                        </Button>
-                      ) : (
-                        <Button size="sm" className="gap-1.5" asChild>
-                          <Link href={`/admit-card/${card.slug}`}>
-                            <Download className="h-4 w-4" />
-                            Download Admit Card
-                          </Link>
-                        </Button>
-                      )}
+                      <div className="flex items-center gap-1">
+                        <BookmarkButton admitCardId={card.id} variant="ghost" />
+                        {card.downloadUrl ? (
+                          <Button size="sm" className="gap-1.5" asChild>
+                            <a href={card.downloadUrl} target="_blank" rel="noopener noreferrer">
+                              <Download className="h-4 w-4" />
+                              Download Admit Card
+                            </a>
+                          </Button>
+                        ) : (
+                          <Button size="sm" className="gap-1.5" asChild>
+                            <Link href={`/admit-card/${card.slug}`}>
+                              <Download className="h-4 w-4" />
+                              Download Admit Card
+                            </Link>
+                          </Button>
+                        )}
+                      </div>
                     </div>
                   </CardContent>
                 </Card>

@@ -7,10 +7,9 @@ import {
   MapPin,
   IndianRupee,
   Users,
-  Bookmark,
   Share2,
-  BookmarkCheck,
 } from "lucide-react"
+import { BookmarkButton } from "@/components/layout/BookmarkButton"
 import { cn, formatDate, formatSalary, getStatusColor } from "@/lib/utils"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -37,6 +36,7 @@ const statusLabel: Record<string, string> = {
 }
 
 export function JobCard({
+  id,
   title,
   department,
   location,
@@ -47,18 +47,11 @@ export function JobCard({
   slug,
   className,
 }: JobCardProps) {
-  const [isBookmarked, setIsBookmarked] = useState(false)
   const [isSharing, setIsSharing] = useState(false)
   const isLastDateUrgent = lastDateToApply
     ? new Date(lastDateToApply).getTime() - Date.now() < 7 * 24 * 60 * 60 * 1000 &&
       new Date(lastDateToApply) > new Date()
     : false
-
-  const handleBookmark = (e: React.MouseEvent) => {
-    e.preventDefault()
-    e.stopPropagation()
-    setIsBookmarked((prev) => !prev)
-  }
 
   const handleShare = async (e: React.MouseEvent) => {
     e.preventDefault()
@@ -140,19 +133,7 @@ export function JobCard({
                 </div>
               </div>
               <div className="flex shrink-0 flex-col gap-1">
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="h-8 w-8 text-gray-400 hover:text-yellow-500"
-                  onClick={handleBookmark}
-                  aria-label={isBookmarked ? "Remove bookmark" : "Add bookmark"}
-                >
-                  {isBookmarked ? (
-                    <BookmarkCheck className="h-4 w-4 text-yellow-500" />
-                  ) : (
-                    <Bookmark className="h-4 w-4" />
-                  )}
-                </Button>
+                <BookmarkButton jobId={id} />
                 <Button
                   variant="ghost"
                   size="icon"
