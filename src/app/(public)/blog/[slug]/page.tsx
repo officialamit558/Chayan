@@ -6,8 +6,9 @@ import { formatDate, getBaseUrl } from "@/lib/utils"
 import { BreadcrumbNav } from "@/components/layout/BreadcrumbNav"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Calendar, User, Eye } from "lucide-react"
+import { Calendar, User, Eye, Share2 } from "lucide-react"
 import { AdBanner } from "@/components/ads/AdBanner"
+import { ShareButtons } from "@/components/blog/ShareButtons"
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params
@@ -109,6 +110,10 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ slu
         )}
 
         <AdBanner format="horizontal" className="mt-8" />
+
+        <div className="mt-8 flex items-center justify-between border-t border-gray-200 pt-6">
+          <ShareButtons title={post.title} url={`${getBaseUrl()}/blog/${post.slug}`} />
+        </div>
       </article>
 
       {relatedPosts.length > 0 && (

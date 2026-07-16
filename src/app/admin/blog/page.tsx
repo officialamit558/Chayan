@@ -27,6 +27,7 @@ import { Pagination } from "@/components/ui/pagination"
 import { toast } from "@/components/ui/toast"
 import { formatDate, slugify } from "@/lib/utils"
 import { ImageUpload } from "@/components/admin/ImageUpload"
+import { RichEditor } from "@/components/admin/RichEditor"
 import { Plus, Pencil, Trash2, Search, Eye, EyeOff, Image } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
 
@@ -92,7 +93,7 @@ export default function AdminBlog() {
       title: post.title,
       slug: post.slug,
       excerpt: post.excerpt,
-      content: null,
+      content: (post as any).content || null,
       author: post.author,
       image: post.image,
       tags: post.tags,
@@ -231,7 +232,7 @@ export default function AdminBlog() {
                 <FormItem><FormLabel>Excerpt (short summary)</FormLabel><FormControl><Textarea {...field} value={field.value || ""} onChange={(e) => field.onChange(e.target.value || null)} rows={2} /></FormControl><FormMessage /></FormItem>
               )} />
               <FormField control={form.control} name="content" render={({ field }) => (
-                <FormItem><FormLabel>Content (HTML)</FormLabel><FormControl><Textarea {...field} value={field.value || ""} onChange={(e) => field.onChange(e.target.value || null)} rows={12} /></FormControl><FormMessage /></FormItem>
+                <FormItem><FormLabel>Content</FormLabel><FormControl><RichEditor value={field.value || ""} onChange={(val) => field.onChange(val || null)} placeholder="Write your blog content here..." /></FormControl><FormMessage /></FormItem>
               )} />
               <FormField control={form.control} name="published" render={({ field }) => (
                 <FormItem className="flex items-center gap-3">

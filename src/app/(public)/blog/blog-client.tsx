@@ -135,7 +135,12 @@ export function BlogClient() {
                 >
                   <Link href={`/blog/${post.slug}`}>
                     <Card className="h-full border-gray-200 transition-all hover:border-teal-300 hover:shadow-md">
-                      <CardHeader>
+                      {post.image && (
+                        <div className="overflow-hidden rounded-t-lg">
+                          <img src={post.image} alt={post.title} className="h-40 w-full object-cover" />
+                        </div>
+                      )}
+                      <CardHeader className={post.image ? "pt-4" : ""}>
                         <div className="mb-2 flex items-center gap-3 text-xs text-gray-400">
                           <span className="flex items-center gap-1">
                             <Calendar className="h-3 w-3" />
@@ -148,11 +153,6 @@ export function BlogClient() {
                             </span>
                           )}
                         </div>
-                        {post.image && (
-                          <div className="mb-3 -mx-6 -mt-4 overflow-hidden">
-                            <img src={post.image} alt={post.title} className="h-40 w-full object-cover" />
-                          </div>
-                        )}
                         <CardTitle className="text-lg leading-snug">{post.title}</CardTitle>
                       </CardHeader>
                       <CardContent>
