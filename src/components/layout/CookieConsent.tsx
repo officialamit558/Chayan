@@ -35,11 +35,11 @@ export function CookieConsent() {
           <p className="text-sm text-gray-700 dark:text-gray-300">
             We use cookies to improve your experience, analyze traffic, and show personalized
             content. By continuing, you agree to our{" "}
-            <Link href="/cookie-policy" className="text-blue-600 underline hover:text-blue-700 dark:text-blue-400">
+             <Link href="/cookie-policy" className="text-teal-600 underline hover:text-teal-700 dark:text-teal-400">
               Cookie Policy
             </Link>
             {" "}and{" "}
-            <Link href="/privacy" className="text-blue-600 underline hover:text-blue-700 dark:text-blue-400">
+             <Link href="/privacy" className="text-teal-600 underline hover:text-teal-700 dark:text-teal-400">
               Privacy Policy
             </Link>.
           </p>

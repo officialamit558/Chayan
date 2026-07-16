@@ -61,7 +61,7 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-blue-50 via-white to-blue-50 px-4 py-12 dark:from-gray-900 dark:via-gray-950 dark:to-gray-900">
+    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-teal-50 via-white to-teal-50 px-4 py-12 dark:from-gray-900 dark:via-gray-950 dark:to-gray-900">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -93,7 +93,7 @@ export default function LoginPage() {
                   <Label htmlFor="password">Password</Label>
                   <Link
                     href="/forgot-password"
-                    className="text-sm font-medium text-blue-600 hover:text-blue-700"
+                    className="text-sm font-medium text-teal-600 hover:text-teal-700"
                   >
                     Forgot password?
                   </Link>
@@ -161,7 +161,7 @@ export default function LoginPage() {
           <CardFooter className="justify-center">
             <p className="text-sm text-gray-500">
               Don&apos;t have an account?{" "}
-              <Link href="/register" className="font-medium text-blue-600 hover:text-blue-700">
+              <Link href="/register" className="font-medium text-teal-600 hover:text-teal-700">
                 Create one
               </Link>
             </p>

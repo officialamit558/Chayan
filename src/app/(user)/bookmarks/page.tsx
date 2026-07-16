@@ -121,7 +121,7 @@ export default function BookmarksPage() {
     <div className="container mx-auto max-w-4xl px-4 py-8">
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
         <div className="mb-6 flex items-center gap-3">
-          <Bookmark className="h-6 w-6 text-blue-600" />
+          <Bookmark className="h-6 w-6 text-teal-600" />
           <h1 className="text-2xl font-bold text-gray-900">
             My Bookmarks ({bookmarks.length})
           </h1>
@@ -248,7 +248,7 @@ interface BookmarkCardProps {
 function BookmarkCard({ id, title, department, date, status, href, onRemove, isRemoving }: BookmarkCardProps) {
   return (
     <motion.div layout initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-      <Card className="group relative border-gray-200 transition-colors hover:border-blue-200">
+      <Card className="group relative border-gray-200 transition-colors hover:border-teal-200">
         <CardContent className="flex items-start justify-between p-5">
           <Link href={href} className="min-w-0 flex-1">
             <div className="mb-2 flex items-center gap-2">
@@ -268,7 +268,7 @@ function BookmarkCard({ id, title, department, date, status, href, onRemove, isR
                 </Badge>
               )}
             </div>
-            <h3 className="mb-2 text-base font-semibold text-gray-900 transition-colors group-hover:text-blue-700">
+            <h3 className="mb-2 text-base font-semibold text-gray-900 transition-colors group-hover:text-teal-700">
               {title}
             </h3>
             <div className="flex items-center gap-4 text-sm text-gray-500">

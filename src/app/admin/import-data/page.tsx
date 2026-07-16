@@ -121,14 +121,14 @@ export default function ImportDataPage() {
               key={imp.id}
               className={cn(
                 "relative transition-shadow duration-200",
-                isActive && "ring-2 ring-blue-400 shadow-md",
+                isActive && "ring-2 ring-teal-400 shadow-md",
                 result && result.success && "ring-1 ring-green-200",
                 result && !result.success && "ring-1 ring-red-200",
               )}
             >
               <CardHeader className="pb-3">
                 <div className="flex items-start justify-between">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-gradient-to-br from-blue-50 to-blue-100 text-blue-600">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-gradient-to-br from-teal-50 to-teal-100 text-teal-600">
                     <Icon className="h-6 w-6" />
                   </div>
                   {result && (
@@ -158,9 +158,9 @@ export default function ImportDataPage() {
                         <div className="text-lg font-bold text-green-700">{result.imported}</div>
                         <div className="text-[11px] text-green-600 font-medium">Imported</div>
                       </div>
-                      <div className="flex-1 rounded-md bg-blue-50 p-2">
-                        <div className="text-lg font-bold text-blue-700">{result.skipped}</div>
-                        <div className="text-[11px] text-blue-600 font-medium">Skipped</div>
+                      <div className="flex-1 rounded-md bg-teal-50 p-2">
+                        <div className="text-lg font-bold text-teal-700">{result.skipped}</div>
+                        <div className="text-[11px] text-teal-600 font-medium">Skipped</div>
                       </div>
                       <div className="flex-1 rounded-md bg-red-50 p-2">
                         <div className="text-lg font-bold text-red-700">{result.errors.length}</div>

@@ -99,7 +99,7 @@ export default async function AdmitCardDetailPage({ params }: { params: Promise<
             {admitCard.job && (
               <div>
                 <p className="text-sm font-medium text-gray-500">Related Job</p>
-                <Link href={`/jobs/${admitCard.job.slug}`} className="text-blue-600 hover:text-blue-700">
+                <Link href={`/jobs/${admitCard.job.slug}`} className="text-teal-600 hover:text-teal-700">
                   {admitCard.job.title}
                 </Link>
               </div>
@@ -125,7 +125,7 @@ export default async function AdmitCardDetailPage({ params }: { params: Promise<
           <div className="grid gap-4 sm:grid-cols-2">
             {relatedCards.map((rc) => (
               <Link key={rc.id} href={`/admit-card/${rc.slug}`}>
-                <Card className="h-full border-gray-200 transition-colors hover:border-blue-300 hover:shadow-md">
+                <Card className="h-full border-gray-200 transition-colors hover:border-teal-300 hover:shadow-md">
                   <CardHeader>
                     <Badge variant="secondary" className="mb-2 text-xs w-fit">{rc.department.name}</Badge>
                     <CardTitle className="text-base">{rc.title}</CardTitle>

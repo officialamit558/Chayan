@@ -71,7 +71,7 @@ export function AdminSidebar({ open, onClose }: AdminSidebarProps) {
       >
         <div className="flex h-16 items-center justify-between border-b border-gray-200 px-4">
           {!collapsed && (
-            <Link href="/admin/dashboard" className="text-lg font-bold text-blue-600">
+            <Link href="/admin/dashboard" className="text-lg font-bold text-teal-600">
               Admin Panel
             </Link>
           )}
@@ -102,7 +102,7 @@ export function AdminSidebar({ open, onClose }: AdminSidebarProps) {
                 className={cn(
                   "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
                   isActive
-                    ? "bg-blue-50 text-blue-700"
+                    ? "bg-teal-50 text-teal-700"
                     : "text-gray-600 hover:bg-gray-100 hover:text-gray-900"
                 )}
               >

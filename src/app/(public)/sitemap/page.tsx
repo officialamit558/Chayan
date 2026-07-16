@@ -30,17 +30,17 @@ export default async function SitemapPage() {
         <Card>
           <CardHeader>
             <CardTitle className="text-lg">
-              <Link href="/jobs" className="text-blue-600 hover:text-blue-700">Jobs</Link>
+              <Link href="/jobs" className="text-teal-600 hover:text-teal-700">Jobs</Link>
             </CardTitle>
           </CardHeader>
           <CardContent>
             <ul className="space-y-1">
               <li>
-                <Link href="/jobs" className="text-sm text-gray-600 hover:text-blue-600">All Jobs</Link>
+                <Link href="/jobs" className="text-sm text-gray-600 hover:text-teal-600">All Jobs</Link>
               </li>
               {categories.map((cat) => (
                 <li key={cat.slug}>
-                  <Link href={`/category/${cat.slug}`} className="text-sm text-gray-600 hover:text-blue-600">
+                  <Link href={`/category/${cat.slug}`} className="text-sm text-gray-600 hover:text-teal-600">
                     {cat.name} Jobs
                   </Link>
                 </li>
@@ -50,7 +50,7 @@ export default async function SitemapPage() {
               </li>
               {jobs.slice(0, 10).map((job) => (
                 <li key={job.slug}>
-                  <Link href={`/jobs/${job.slug}`} className="text-sm text-gray-600 hover:text-blue-600 truncate block">
+                  <Link href={`/jobs/${job.slug}`} className="text-sm text-gray-600 hover:text-teal-600 truncate block">
                     {job.title}
                   </Link>
                 </li>
@@ -62,20 +62,20 @@ export default async function SitemapPage() {
         <Card>
           <CardHeader>
             <CardTitle className="text-lg">
-              <Link href="/results" className="text-blue-600 hover:text-blue-700">Results</Link>
+              <Link href="/results" className="text-teal-600 hover:text-teal-700">Results</Link>
             </CardTitle>
           </CardHeader>
           <CardContent>
             <ul className="space-y-1">
               <li>
-                <Link href="/results" className="text-sm text-gray-600 hover:text-blue-600">All Results</Link>
+                <Link href="/results" className="text-sm text-gray-600 hover:text-teal-600">All Results</Link>
               </li>
               <li className="border-t pt-2 mt-2">
                 <p className="mb-1 text-xs font-medium text-gray-400">Recent Results</p>
               </li>
               {results.slice(0, 10).map((result) => (
                 <li key={result.slug}>
-                  <Link href={`/result/${result.slug}`} className="text-sm text-gray-600 hover:text-blue-600 truncate block">
+                  <Link href={`/result/${result.slug}`} className="text-sm text-gray-600 hover:text-teal-600 truncate block">
                     {result.title}
                   </Link>
                 </li>
@@ -87,20 +87,20 @@ export default async function SitemapPage() {
         <Card>
           <CardHeader>
             <CardTitle className="text-lg">
-              <Link href="/admit-cards" className="text-blue-600 hover:text-blue-700">Admit Cards</Link>
+              <Link href="/admit-cards" className="text-teal-600 hover:text-teal-700">Admit Cards</Link>
             </CardTitle>
           </CardHeader>
           <CardContent>
             <ul className="space-y-1">
               <li>
-                <Link href="/admit-cards" className="text-sm text-gray-600 hover:text-blue-600">All Admit Cards</Link>
+                <Link href="/admit-cards" className="text-sm text-gray-600 hover:text-teal-600">All Admit Cards</Link>
               </li>
               <li className="border-t pt-2 mt-2">
                 <p className="mb-1 text-xs font-medium text-gray-400">Recent Admit Cards</p>
               </li>
               {admitCards.slice(0, 10).map((card) => (
                 <li key={card.slug}>
-                  <Link href={`/admit-card/${card.slug}`} className="text-sm text-gray-600 hover:text-blue-600 truncate block">
+                  <Link href={`/admit-card/${card.slug}`} className="text-sm text-gray-600 hover:text-teal-600 truncate block">
                     {card.title}
                   </Link>
                 </li>
@@ -112,20 +112,20 @@ export default async function SitemapPage() {
         <Card>
           <CardHeader>
             <CardTitle className="text-lg">
-              <Link href="/answer-keys" className="text-blue-600 hover:text-blue-700">Answer Keys</Link>
+              <Link href="/answer-keys" className="text-teal-600 hover:text-teal-700">Answer Keys</Link>
             </CardTitle>
           </CardHeader>
           <CardContent>
             <ul className="space-y-1">
               <li>
-                <Link href="/answer-keys" className="text-sm text-gray-600 hover:text-blue-600">All Answer Keys</Link>
+                <Link href="/answer-keys" className="text-sm text-gray-600 hover:text-teal-600">All Answer Keys</Link>
               </li>
               <li className="border-t pt-2 mt-2">
                 <p className="mb-1 text-xs font-medium text-gray-400">Recent Answer Keys</p>
               </li>
               {answerKeys.slice(0, 10).map((key) => (
                 <li key={key.slug}>
-                  <Link href={`/answer-key/${key.slug}`} className="text-sm text-gray-600 hover:text-blue-600 truncate block">
+                  <Link href={`/answer-key/${key.slug}`} className="text-sm text-gray-600 hover:text-teal-600 truncate block">
                     {key.title}
                   </Link>
                 </li>
@@ -137,20 +137,20 @@ export default async function SitemapPage() {
         <Card>
           <CardHeader>
             <CardTitle className="text-lg">
-              <Link href="/syllabus" className="text-blue-600 hover:text-blue-700">Syllabus</Link>
+              <Link href="/syllabus" className="text-teal-600 hover:text-teal-700">Syllabus</Link>
             </CardTitle>
           </CardHeader>
           <CardContent>
             <ul className="space-y-1">
               <li>
-                <Link href="/syllabus" className="text-sm text-gray-600 hover:text-blue-600">All Syllabus</Link>
+                <Link href="/syllabus" className="text-sm text-gray-600 hover:text-teal-600">All Syllabus</Link>
               </li>
               <li className="border-t pt-2 mt-2">
                 <p className="mb-1 text-xs font-medium text-gray-400">Recent Syllabus</p>
               </li>
               {syllabus.slice(0, 10).map((s) => (
                 <li key={s.slug}>
-                  <Link href={`/syllabus/${s.slug}`} className="text-sm text-gray-600 hover:text-blue-600 truncate block">
+                  <Link href={`/syllabus/${s.slug}`} className="text-sm text-gray-600 hover:text-teal-600 truncate block">
                     {s.title}
                   </Link>
                 </li>
@@ -162,20 +162,20 @@ export default async function SitemapPage() {
         <Card>
           <CardHeader>
             <CardTitle className="text-lg">
-              <Link href="/admissions" className="text-blue-600 hover:text-blue-700">Admissions</Link>
+              <Link href="/admissions" className="text-teal-600 hover:text-teal-700">Admissions</Link>
             </CardTitle>
           </CardHeader>
           <CardContent>
             <ul className="space-y-1">
               <li>
-                <Link href="/admissions" className="text-sm text-gray-600 hover:text-blue-600">All Admissions</Link>
+                <Link href="/admissions" className="text-sm text-gray-600 hover:text-teal-600">All Admissions</Link>
               </li>
               <li className="border-t pt-2 mt-2">
                 <p className="mb-1 text-xs font-medium text-gray-400">Recent Admissions</p>
               </li>
               {admissions.slice(0, 10).map((admission) => (
                 <li key={admission.slug}>
-                  <Link href={`/admission/${admission.slug}`} className="text-sm text-gray-600 hover:text-blue-600 truncate block">
+                  <Link href={`/admission/${admission.slug}`} className="text-sm text-gray-600 hover:text-teal-600 truncate block">
                     {admission.title}
                   </Link>
                 </li>

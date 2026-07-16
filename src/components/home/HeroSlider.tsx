@@ -54,7 +54,7 @@ function CountUp({ end, suffix = "", label, icon }: CounterProps) {
     <div ref={ref} className="flex flex-col items-center gap-1">
       <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white/15 backdrop-blur-sm">{icon}</div>
       <span className="text-2xl font-bold text-white">{count.toLocaleString()}{suffix}</span>
-      <span className="text-xs text-blue-200/80">{label}</span>
+      <span className="text-xs text-teal-200/80">{label}</span>
     </div>
   )
 }

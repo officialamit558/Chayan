@@ -70,7 +70,7 @@ export default function CopyrightPage() {
         <p className="leading-relaxed text-gray-700">
           If you believe that your copyrighted work has been used on Chayan in a way that constitutes
           copyright infringement, please refer to our{" "}
-          <Link href="/dmca" className="text-blue-600 hover:underline">DMCA Policy</Link> for instructions
+          <Link href="/dmca" className="text-teal-600 hover:underline">DMCA Policy</Link> for instructions
           on how to submit a takedown notice.
         </p>
       </section>
@@ -80,7 +80,7 @@ export default function CopyrightPage() {
         <p className="leading-relaxed text-gray-700">
           If you have any questions about our Copyright Policy or wish to request permission to use our
           content, please{" "}
-          <Link href="/contact" className="text-blue-600 hover:underline">contact us</Link>.
+          <Link href="/contact" className="text-teal-600 hover:underline">contact us</Link>.
         </p>
       </section>
     </div>

@@ -85,11 +85,11 @@ export function JobCard({
       <Link href={`/apply/${slug}`} className="block">
         <Card
           className={cn(
-            "group relative overflow-hidden border-gray-200 transition-colors hover:border-blue-300 hover:shadow-md",
+            "group relative overflow-hidden border-gray-200 transition-colors hover:border-teal-300 hover:shadow-md",
             className
           )}
         >
-          <div className="absolute inset-0 bg-gradient-to-r from-blue-50/50 to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
+          <div className="absolute inset-0 bg-gradient-to-r from-teal-50/50 to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
           <CardContent className="relative p-5">
             <div className="flex items-start justify-between gap-3">
               <div className="min-w-0 flex-1">
@@ -107,7 +107,7 @@ export function JobCard({
                   </span>
 
                 </div>
-                <h3 className="mb-3 text-base font-semibold leading-snug text-gray-900 group-hover:text-blue-700 transition-colors line-clamp-2">
+                <h3 className="mb-3 text-base font-semibold leading-snug text-gray-900 group-hover:text-teal-700 transition-colors line-clamp-2">
                   {title}
                 </h3>
                 <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-gray-600">
@@ -156,7 +156,7 @@ export function JobCard({
                 <Button
                   variant="ghost"
                   size="icon"
-                  className="h-8 w-8 text-gray-400 hover:text-blue-500"
+                  className="h-8 w-8 text-gray-400 hover:text-teal-500"
                   onClick={handleShare}
                   disabled={isSharing}
                   aria-label="Share"

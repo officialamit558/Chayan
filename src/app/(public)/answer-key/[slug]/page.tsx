@@ -90,7 +90,7 @@ export default async function AnswerKeyDetailPage({ params }: { params: Promise<
             {answerKey.job && (
               <div>
                 <p className="text-sm font-medium text-gray-500">Related Job</p>
-                <Link href={`/jobs/${answerKey.job.slug}`} className="text-blue-600 hover:text-blue-700">
+                <Link href={`/jobs/${answerKey.job.slug}`} className="text-teal-600 hover:text-teal-700">
                   {answerKey.job.title}
                 </Link>
               </div>
@@ -114,7 +114,7 @@ export default async function AnswerKeyDetailPage({ params }: { params: Promise<
           <div className="grid gap-4 sm:grid-cols-2">
             {relatedKeys.map((rk) => (
               <Link key={rk.id} href={`/answer-key/${rk.slug}`}>
-                <Card className="h-full border-gray-200 transition-colors hover:border-blue-300 hover:shadow-md">
+                <Card className="h-full border-gray-200 transition-colors hover:border-teal-300 hover:shadow-md">
                   <CardHeader>
                     <Badge variant="secondary" className="mb-2 text-xs w-fit">{rk.department.name}</Badge>
                     <CardTitle className="text-base">{rk.title}</CardTitle>

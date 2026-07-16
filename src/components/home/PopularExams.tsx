@@ -20,7 +20,7 @@ interface ExamItem {
 
 const GRADIENTS = [
   "from-purple-500 to-indigo-600",
-  "from-blue-500 to-blue-600",
+  "from-teal-500 to-teal-600",
   "from-orange-500 to-red-600",
   "from-green-500 to-teal-600",
   "from-pink-500 to-rose-600",
@@ -82,7 +82,7 @@ export function PopularExams({ className }: { className?: string }) {
           </div>
           <Link
             href="/jobs"
-            className="group hidden items-center gap-1 text-sm font-medium text-blue-600 hover:text-blue-700 sm:flex"
+            className="group hidden items-center gap-1 text-sm font-medium text-teal-600 hover:text-teal-700 sm:flex"
           >
             View All
             <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
@@ -127,7 +127,7 @@ export function PopularExams({ className }: { className?: string }) {
                         </div>
                         <div className="p-4">
                           <div className="flex items-center justify-between text-sm">
-                            <span className="flex items-center gap-1 font-medium text-blue-600 group-hover:text-blue-700">
+                            <span className="flex items-center gap-1 font-medium text-teal-600 group-hover:text-teal-700">
                               View Jobs
                               <ExternalLink className="h-3.5 w-3.5" />
                             </span>
@@ -145,7 +145,7 @@ export function PopularExams({ className }: { className?: string }) {
         <div className="mt-6 text-center sm:hidden">
           <Link
             href="/jobs"
-            className="inline-flex items-center gap-1 text-sm font-medium text-blue-600 hover:text-blue-700"
+            className="inline-flex items-center gap-1 text-sm font-medium text-teal-600 hover:text-teal-700"
           >
             Browse All Exams
             <ArrowRight className="h-4 w-4" />

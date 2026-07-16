@@ -124,7 +124,7 @@ export default async function AdmissionDetailPage({ params }: { params: Promise<
           <div className="grid gap-4 sm:grid-cols-2">
             {relatedAdmissions.map((ra) => (
               <Link key={ra.id} href={`/admission/${ra.slug}`}>
-                <Card className="h-full border-gray-200 transition-colors hover:border-blue-300 hover:shadow-md">
+                <Card className="h-full border-gray-200 transition-colors hover:border-teal-300 hover:shadow-md">
                   <CardHeader>
                     <Badge variant="secondary" className="mb-2 text-xs w-fit">{ra.department.name}</Badge>
                     <CardTitle className="text-base">{ra.title}</CardTitle>

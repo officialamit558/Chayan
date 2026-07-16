@@ -131,7 +131,7 @@ export function JobsByQualification({ className }: { className?: string }) {
           </div>
           <Link
             href="/jobs"
-            className="group hidden items-center gap-1 text-sm font-medium text-blue-600 hover:text-blue-700 sm:flex"
+            className="group hidden items-center gap-1 text-sm font-medium text-teal-600 hover:text-teal-700 sm:flex"
           >
             View All
             <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
@@ -176,8 +176,8 @@ export function JobsByQualification({ className }: { className?: string }) {
                       className={cn(
                         "whitespace-nowrap rounded-full px-5 py-2 text-sm font-medium transition-all",
                         selectedQual === qual
-                          ? "bg-blue-600 text-white shadow-md"
-                          : "bg-white text-gray-700 hover:bg-blue-50 hover:text-blue-700 border border-gray-200"
+                          ? "bg-teal-600 text-white shadow-md"
+                          : "bg-white text-gray-700 hover:bg-teal-50 hover:text-teal-700 border border-gray-200"
                       )}
                     >
                       {qual === "Ph.D" ? "PhD" : qual}
@@ -196,7 +196,7 @@ export function JobsByQualification({ className }: { className?: string }) {
               >
                 {filteredJobs.slice(0, 4).map((job) => (
                   <Link key={job.id} href={`/apply/${job.slug}`} className="group block">
-                    <Card className="h-full border-gray-200 transition-all hover:border-blue-300 hover:shadow-md hover:-translate-y-1">
+                    <Card className="h-full border-gray-200 transition-all hover:border-teal-300 hover:shadow-md hover:-translate-y-1">
                       <CardContent className="p-5">
                         <div className="mb-2 flex flex-wrap items-center gap-2">
                           <Badge variant="secondary" className="text-xs">{job.department}</Badge>
@@ -204,7 +204,7 @@ export function JobsByQualification({ className }: { className?: string }) {
                             {STATUS_LABELS[job.status] || job.status}
                           </span>
                         </div>
-                        <h3 className="mb-3 text-base font-semibold leading-snug text-gray-900 group-hover:text-blue-700 transition-colors line-clamp-2">
+                        <h3 className="mb-3 text-base font-semibold leading-snug text-gray-900 group-hover:text-teal-700 transition-colors line-clamp-2">
                           {job.title}
                         </h3>
                         <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-gray-600">

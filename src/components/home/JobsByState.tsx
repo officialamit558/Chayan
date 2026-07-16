@@ -153,13 +153,13 @@ export function JobsByState({ className }: { className?: string }) {
                     className={cn(
                       "flex items-center gap-2 rounded-xl border p-3 text-left transition-all hover:shadow-md hover:-translate-y-0.5",
                       selectedStateId === state.id
-                        ? "border-blue-500 bg-blue-50 shadow-sm"
-                        : "border-gray-200 bg-white hover:border-blue-300"
+                        ? "border-teal-500 bg-teal-50 shadow-sm"
+                        : "border-gray-200 bg-white hover:border-teal-300"
                     )}
                   >
-                    <MapPin className={cn("h-4 w-4 shrink-0", selectedStateId === state.id ? "text-blue-600" : "text-blue-500")} />
+                    <MapPin className={cn("h-4 w-4 shrink-0", selectedStateId === state.id ? "text-teal-600" : "text-teal-500")} />
                     <div className="min-w-0 flex-1">
-                      <p className={cn("truncate text-sm font-medium", selectedStateId === state.id ? "text-blue-700" : "text-gray-900")}>
+                      <p className={cn("truncate text-sm font-medium", selectedStateId === state.id ? "text-teal-700" : "text-gray-900")}>
                         {state.name}
                       </p>
                       <p className="text-xs text-gray-500">{formatCount(count)} jobs</p>
@@ -181,7 +181,7 @@ export function JobsByState({ className }: { className?: string }) {
                 <div className="mb-4 flex items-center justify-between">
                   <h3 className="text-lg font-semibold text-gray-900">Jobs in {selectedState.name}</h3>
                   <Link href={`/jobs?stateId=${selectedState.id}`}>
-                    <Button variant="ghost" size="sm" className="gap-1 text-blue-600">
+                    <Button variant="ghost" size="sm" className="gap-1 text-teal-600">
                       View All <ArrowRight className="h-3.5 w-3.5" />
                     </Button>
                   </Link>
@@ -192,7 +192,7 @@ export function JobsByState({ className }: { className?: string }) {
                   <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                     {visibleJobs.slice(0, 6).map((job) => (
                       <Link key={job.id} href={`/apply/${job.slug}`} className="group block">
-                        <Card className="h-full border-gray-200 transition-all hover:border-blue-300 hover:shadow-md hover:-translate-y-1">
+                        <Card className="h-full border-gray-200 transition-all hover:border-teal-300 hover:shadow-md hover:-translate-y-1">
                           <CardContent className="p-4">
                             <div className="mb-2 flex flex-wrap items-center gap-2">
                               <Badge variant="secondary" className="text-xs">{job.department}</Badge>
@@ -200,7 +200,7 @@ export function JobsByState({ className }: { className?: string }) {
                                 {STATUS_LABELS[job.status] || job.status}
                               </span>
                             </div>
-                            <h4 className="mb-2 text-sm font-semibold leading-snug text-gray-900 group-hover:text-blue-700 transition-colors line-clamp-2">
+                            <h4 className="mb-2 text-sm font-semibold leading-snug text-gray-900 group-hover:text-teal-700 transition-colors line-clamp-2">
                               {job.title}
                             </h4>
                             <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5 text-xs text-gray-600">

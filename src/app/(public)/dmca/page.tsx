@@ -44,7 +44,7 @@ export default function DMCAPage() {
         <h2 className="mb-3 text-2xl font-semibold text-gray-900">Submit a DMCA Notice</h2>
         <p className="leading-relaxed text-gray-700">
           Please send your DMCA notice to:{" "}
-          <Link href="/contact" className="text-blue-600 hover:underline">Contact Us</Link>
+          <Link href="/contact" className="text-teal-600 hover:underline">Contact Us</Link>
           {" "}with the subject line &quot;DMCA Notice.&quot; We will respond to valid notices promptly.
         </p>
       </section>
@@ -77,7 +77,7 @@ export default function DMCAPage() {
         <h2 className="mb-3 text-2xl font-semibold text-gray-900">Contact</h2>
         <p className="leading-relaxed text-gray-700">
           If you have any questions about our DMCA Policy, please{" "}
-          <Link href="/contact" className="text-blue-600 hover:underline">contact us</Link>.
+          <Link href="/contact" className="text-teal-600 hover:underline">contact us</Link>.
         </p>
       </section>
     </div>

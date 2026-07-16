@@ -90,13 +90,13 @@ export default function AboutPage() {
         </p>
       </section>
 
-      <div className="rounded-lg bg-blue-50 p-6 text-center">
+      <div className="rounded-lg bg-teal-50 p-6 text-center">
         <p className="mb-3 text-gray-700">
           Have questions or feedback? We would love to hear from you.
         </p>
         <Link
           href="/contact"
-          className="inline-flex items-center justify-center rounded-md bg-blue-600 px-6 py-2.5 text-sm font-medium text-white transition-colors hover:bg-blue-700"
+          className="inline-flex items-center justify-center rounded-md bg-teal-600 px-6 py-2.5 text-sm font-medium text-white transition-colors hover:bg-teal-700"
         >
           Contact Us
         </Link>

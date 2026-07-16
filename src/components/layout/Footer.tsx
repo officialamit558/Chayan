@@ -1,6 +1,3 @@
-"use client"
-
-import * as React from "react"
 import Link from "next/link"
 import {
   Globe,
@@ -10,15 +7,10 @@ import {
   Mail,
   MapPin,
   Phone,
-  ArrowRight,
-  AlertTriangle,
 } from "lucide-react"
 import { Separator } from "@/components/ui/separator"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
 import { siteConfig, footerLinks } from "@/lib/constants"
 import { cn } from "@/lib/utils"
-import { LogoSmall } from "@/components/layout/LogoSmall"
 
 const socialLinks = [
   { label: "Facebook", icon: Globe, href: siteConfig.links.facebook },
@@ -43,40 +35,28 @@ const importantLinks = [
 ]
 
 export function Footer({ className }: { className?: string }) {
-  const [email, setEmail] = React.useState("")
   const currentYear = new Date().getFullYear()
 
-  const handleNewsletterSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    if (email) {
-      console.log("Newsletter signup:", email)
-      setEmail("")
-    }
-  }
-
   return (
-    <footer className={cn("bg-gray-900 text-gray-300", className)}>
+    <footer className={cn("border-t border-gray-200 bg-white text-gray-600 dark:border-gray-800 dark:bg-gray-950 dark:text-gray-400", className)}>
       <div className="mx-auto max-w-7xl px-4 py-12">
         <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
           <div>
-            <div className="mb-4">
-              <LogoSmall />
-            </div>
-            <p className="mb-4 text-sm leading-relaxed text-gray-400">
+            <p className="mb-4 text-sm leading-relaxed">
               {siteConfig.description}. We provide the latest government job notifications, exam
               results, admit cards, answer keys, and more.
             </p>
-            <div className="mb-4 space-y-2 text-sm text-gray-400">
+            <div className="mb-4 space-y-2 text-sm">
               <div className="flex items-start gap-2">
-                <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-blue-400" />
+                <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-teal-600 dark:text-teal-400" />
                 <span>New Delhi, India</span>
               </div>
               <div className="flex items-center gap-2">
-                <Mail className="h-4 w-4 shrink-0 text-blue-400" />
+                <Mail className="h-4 w-4 shrink-0 text-teal-600 dark:text-teal-400" />
                 <span>contact@chayan.in</span>
               </div>
               <div className="flex items-center gap-2">
-                <Phone className="h-4 w-4 shrink-0 text-blue-400" />
+                <Phone className="h-4 w-4 shrink-0 text-teal-600 dark:text-teal-400" />
                 <span>+91-11-23456789</span>
               </div>
             </div>
@@ -90,7 +70,7 @@ export function Footer({ className }: { className?: string }) {
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label={social.label}
-                    className="flex h-9 w-9 items-center justify-center rounded-full bg-gray-800 text-gray-400 transition-colors hover:bg-blue-600 hover:text-white"
+                    className="flex h-9 w-9 items-center justify-center rounded-full bg-gray-100 text-gray-500 transition-colors hover:bg-teal-600 hover:text-white dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-teal-600 dark:hover:text-white"
                   >
                     <Icon className="h-4 w-4" />
                   </a>
@@ -101,7 +81,7 @@ export function Footer({ className }: { className?: string }) {
 
           {footerLinks.map((section) => (
             <div key={section.title}>
-              <h3 className="mb-4 text-sm font-semibold uppercase tracking-wider text-white">
+              <h3 className="mb-4 text-sm font-semibold uppercase tracking-wider text-gray-900 dark:text-white">
                 {section.title}
               </h3>
               <ul className="space-y-2.5">
@@ -109,7 +89,7 @@ export function Footer({ className }: { className?: string }) {
                   <li key={link.label}>
                     <Link
                       href={link.href}
-                      className="text-sm text-gray-400 transition-colors hover:text-blue-400"
+                      className="text-sm transition-colors hover:text-teal-600 dark:hover:text-teal-400"
                     >
                       {link.label}
                     </Link>
@@ -118,45 +98,12 @@ export function Footer({ className }: { className?: string }) {
               </ul>
             </div>
           ))}
-
-          <div>
-            <h3 className="mb-4 text-sm font-semibold uppercase tracking-wider text-white">
-              Newsletter
-            </h3>
-            <p className="mb-4 text-sm text-gray-400">
-              Subscribe to get latest job alerts directly in your inbox.
-            </p>
-            <form onSubmit={handleNewsletterSubmit} className="flex gap-2">
-              <Input
-                type="email"
-                placeholder="Your email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="h-10 border-gray-700 bg-gray-800 text-white placeholder:text-gray-500 focus-visible:ring-blue-500"
-                required
-              />
-              <Button type="submit" size="icon" className="h-10 w-10 shrink-0">
-                <ArrowRight className="h-4 w-4" />
-              </Button>
-            </form>
-          </div>
         </div>
 
-        <Separator className="my-8 bg-gray-800" />
+        <Separator className="my-8 bg-gray-200 dark:bg-gray-800" />
 
-        <div className="mb-6 rounded-lg bg-gray-800/50 p-4">
-          <div className="flex items-start gap-2">
-            <AlertTriangle className="mt-0.5 h-5 w-5 shrink-0 text-yellow-400" />
-            <div>
-              <h4 className="mb-1 text-sm font-semibold text-yellow-400">Important Notice</h4>
-              <p className="text-xs leading-relaxed text-gray-400">
-                This website is not affiliated with any government organization. We aggregate
-                publicly available information from official sources for informational purposes only.
-                Users are advised to verify all details on the respective official websites before
-                applying. We do not charge any fees for job applications or exam registrations.
-              </p>
-            </div>
-          </div>
+        <div className="flex items-center justify-center py-10">
+          <div className="text-7xl font-bold tracking-[0.15em] text-gray-900 dark:text-white sm:text-8xl md:text-9xl">Chayan</div>
         </div>
 
         <div className="mb-6 flex flex-wrap justify-center gap-x-6 gap-y-2">
@@ -164,16 +111,16 @@ export function Footer({ className }: { className?: string }) {
             <Link
               key={link.label}
               href={link.href}
-              className="text-xs text-gray-500 transition-colors hover:text-blue-400"
+              className="text-xs transition-colors hover:text-teal-600 dark:hover:text-teal-400"
             >
               {link.label}
             </Link>
           ))}
         </div>
 
-        <Separator className="my-6 bg-gray-800" />
+        <Separator className="my-6 bg-gray-200 dark:bg-gray-800" />
 
-        <div className="text-center text-xs text-gray-500">
+        <div className="text-center text-xs">
           <p>&copy; {currentYear} {siteConfig.name}. All rights reserved.</p>
           <p className="mt-1">
             Powered by Chayan | Last updated: {new Date().toLocaleDateString("en-IN", {

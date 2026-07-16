@@ -161,7 +161,7 @@ function SearchContent({ onNavigate }: { onNavigate: () => void }) {
                           className={cn(
                             "flex w-full items-center gap-3 px-4 py-2.5 text-left text-sm transition-colors",
                             selectedIndex === globalIndex
-                              ? "bg-blue-50 text-blue-700 dark:bg-blue-950 dark:text-blue-300"
+                              ? "bg-teal-50 text-teal-700 dark:bg-teal-950 dark:text-teal-300"
                               : "hover:bg-gray-50 dark:hover:bg-gray-800"
                           )}
                         >

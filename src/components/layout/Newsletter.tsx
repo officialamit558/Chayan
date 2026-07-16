@@ -76,7 +76,7 @@ export function Newsletter({ className }: { className?: string }) {
     <Card className={cn("", className)}>
       <CardHeader>
         <div className="flex items-center gap-2">
-          <Mail className="h-5 w-5 text-blue-600" />
+          <Mail className="h-5 w-5 text-teal-600" />
           <CardTitle className="text-lg">Newsletter</CardTitle>
         </div>
         <CardDescription>

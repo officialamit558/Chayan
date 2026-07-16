@@ -84,7 +84,7 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-blue-50 via-white to-blue-50 px-4 py-12 dark:from-gray-900 dark:via-gray-950 dark:to-gray-900">
+    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-teal-50 via-white to-teal-50 px-4 py-12 dark:from-gray-900 dark:via-gray-950 dark:to-gray-900">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -189,7 +189,7 @@ export default function RegisterPage() {
                 />
                 <Label htmlFor="terms" className="text-sm font-normal">
                   I accept the{" "}
-                  <Link href="/terms" className="text-blue-600 hover:text-blue-700">
+                  <Link href="/terms" className="text-teal-600 hover:text-teal-700">
                     Terms and Conditions
                   </Link>
                 </Label>
@@ -209,7 +209,7 @@ export default function RegisterPage() {
           <CardFooter className="justify-center">
             <p className="text-sm text-gray-500">
               Already have an account?{" "}
-              <Link href="/login" className="font-medium text-blue-600 hover:text-blue-700">
+              <Link href="/login" className="font-medium text-teal-600 hover:text-teal-700">
                 Sign in
               </Link>
             </p>

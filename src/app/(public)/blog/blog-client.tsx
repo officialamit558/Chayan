@@ -134,7 +134,7 @@ export function BlogClient() {
                   transition={{ duration: 0.3 }}
                 >
                   <Link href={`/blog/${post.slug}`}>
-                    <Card className="h-full border-gray-200 transition-all hover:border-blue-300 hover:shadow-md">
+                    <Card className="h-full border-gray-200 transition-all hover:border-teal-300 hover:shadow-md">
                       <CardHeader>
                         <div className="mb-2 flex items-center gap-3 text-xs text-gray-400">
                           <span className="flex items-center gap-1">
@@ -159,7 +159,7 @@ export function BlogClient() {
                         {post.excerpt && (
                           <p className="mb-4 text-sm text-gray-600 line-clamp-3">{post.excerpt}</p>
                         )}
-                        <div className="flex items-center text-sm font-medium text-blue-600">
+                        <div className="flex items-center text-sm font-medium text-teal-600">
                           Read More <ArrowRight className="ml-1 h-3 w-3" />
                         </div>
                       </CardContent>

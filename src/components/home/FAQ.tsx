@@ -67,8 +67,8 @@ export function FAQ({ items = defaultItems, className }: FAQProps) {
     <section className={cn("bg-gray-50 py-16", className)}>
       <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
         <div className="mb-8 text-center">
-          <div className="mx-auto mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-blue-100">
-            <HelpCircle className="h-5 w-5 text-blue-600" />
+          <div className="mx-auto mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-teal-100">
+            <HelpCircle className="h-5 w-5 text-teal-600" />
           </div>
           <h2 className="text-2xl font-bold text-gray-900 sm:text-3xl">
             Frequently Asked Questions
@@ -82,7 +82,7 @@ export function FAQ({ items = defaultItems, className }: FAQProps) {
           <Accordion type="single" collapsible className="px-2">
             {items.map((item, index) => (
               <AccordionItem key={index} value={`item-${index}`}>
-                <AccordionTrigger className="px-4 text-left text-sm font-medium text-gray-900 hover:text-blue-700 hover:no-underline">
+                <AccordionTrigger className="px-4 text-left text-sm font-medium text-gray-900 hover:text-teal-700 hover:no-underline">
                   {item.question}
                 </AccordionTrigger>
                 <AccordionContent className="px-4 text-sm leading-relaxed text-gray-600">

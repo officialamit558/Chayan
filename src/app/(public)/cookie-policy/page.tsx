@@ -62,7 +62,7 @@ export default function CookiePolicyPage() {
           <li><strong>Cookie Consent Banner:</strong> When you first visit our site, a banner allows you to accept or decline non-essential cookies.</li>
           <li><strong>Browser Settings:</strong> Most browsers allow you to view, block, or delete cookies through their settings. You can typically find these options under the "Privacy" or "Security" section.</li>
           <li><strong>Opt-Out Tools:</strong> You can opt out of Google Analytics by installing the{" "}
-            <a href="https://tools.google.com/dlpage/gaoptout" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Google Analytics Opt-Out Browser Add-on</a>.
+            <a href="https://tools.google.com/dlpage/gaoptout" target="_blank" rel="noopener noreferrer" className="text-teal-600 hover:underline">Google Analytics Opt-Out Browser Add-on</a>.
           </li>
         </ul>
         <p className="mt-3 leading-relaxed text-gray-700">
@@ -76,7 +76,7 @@ export default function CookiePolicyPage() {
           We use Google AdSense to serve advertisements on our website. Google and its partners may use cookies
           to serve ads based on your previous visits to our site or other websites. You can manage your Google
           ad personalization preferences at{" "}
-          <a href="https://adssettings.google.com" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Google Ad Settings</a>.
+          <a href="https://adssettings.google.com" target="_blank" rel="noopener noreferrer" className="text-teal-600 hover:underline">Google Ad Settings</a>.
         </p>
       </section>
 
@@ -93,7 +93,7 @@ export default function CookiePolicyPage() {
         <h2 className="mb-3 text-2xl font-semibold text-gray-900">Contact</h2>
         <p className="leading-relaxed text-gray-700">
           If you have any questions about our Cookie Policy, please{" "}
-          <Link href="/contact" className="text-blue-600 hover:underline">contact us</Link>.
+          <Link href="/contact" className="text-teal-600 hover:underline">contact us</Link>.
         </p>
       </section>
     </div>

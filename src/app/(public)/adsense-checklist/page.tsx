@@ -71,8 +71,8 @@ export default function AdSenseChecklistPage() {
         Use this checklist to verify Chayan meets all Google AdSense requirements before applying.
       </p>
 
-      <div className="mb-8 rounded-lg border border-blue-200 bg-blue-50 p-4">
-        <p className="text-sm text-blue-800">
+      <div className="mb-8 rounded-lg border border-teal-200 bg-teal-50 p-4">
+        <p className="text-sm text-teal-800">
           <strong>Recommendation:</strong> Wait until the site has been live for at least 2-3 months with
           consistent traffic before applying to AdSense. The most common rejection reasons are:
           insufficient content, lack of essential pages, and site age less than 6 months.

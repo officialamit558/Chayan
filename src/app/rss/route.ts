@@ -28,7 +28,7 @@ export async function GET() {
   <channel>
     <title>Chayan - Latest Government Jobs</title>
     <link>${baseUrl}</link>
-    <description>select right. serve right. — Your trusted government job portal. Latest notifications, results, admit cards, answer keys and more.</description>
+    <description>Select right. serve right. Your trusted government job portal. Latest notifications, results, admit cards, answer keys and more.</description>
     <language>en-in</language>
     <lastBuildDate>${new Date().toUTCString()}</lastBuildDate>
     <atom:link href="${baseUrl}/rss" rel="self" type="application/rss+xml"/>

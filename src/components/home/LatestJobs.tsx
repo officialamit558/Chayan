@@ -69,7 +69,7 @@ export function LatestJobs({ className }: LatestJobsProps) {
           </div>
           <Link
             href="/jobs"
-            className="group hidden items-center gap-1 text-sm font-medium text-blue-600 hover:text-blue-700 sm:flex"
+            className="group hidden items-center gap-1 text-sm font-medium text-teal-600 hover:text-teal-700 sm:flex"
           >
             View All
             <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
@@ -115,7 +115,7 @@ export function LatestJobs({ className }: LatestJobsProps) {
         <div className="mt-6 text-center sm:hidden">
           <Link
             href="/jobs"
-            className="inline-flex items-center gap-1 text-sm font-medium text-blue-600 hover:text-blue-700"
+            className="inline-flex items-center gap-1 text-sm font-medium text-teal-600 hover:text-teal-700"
           >
             View All Jobs
             <ArrowRight className="h-4 w-4" />

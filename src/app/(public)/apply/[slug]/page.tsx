@@ -132,7 +132,7 @@ export default async function ApplyJobPage({ params }: { params: Promise<{ slug:
           <div className="grid gap-4 sm:grid-cols-2">
             {relatedJobs.map((rj) => (
               <Link key={rj.id} href={`/apply/${rj.slug}`}>
-                <Card className="h-full border-gray-200 transition-colors hover:border-blue-300 hover:shadow-md">
+                <Card className="h-full border-gray-200 transition-colors hover:border-teal-300 hover:shadow-md">
                   <CardHeader>
                     <div className="flex items-start justify-between gap-2">
                       <div>

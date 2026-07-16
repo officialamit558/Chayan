@@ -60,7 +60,7 @@ export function Header() {
             : "bg-white dark:bg-gray-950"
         )}
       >
-        <div className="bg-blue-600 dark:bg-blue-700 overflow-hidden">
+        <div className="bg-teal-600 dark:bg-teal-700 overflow-hidden">
           <div className="relative flex items-center mx-auto max-w-7xl px-4 py-1.5">
             <Megaphone className="h-4 w-4 shrink-0 text-yellow-300 mr-2" />
             <div className="overflow-hidden flex-1">
@@ -92,12 +92,12 @@ export function Header() {
 
         <div className="mx-auto max-w-7xl px-4">
           <div className="flex h-16 items-center justify-between gap-4">
-            <div className="flex items-center gap-6">
+            <div className="flex items-center gap-1">
               <MobileNav />
               <LogoSmall />
             </div>
 
-            <nav className="hidden lg:flex items-center gap-1">
+            <nav className="hidden lg:flex items-center gap-0.5">
               {mainNav.map((link) => {
                 const isActive =
                   link.href === "/"
@@ -108,15 +108,15 @@ export function Header() {
                     key={link.href}
                     href={link.href}
                     className={cn(
-                      "relative px-3 py-2 text-sm font-medium rounded-md transition-colors",
+                      "relative px-3.5 py-2.5 text-sm font-semibold tracking-wide transition-all duration-200",
                       isActive
-                        ? "text-blue-600 dark:text-blue-400"
-                        : "text-gray-600 hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-800"
+                        ? "text-teal-700 dark:text-teal-300"
+                        : "text-gray-700 hover:text-teal-600 hover:bg-teal-50/60 dark:text-gray-300 dark:hover:text-teal-300 dark:hover:bg-teal-950/40"
                     )}
                   >
                     {link.title}
                     {isActive && (
-                      <span className="absolute bottom-0 left-2 right-2 h-0.5 bg-blue-600 dark:bg-blue-400 rounded-full" />
+                      <span className="absolute bottom-0 left-0 right-0 h-1 bg-teal-600 dark:bg-teal-400 rounded-full" />
                     )}
                   </Link>
                 )
@@ -128,7 +128,7 @@ export function Header() {
                 variant="ghost"
                 size="icon"
                 onClick={() => setSearchOpen(true)}
-                className="text-gray-600 dark:text-gray-400"
+                className="text-gray-600 dark:text-gray-400 hover:text-teal-600 dark:hover:text-teal-400"
               >
                 <Search className="h-5 w-5" />
                 <span className="sr-only">Search</span>
@@ -149,7 +149,7 @@ export function Header() {
                           src={session.user.image ?? ""}
                           alt={session.user.name ?? "User"}
                         />
-                        <AvatarFallback className="text-xs bg-blue-100 text-blue-700">
+                        <AvatarFallback className="text-xs bg-teal-100 text-teal-700">
                           {session.user.name?.charAt(0)?.toUpperCase() ?? "U"}
                         </AvatarFallback>
                       </Avatar>
@@ -199,10 +199,10 @@ export function Header() {
                 </DropdownMenu>
               ) : (
                 <div className="hidden sm:flex items-center gap-2">
-                  <Button variant="ghost" size="sm" asChild>
+                  <Button variant="outline" size="sm" className="border-teal-600 text-teal-600 hover:bg-teal-50 hover:text-teal-700 dark:border-teal-400 dark:text-teal-400 dark:hover:bg-teal-950/50" asChild>
                     <Link href="/login">Login</Link>
                   </Button>
-                  <Button size="sm" asChild>
+                  <Button size="sm" className="bg-teal-600 hover:bg-teal-700 text-white" asChild>
                     <Link href="/register">Register</Link>
                   </Button>
                 </div>

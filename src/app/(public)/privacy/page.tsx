@@ -85,7 +85,7 @@ export default function PrivacyPage() {
         <h2 className="mb-3 text-2xl font-semibold text-gray-900">Contact</h2>
         <p className="leading-relaxed text-gray-700">
           If you have any questions about this Privacy Policy, please{" "}
-          <Link href="/contact" className="text-blue-600 hover:underline">contact us</Link>.
+          <Link href="/contact" className="text-teal-600 hover:underline">contact us</Link>.
         </p>
       </section>
     </div>

@@ -62,7 +62,7 @@ export function TrendingNotifications() {
           </div>
           <Link
             href="/notifications"
-            className="flex items-center gap-1 text-sm font-medium text-blue-600 hover:text-blue-700"
+            className="flex items-center gap-1 text-sm font-medium text-teal-600 hover:text-teal-700"
           >
             View All
             <ArrowRight className="h-4 w-4" />

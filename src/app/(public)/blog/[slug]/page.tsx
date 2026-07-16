@@ -103,7 +103,7 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ slu
         <AdBanner format="horizontal" />
 
         {post.content && (
-          <div className="prose prose-gray max-w-none prose-headings:text-gray-900 prose-p:text-gray-700 prose-a:text-blue-600 prose-strong:text-gray-900 prose-ul:list-disc prose-ol:list-decimal">
+          <div className="prose prose-gray max-w-none prose-headings:text-gray-900 prose-p:text-gray-700 prose-a:text-teal-600 prose-strong:text-gray-900 prose-ul:list-disc prose-ol:list-decimal">
             <div dangerouslySetInnerHTML={{ __html: post.content }} />
           </div>
         )}
@@ -117,7 +117,7 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ slu
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {relatedPosts.map((rp) => (
               <Link key={rp.id} href={`/blog/${rp.slug}`}>
-                <Card className="h-full border-gray-200 transition-colors hover:border-blue-300 hover:shadow-md">
+                <Card className="h-full border-gray-200 transition-colors hover:border-teal-300 hover:shadow-md">
                   <CardHeader>
                     <CardTitle className="text-base">{rp.title}</CardTitle>
                   </CardHeader>

@@ -174,7 +174,7 @@ export default function ProfilePage() {
                     <AvatarImage src={session?.user?.image || undefined} />
                     <AvatarFallback className="text-2xl">{initials}</AvatarFallback>
                   </Avatar>
-                  <button className="absolute bottom-0 right-0 flex h-8 w-8 items-center justify-center rounded-full bg-blue-600 text-white shadow hover:bg-blue-700">
+                  <button className="absolute bottom-0 right-0 flex h-8 w-8 items-center justify-center rounded-full bg-teal-600 text-white shadow hover:bg-teal-700">
                     <Camera className="h-4 w-4" />
                   </button>
                 </div>

@@ -25,7 +25,7 @@ const links: QuickLink[] = [
     description: "Browse and apply to active government job vacancies",
     href: "/jobs",
     icon: <Briefcase className="h-6 w-6" />,
-    gradient: "from-blue-500 to-blue-600",
+    gradient: "from-teal-500 to-teal-600",
   },
   {
     title: "Download Admit Cards",

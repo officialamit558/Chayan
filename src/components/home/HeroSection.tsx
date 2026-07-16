@@ -54,7 +54,7 @@ function CountUp({ end, suffix = "", duration = 2, label, icon }: CounterProps) 
       <span className="text-2xl font-bold text-white">
         {count.toLocaleString()}{suffix}
       </span>
-      <span className="text-sm text-blue-100">{label}</span>
+      <span className="text-sm text-teal-100">{label}</span>
     </div>
   )
 }
@@ -77,9 +77,9 @@ export function HeroSection() {
   }
 
   return (
-    <section className="relative overflow-hidden bg-gradient-to-br from-blue-700 via-blue-600 to-indigo-800">
+    <section className="relative overflow-hidden bg-gradient-to-br from-teal-700 via-teal-600 to-teal-800">
       <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4wNSI+PHBhdGggZD0iTTM2IDM0djItSDI0di0yaDEyek0zNiAyNHYySDI0di0yaDEyeiIvPjwvZz48L2c+PC9zdmc+')] opacity-30" />
-      <div className="absolute left-0 top-0 h-64 w-64 rounded-full bg-blue-400/20 blur-3xl" />
+      <div className="absolute left-0 top-0 h-64 w-64 rounded-full bg-teal-400/20 blur-3xl" />
       <div className="absolute bottom-0 right-0 h-80 w-80 rounded-full bg-indigo-400/20 blur-3xl" />
 
       <div className="relative mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
@@ -92,7 +92,7 @@ export function HeroSection() {
               </span>{" "}
               in India
             </h1>
-            <p className="mx-auto mb-8 max-w-2xl animate-fade-in-up text-lg text-blue-100 sm:text-xl" style={{ animationDelay: "0.1s" }}>
+            <p className="mx-auto mb-8 max-w-2xl animate-fade-in-up text-lg text-teal-100 sm:text-xl" style={{ animationDelay: "0.1s" }}>
               Find the latest government job notifications, exam results, admit cards, and more. 
               Your one-stop destination for Sarkari Naukri updates.
             </p>
@@ -126,7 +126,7 @@ export function HeroSection() {
             ))}
           </div>
 
-          <div className="flex animate-fade-in-up items-center justify-center gap-2 text-blue-200" style={{ animationDelay: "0.4s" }}>
+          <div className="flex animate-fade-in-up items-center justify-center gap-2 text-teal-200" style={{ animationDelay: "0.4s" }}>
             <Users className="h-4 w-4" />
             <span className="text-sm">
               Trusted by millions of job seekers across India

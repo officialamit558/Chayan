@@ -40,7 +40,7 @@ const STATUS_LABELS: Record<string, string> = {
 }
 
 const DEPT_GRADIENTS: string[] = [
-  "from-blue-500 to-blue-600",
+  "from-teal-500 to-teal-600",
   "from-purple-500 to-purple-600",
   "from-orange-500 to-orange-600",
   "from-green-500 to-green-600",
@@ -141,7 +141,7 @@ export function JobsByDepartment({ className }: { className?: string }) {
           </div>
           <Link
             href="/jobs"
-            className="group hidden items-center gap-1 text-sm font-medium text-blue-600 hover:text-blue-700 sm:flex"
+            className="group hidden items-center gap-1 text-sm font-medium text-teal-600 hover:text-teal-700 sm:flex"
           >
             View All
             <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />

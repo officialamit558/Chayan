@@ -55,7 +55,7 @@ export default function ForgotPasswordPage() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-blue-50 via-white to-blue-50 px-4 py-12 dark:from-gray-900 dark:via-gray-950 dark:to-gray-900">
+    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-teal-50 via-white to-teal-50 px-4 py-12 dark:from-gray-900 dark:via-gray-950 dark:to-gray-900">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -64,11 +64,11 @@ export default function ForgotPasswordPage() {
       >
         <Card className="border-gray-200 shadow-xl dark:border-gray-800">
           <CardHeader className="space-y-1 text-center">
-            <div className="mx-auto mb-2 flex h-12 w-12 items-center justify-center rounded-full bg-blue-100">
+            <div className="mx-auto mb-2 flex h-12 w-12 items-center justify-center rounded-full bg-teal-100">
               {isSuccess ? (
                 <CheckCircle2 className="h-6 w-6 text-green-600" />
               ) : (
-                <Mail className="h-6 w-6 text-blue-600" />
+                <Mail className="h-6 w-6 text-teal-600" />
               )}
             </div>
             <CardTitle className="text-2xl font-bold">
@@ -122,7 +122,7 @@ export default function ForgotPasswordPage() {
                 <div className="text-center">
                   <Link
                     href="/login"
-                    className="inline-flex items-center text-sm font-medium text-blue-600 hover:text-blue-700"
+                    className="inline-flex items-center text-sm font-medium text-teal-600 hover:text-teal-700"
                   >
                     <ArrowLeft className="mr-1 h-4 w-4" />
                     Back to login

@@ -86,7 +86,7 @@ export function ImageUpload({ value, onChange, folder = "chayan", className }: I
     <div
       className={cn(
         "relative flex cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed p-6 transition-colors",
-        dragOver ? "border-blue-400 bg-blue-50" : "border-gray-300 bg-gray-50 hover:border-gray-400 hover:bg-gray-100",
+        dragOver ? "border-teal-400 bg-teal-50" : "border-gray-300 bg-gray-50 hover:border-gray-400 hover:bg-gray-100",
         uploading && "pointer-events-none opacity-60",
         className,
       )}
@@ -104,7 +104,7 @@ export function ImageUpload({ value, onChange, folder = "chayan", className }: I
       />
       {uploading ? (
         <>
-          <Loader2 className="mb-2 h-8 w-8 animate-spin text-blue-500" />
+          <Loader2 className="mb-2 h-8 w-8 animate-spin text-teal-500" />
           <p className="text-sm text-gray-500">Uploading...</p>
         </>
       ) : (

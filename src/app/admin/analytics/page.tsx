@@ -84,7 +84,7 @@ export default function AdminAnalytics() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium">Active Jobs</CardTitle>
-            <Briefcase className="h-4 w-4 text-blue-500" />
+            <Briefcase className="h-4 w-4 text-teal-500" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{data.overview.totalActiveJobs}</div>

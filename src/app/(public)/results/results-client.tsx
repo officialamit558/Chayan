@@ -144,7 +144,7 @@ export function ResultsClient() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.3 }}
                 >
-                  <Card className="h-full border-gray-200 transition-colors hover:border-blue-300 hover:shadow-md">
+                  <Card className="h-full border-gray-200 transition-colors hover:border-teal-300 hover:shadow-md">
                     <CardHeader>
                       <Badge variant="secondary" className="mb-2 w-fit text-xs">
                         {result.department.name}
