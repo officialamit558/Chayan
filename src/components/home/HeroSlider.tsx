@@ -2,9 +2,7 @@
 
 import { useState, useEffect, useRef, useCallback } from "react"
 import Image from "next/image"
-import { Search, ChevronLeft, ChevronRight, Briefcase, FileText, Award, TrendingUp, Users, Pause, Play } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
+import { ChevronLeft, ChevronRight, Briefcase, FileText, Award, TrendingUp, Pause, Play } from "lucide-react"
 
 const slides = [
   { src: "/11.jpg" },
@@ -63,7 +61,6 @@ function CountUp({ end, suffix = "", label, icon }: CounterProps) {
 
 export function HeroSlider() {
   const [current, setCurrent] = useState(0)
-  const [searchQuery, setSearchQuery] = useState("")
   const [isPaused, setIsPaused] = useState(false)
   const [stats, setStats] = useState<{ end: number; suffix: string; label: string; icon: React.ReactNode }[] | null>(null)
   const intervalRef = useRef<ReturnType<typeof setInterval> | undefined>(undefined)
@@ -93,13 +90,8 @@ export function HeroSlider() {
     return () => clearInterval(intervalRef.current)
   }, [isPaused, next])
 
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault()
-    if (searchQuery.trim()) window.location.href = `/jobs?search=${encodeURIComponent(searchQuery.trim())}`
-  }
-
   return (
-    <section className="relative h-[600px] overflow-hidden sm:h-[650px] lg:h-[700px]">
+    <section className="relative h-[520px] overflow-hidden sm:h-[560px] lg:h-[600px]">
       {slides.map((slide, i) => (
         <div
           key={i}
@@ -112,49 +104,23 @@ export function HeroSlider() {
             className="object-cover"
             priority={i === 0}
             sizes="100vw"
+            quality={100}
           />
         </div>
       ))}
 
-      <div className="absolute inset-0 bg-gradient-to-b from-[#0f2744]/85 via-[#1a3a5f]/70 to-[#0f2744]/90" />
-
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(59,130,246,0.15),transparent_70%)]" />
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,rgba(34,197,94,0.08),transparent_70%)]" />
+      <div className="absolute inset-0 bg-gradient-to-b from-[#0f2744]/70 via-[#1a3a5f]/55 to-[#0f2744]/75" />
 
       <div className="relative z-10 mx-auto flex h-full max-w-7xl flex-col items-center justify-center px-4 sm:px-6 lg:px-8">
-        <div className="mb-2 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-1.5 text-xs text-blue-200 backdrop-blur-md">
-          <Users className="h-3.5 w-3.5" />
-          Trusted by millions of job seekers across India
-        </div>
-
-        <h1 className="mb-3 text-center text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-6xl">
+        <h1 className="mb-3 text-center text-4xl font-bold tracking-tight text-white/90 sm:text-5xl lg:text-6xl">
           Your Gateway to{" "}
           <span className="bg-gradient-to-r from-amber-300 to-yellow-400 bg-clip-text text-transparent">
-            Government Jobs
+            Career Opportunities
           </span>
         </h1>
-        <p className="mb-8 max-w-2xl text-center text-base text-blue-200/90 sm:text-lg">
-          Find the latest government job notifications, exam results, admit cards & more.
-          Your one-stop destination for Sarkari Naukri updates.
+        <p className="mb-10 max-w-2xl text-center text-base text-white/60 sm:text-lg">
+          Find the latest job notifications, exam results, admit cards & updates across government, banking, defence, and more.
         </p>
-
-        <div className="mb-10 w-full max-w-2xl">
-          <form onSubmit={handleSearch} className="flex items-center gap-2">
-            <div className="relative flex-1">
-              <Search className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-400" />
-              <Input
-                type="text"
-                placeholder="Search for jobs, results, exams..."
-                value={searchQuery}
-                onChange={e => setSearchQuery(e.target.value)}
-                className="h-14 w-full border-0 bg-white/95 pl-12 pr-4 text-base shadow-xl backdrop-blur-sm focus-visible:ring-2 focus-visible:ring-amber-400"
-              />
-            </div>
-            <Button type="submit" size="lg" className="h-14 bg-amber-500 px-8 text-base font-semibold text-gray-900 hover:bg-amber-400">
-              Search
-            </Button>
-          </form>
-        </div>
 
         <div className="grid grid-cols-2 gap-6 sm:grid-cols-4">
           {stats ? stats.map(s => <CountUp key={s.label} {...s} />) : (

@@ -1,5 +1,6 @@
 import dynamic from "next/dynamic"
 import { HeroSlider } from "@/components/home/HeroSlider"
+import { SearchBar } from "@/components/home/SearchBar"
 import { QuickLinks } from "@/components/home/QuickLinks"
 import { LatestJobs } from "@/components/home/LatestJobs"
 import { AdBanner } from "@/components/ads/AdBanner"
@@ -18,6 +19,7 @@ export default function HomePage() {
   return (
     <>
       <HeroSlider />
+      <SearchBar />
       <QuickLinks />
       <AdBanner format="horizontal" />
       <LatestJobs />
