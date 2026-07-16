@@ -155,7 +155,7 @@ export default function BookmarksPage() {
                     location={bookmark.job!.location}
                     date={bookmark.job!.lastDate}
                     status={bookmark.job!.status}
-                    href={`/jobs/${bookmark.job!.slug}`}
+                    href={`/apply/${bookmark.job!.slug}`}
                     onRemove={removeBookmark}
                     isRemoving={removingId === bookmark.id}
                   />
