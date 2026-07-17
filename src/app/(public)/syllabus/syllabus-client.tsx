@@ -34,18 +34,24 @@ export function SyllabusClient() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState("")
   const [search, setSearch] = useState("")
+  const [debouncedSearch, setDebouncedSearch] = useState("")
   const [page, setPage] = useState(1)
 
-  const fetchItems = useCallback(async () => {
+  useEffect(() => {
+    const timer = setTimeout(() => setDebouncedSearch(search), 300)
+    return () => clearTimeout(timer)
+  }, [search])
+
+  const fetchItems = useCallback(async (signal?: AbortSignal) => {
     setLoading(true)
     setError("")
     try {
       const params = new URLSearchParams()
-      if (search) params.set("search", search)
+      if (debouncedSearch) params.set("search", debouncedSearch)
       params.set("page", String(page))
       params.set("limit", "12")
 
-      const res = await fetch(`/api/syllabus?${params}`)
+      const res = await fetch(`/api/syllabus?${params}`, { signal })
       const json = await res.json()
       if (json.success) {
         setItems(json.data)
@@ -53,15 +59,18 @@ export function SyllabusClient() {
       } else {
         setError(json.error || "Failed to fetch syllabus")
       }
-    } catch {
+    } catch (err) {
+      if (err instanceof DOMException && err.name === "AbortError") return
       setError("Failed to fetch syllabus. Please try again.")
     } finally {
       setLoading(false)
     }
-  }, [search, page])
+  }, [debouncedSearch, page])
 
   useEffect(() => {
-    fetchItems()
+    const controller = new AbortController()
+    fetchItems(controller.signal)
+    return () => controller.abort()
   }, [fetchItems])
 
   const getSubjectsList = (subjects: string | null): string[] => {
@@ -122,7 +131,7 @@ export function SyllabusClient() {
               <AlertCircle className="mb-4 h-12 w-12 text-red-400" />
               <h3 className="mb-2 text-lg font-semibold text-gray-900">Something went wrong</h3>
               <p className="mb-4 text-sm text-gray-500">{error}</p>
-              <Button onClick={fetchItems}>Try Again</Button>
+              <Button onClick={() => fetchItems()}>Try Again</Button>
             </CardContent>
           </Card>
         ) : items.length === 0 ? (

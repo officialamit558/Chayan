@@ -30,7 +30,7 @@ function SearchContent({ onNavigate }: { onNavigate: () => void }) {
   const [loading, setLoading] = React.useState(false)
   const [error, setError] = React.useState("")
   const [selectedIndex, setSelectedIndex] = React.useState(-1)
-  const debounceRef = React.useRef<number>(0)
+  const abortRef = React.useRef<AbortController | null>(null)
 
   React.useEffect(() => {
     inputRef.current?.focus()
@@ -43,27 +43,53 @@ function SearchContent({ onNavigate }: { onNavigate: () => void }) {
       return
     }
 
+    abortRef.current?.abort()
+    const controller = new AbortController()
+    abortRef.current = controller
+
     setLoading(true)
     setError("")
 
     try {
-      const res = await fetch(`/api/search?q=${encodeURIComponent(q)}`)
+      const res = await fetch(`/api/search?q=${encodeURIComponent(q)}&limit=5`, {
+        signal: controller.signal,
+      })
       if (!res.ok) throw new Error("Search failed")
-      const data = await res.json()
-      setResults(data.results ?? [])
+      const json = await res.json()
+      if (controller.signal.aborted) return
+
+      const items: SearchResult[] = []
+      if (json.data?.jobs) {
+        for (const j of json.data.jobs) {
+          items.push({ id: j.id, title: j.title, type: "job", slug: j.slug, category: j.department?.name })
+        }
+      }
+      if (json.data?.results) {
+        for (const r of json.data.results) {
+          items.push({ id: r.id, title: r.title, type: "result", slug: r.slug, category: r.department?.name })
+        }
+      }
+      if (json.data?.admitCards) {
+        for (const a of json.data.admitCards) {
+          items.push({ id: a.id, title: a.title, type: "admit_card", slug: a.slug, category: a.department?.name })
+        }
+      }
+      setResults(items)
       setSelectedIndex(-1)
-    } catch {
+    } catch (err) {
+      if (err instanceof DOMException && err.name === "AbortError") return
       setError("Failed to perform search. Please try again.")
       setResults([])
     } finally {
-      setLoading(false)
+      if (!controller.signal.aborted) setLoading(false)
     }
   }, [])
 
+  const debounceRef = React.useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
   const handleChange = (value: string) => {
     setQuery(value)
-    if (debounceRef.current) window.clearTimeout(debounceRef.current)
-    debounceRef.current = window.setTimeout(() => performSearch(value), 300)
+    if (debounceRef.current) clearTimeout(debounceRef.current)
+    debounceRef.current = setTimeout(() => performSearch(value), 150)
   }
 
   const groupedResults = React.useMemo(() => {

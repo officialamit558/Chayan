@@ -43,19 +43,25 @@ export function CategoryClient({ category }: { category: CategoryInfo }) {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState("")
   const [search, setSearch] = useState("")
+  const [debouncedSearch, setDebouncedSearch] = useState("")
   const [page, setPage] = useState(1)
 
-  const fetchJobs = useCallback(async () => {
+  useEffect(() => {
+    const timer = setTimeout(() => setDebouncedSearch(search), 300)
+    return () => clearTimeout(timer)
+  }, [search])
+
+  const fetchJobs = useCallback(async (signal?: AbortSignal) => {
     setLoading(true)
     setError("")
     try {
       const params = new URLSearchParams()
       params.set("categoryId", category.id)
-      if (search) params.set("search", search)
+      if (debouncedSearch) params.set("search", debouncedSearch)
       params.set("page", String(page))
       params.set("limit", "12")
 
-      const res = await fetch(`/api/jobs?${params}`)
+      const res = await fetch(`/api/jobs?${params}`, { signal })
       const json = await res.json()
       if (json.success) {
         setJobs(json.data)
@@ -63,15 +69,18 @@ export function CategoryClient({ category }: { category: CategoryInfo }) {
       } else {
         setError(json.error || "Failed to fetch jobs")
       }
-    } catch {
+    } catch (err) {
+      if (err instanceof DOMException && err.name === "AbortError") return
       setError("Failed to fetch jobs. Please try again.")
     } finally {
       setLoading(false)
     }
-  }, [category.id, search, page])
+  }, [debouncedSearch, page, category.id])
 
   useEffect(() => {
-    fetchJobs()
+    const controller = new AbortController()
+    fetchJobs(controller.signal)
+    return () => controller.abort()
   }, [fetchJobs])
 
   return (
@@ -123,7 +132,7 @@ export function CategoryClient({ category }: { category: CategoryInfo }) {
               <AlertCircle className="mb-4 h-12 w-12 text-red-400" />
               <h3 className="mb-2 text-lg font-semibold text-gray-900">Something went wrong</h3>
               <p className="mb-4 text-sm text-gray-500">{error}</p>
-              <Button onClick={fetchJobs}>Try Again</Button>
+              <Button onClick={() => fetchJobs()}>Try Again</Button>
             </CardContent>
           </Card>
         ) : jobs.length === 0 ? (

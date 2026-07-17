@@ -119,7 +119,7 @@ export function ResultsClient() {
               <AlertCircle className="mb-4 h-12 w-12 text-red-400" />
               <h3 className="mb-2 text-lg font-semibold text-gray-900">Something went wrong</h3>
               <p className="mb-4 text-sm text-gray-500">{error}</p>
-              <Button onClick={fetchResults}>Try Again</Button>
+              <Button onClick={() => fetchResults()}>Try Again</Button>
             </CardContent>
           </Card>
         ) : results.length === 0 ? (

@@ -43,6 +43,7 @@ export function JobsClient() {
   const [error, setError] = useState("")
 
   const [search, setSearch] = useState("")
+  const [debouncedSearch, setDebouncedSearch] = useState("")
   const [page, setPage] = useState(1)
 
   const [categories, setCategories] = useState<FilterOption[]>([])
@@ -55,6 +56,11 @@ export function JobsClient() {
   const [selectedStatus, setSelectedStatus] = useState("")
 
   const [showFilters, setShowFilters] = useState(false)
+
+  useEffect(() => {
+    const timer = setTimeout(() => setDebouncedSearch(search), 300)
+    return () => clearTimeout(timer)
+  }, [search])
 
   useEffect(() => {
     Promise.all([
@@ -70,12 +76,12 @@ export function JobsClient() {
       .catch(() => {})
   }, [])
 
-  const fetchJobs = useCallback(async () => {
+  const fetchJobs = useCallback(async (signal?: AbortSignal) => {
     setLoading(true)
     setError("")
     try {
       const params = new URLSearchParams()
-      if (search) params.set("search", search)
+      if (debouncedSearch) params.set("search", debouncedSearch)
       if (selectedCategory) params.set("categoryId", selectedCategory)
       if (selectedDepartment) params.set("departmentId", selectedDepartment)
       if (selectedState) params.set("stateId", selectedState)
@@ -83,7 +89,7 @@ export function JobsClient() {
       params.set("page", String(page))
       params.set("limit", "12")
 
-      const res = await fetch(`/api/jobs?${params}`)
+      const res = await fetch(`/api/jobs?${params}`, { signal })
       const json = await res.json()
       if (json.success) {
         setJobs(json.data)
@@ -91,21 +97,24 @@ export function JobsClient() {
       } else {
         setError(json.error || "Failed to fetch jobs")
       }
-    } catch {
+    } catch (err) {
+      if (err instanceof DOMException && err.name === "AbortError") return
       setError("Failed to fetch jobs. Please try again.")
     } finally {
       setLoading(false)
     }
-  }, [search, selectedCategory, selectedDepartment, selectedState, selectedStatus, page])
+  }, [debouncedSearch, selectedCategory, selectedDepartment, selectedState, selectedStatus, page])
 
   useEffect(() => {
-    fetchJobs()
+    const controller = new AbortController()
+    fetchJobs(controller.signal)
+    return () => controller.abort()
   }, [fetchJobs])
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault()
     setPage(1)
-    fetchJobs()
+    setDebouncedSearch(search)
   }
 
   const clearFilters = () => {
@@ -114,10 +123,11 @@ export function JobsClient() {
     setSelectedState("")
     setSelectedStatus("")
     setSearch("")
+    setDebouncedSearch("")
     setPage(1)
   }
 
-  const hasActiveFilters = selectedCategory || selectedDepartment || selectedState || selectedStatus || search
+  const hasActiveFilters = selectedCategory || selectedDepartment || selectedState || selectedStatus || debouncedSearch
 
   return (
     <div className="container mx-auto max-w-7xl px-4 py-8">
@@ -220,7 +230,7 @@ export function JobsClient() {
               <AlertCircle className="mb-4 h-12 w-12 text-red-400" />
               <h3 className="mb-2 text-lg font-semibold text-gray-900">Something went wrong</h3>
               <p className="mb-4 text-sm text-gray-500">{error}</p>
-              <Button onClick={fetchJobs}>Try Again</Button>
+              <Button onClick={() => fetchJobs()}>Try Again</Button>
             </CardContent>
           </Card>
         ) : jobs.length === 0 ? (
