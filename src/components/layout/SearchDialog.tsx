@@ -17,9 +17,9 @@ interface SearchResult {
 }
 
 const typeConfig = {
-  job: { icon: FileText, label: "Jobs", href: "/jobs" },
-  result: { icon: Award, label: "Results", href: "/results" },
-  admit_card: { icon: CreditCard, label: "Admit Cards", href: "/admit-cards" },
+  job: { icon: FileText, label: "Jobs", href: "/apply" },
+  result: { icon: Award, label: "Results", href: "/result" },
+  admit_card: { icon: CreditCard, label: "Admit Cards", href: "/admit-card" },
 } as const
 
 function SearchContent({ onNavigate }: { onNavigate: () => void }) {
