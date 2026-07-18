@@ -32,13 +32,38 @@ model User {
   resetTokenExpiry DateTime?
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt
-  bookmark        Bookmark[]
-  comment         Comment[]
-  log             Log[]
+  bookmark                 Bookmark[]
+  comment                  Comment[]
+  log                      Log[]
+  notificationPreference   NotificationPreference?
+  userNotification         UserNotification[]
 
   @@index([email])
   @@index([role])
   @@index([resetToken])
+}
+
+model NotificationPreference {
+  id              String  @id @default(cuid())
+  userId          String  @unique
+  jobAlerts       Boolean @default(true)
+  resultAlerts    Boolean @default(true)
+  admitCardAlerts Boolean @default(false)
+  user            User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model UserNotification {
+  id        String   @id @default(cuid())
+  userId    String
+  type      String
+  title     String
+  slug      String
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([userId, read])
 }
 
 model AdminUser {

@@ -3,6 +3,7 @@ import { auth } from "@/lib/auth"
 import { prisma } from "@/lib/prisma"
 import { jobSchema } from "@/lib/validations"
 import { Prisma } from "@prisma/client"
+import { notifyUsers } from "@/lib/notifications"
 
 export async function GET(request: NextRequest) {
   try {
@@ -161,6 +162,8 @@ export async function POST(request: NextRequest) {
     }
 
     const job = await prisma.job.create({ data })
+
+    await notifyUsers("JOB", job.title, job.slug)
 
     return NextResponse.json({ success: true, data: job }, { status: 201 })
   } catch (error) {

@@ -3,6 +3,7 @@ import { auth } from "@/lib/auth"
 import { prisma } from "@/lib/prisma"
 import { resultSchema } from "@/lib/validations"
 import { Prisma } from "@prisma/client"
+import { notifyUsers } from "@/lib/notifications"
 
 export async function GET(request: NextRequest) {
   try {
@@ -84,6 +85,8 @@ export async function POST(request: NextRequest) {
     }
 
     const result = await prisma.result.create({ data })
+
+    await notifyUsers("RESULT", result.title, result.slug)
 
     return NextResponse.json({ success: true, data: result }, { status: 201 })
   } catch (error) {

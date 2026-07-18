@@ -28,6 +28,7 @@ import { ThemeToggle } from "./ThemeToggle"
 import { MobileNav } from "./MobileNav"
 import { SearchDialog, useSearchDialog } from "./SearchDialog"
 import { LogoSmall } from "@/components/layout/LogoSmall"
+import { NotificationBell } from "./NotificationBell"
 
 const tickerItems = [
   "SSC CGL 2025 Tier I Results Announced - Check Now",
@@ -133,6 +134,8 @@ export function Header() {
                 <Search className="h-5 w-5" />
                 <span className="sr-only">Search</span>
               </Button>
+
+              <NotificationBell />
 
               <ThemeToggle />
 

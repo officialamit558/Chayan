@@ -3,6 +3,7 @@ import { auth } from "@/lib/auth"
 import { prisma } from "@/lib/prisma"
 import { admitCardSchema } from "@/lib/validations"
 import { Prisma } from "@prisma/client"
+import { notifyUsers } from "@/lib/notifications"
 
 export async function GET(request: NextRequest) {
   try {
@@ -84,6 +85,8 @@ export async function POST(request: NextRequest) {
     }
 
     const admitCard = await prisma.admitCard.create({ data })
+
+    await notifyUsers("ADMIT_CARD", admitCard.title, admitCard.slug)
 
     return NextResponse.json({ success: true, data: admitCard }, { status: 201 })
   } catch (error) {

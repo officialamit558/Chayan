@@ -67,6 +67,7 @@ export default function ProfilePage() {
     resultAlerts: true,
     admitCardAlerts: false,
   })
+  const [prefsLoaded, setPrefsLoaded] = useState(false)
 
   const profileForm = useForm<ProfileEditInput>({
     resolver: zodResolver(profileEditSchema),
@@ -89,6 +90,7 @@ export default function ProfilePage() {
     if (status === "authenticated") {
       setIsLoading(false)
       fetchStats()
+      loadNotificationPrefs()
     }
   }, [status, router])
 
@@ -102,6 +104,42 @@ export default function ProfilePage() {
         }
       }
     } catch {
+    }
+  }
+
+  async function loadNotificationPrefs() {
+    try {
+      const res = await fetch("/api/user/notifications/preferences")
+      if (res.ok) {
+        const json = await res.json()
+        if (json.success && json.data) {
+          setNotificationPrefs({
+            jobAlerts: json.data.jobAlerts,
+            resultAlerts: json.data.resultAlerts,
+            admitCardAlerts: json.data.admitCardAlerts,
+          })
+        }
+      }
+    } catch {
+    } finally {
+      setPrefsLoaded(true)
+    }
+  }
+
+  async function saveNotificationPrefs() {
+    try {
+      const res = await fetch("/api/user/notifications/preferences", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(notificationPrefs),
+      })
+      if (res.ok) {
+        toast("Notification preferences saved", "success")
+      } else {
+        toast("Failed to save preferences", "destructive")
+      }
+    } catch {
+      toast("Failed to save preferences", "destructive")
     }
   }
 
@@ -421,7 +459,8 @@ export default function ProfilePage() {
                     />
                   </div>
                   <Button
-                    onClick={() => toast("Notification preferences saved", "success")}
+                    onClick={saveNotificationPrefs}
+                    disabled={!prefsLoaded}
                   >
                     Save Preferences
                   </Button>
