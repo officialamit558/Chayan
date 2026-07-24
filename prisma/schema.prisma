@@ -19,6 +19,13 @@ enum JobStatus {
   UPCOMING
 }
 
+enum JobType {
+  FULL_TIME
+  PART_TIME
+  INTERNSHIP
+  CONTRACT
+}
+
 model User {
   id              String    @id @default(cuid())
   name            String?
@@ -177,6 +184,47 @@ model Job {
   @@index([stateId])
 }
 
+model Company {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  slug        String   @unique
+  logo        String?
+  website     String?
+  description String?
+  createdAt   DateTime @default(now())
+  privateJob  PrivateJob[]
+
+  @@index([name])
+  @@index([slug])
+}
+
+model PrivateJob {
+  id               String     @id @default(cuid())
+  title            String
+  slug             String     @unique
+  companyId        String
+  type             JobType
+  category         String?
+  description      String?
+  location         String?
+  salary           String?
+  experience       String?
+  applicationUrl   String?
+  applicationEmail String?
+  lastDate         DateTime?
+  status           String     @default("ACTIVE")
+  createdAt        DateTime   @default(now())
+  updatedAt        DateTime   @updatedAt
+  company          Company    @relation(fields: [companyId], references: [id])
+  bookmark         Bookmark[]
+
+  @@index([title])
+  @@index([slug])
+  @@index([companyId])
+  @@index([type])
+  @@index([status])
+}
+
 model Result {
   id           String     @id @default(cuid())
   title        String
@@ -326,21 +374,24 @@ model Exam {
 }
 
 model Bookmark {
-  id          String     @id @default(cuid())
-  userId      String
-  jobId       String?
-  resultId    String?
-  admitCardId String?
-  createdAt   DateTime   @default(now())
-  user        User       @relation(fields: [userId], references: [id])
-  job         Job?       @relation(fields: [jobId], references: [id])
-  result      Result?    @relation(fields: [resultId], references: [id])
-  admitCard   AdmitCard? @relation(fields: [admitCardId], references: [id])
+  id            String     @id @default(cuid())
+  userId        String
+  jobId         String?
+  resultId      String?
+  admitCardId   String?
+  privateJobId  String?
+  createdAt     DateTime   @default(now())
+  user          User       @relation(fields: [userId], references: [id])
+  job           Job?       @relation(fields: [jobId], references: [id])
+  result        Result?    @relation(fields: [resultId], references: [id])
+  admitCard     AdmitCard? @relation(fields: [admitCardId], references: [id])
+  privateJob    PrivateJob? @relation(fields: [privateJobId], references: [id])
 
   @@index([userId])
   @@index([jobId])
   @@index([resultId])
   @@index([admitCardId])
+  @@index([privateJobId])
 }
 
 model Comment {

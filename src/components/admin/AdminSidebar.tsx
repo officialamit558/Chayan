@@ -20,12 +20,14 @@ import {
   ChevronRight,
   X,
   Newspaper,
+  Building2,
 } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
 
 const sidebarLinks = [
   { href: "/admin/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { href: "/admin/jobs", label: "Jobs", icon: Briefcase },
+  { href: "/admin/private-jobs", label: "Private Jobs", icon: Building2 },
   { href: "/admin/results", label: "Results", icon: FileText },
   { href: "/admin/admit-cards", label: "Admit Cards", icon: IdCard },
   { href: "/admin/answer-keys", label: "Answer Keys", icon: Key },

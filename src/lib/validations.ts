@@ -135,6 +135,7 @@ export const bookmarkSchema = z.object({
   jobId: z.string().nullable().optional(),
   resultId: z.string().nullable().optional(),
   admitCardId: z.string().nullable().optional(),
+  privateJobId: z.string().nullable().optional(),
 })
 
 export const searchSchema = z.object({
@@ -174,5 +175,33 @@ export const blogPostSchema = z.object({
 })
 
 export type BlogPostInput = z.infer<typeof blogPostSchema>
+
+export const privateJobSchema = z.object({
+  title: z.string().min(1, "Title is required"),
+  slug: z.string().min(1, "Slug is required"),
+  companyId: z.string().min(1, "Company is required"),
+  type: z.enum(["FULL_TIME", "PART_TIME", "INTERNSHIP", "CONTRACT"]),
+  category: z.string().nullable().optional(),
+  description: z.string().nullable().optional(),
+  location: z.string().nullable().optional(),
+  salary: z.string().nullable().optional(),
+  experience: z.string().nullable().optional(),
+  applicationUrl: z.string().nullable().optional(),
+  applicationEmail: z.string().nullable().optional(),
+  lastDate: z.coerce.date().nullable().optional(),
+  status: z.enum(["ACTIVE", "EXPIRED"]).default("ACTIVE"),
+})
+
+export type PrivateJobInput = z.infer<typeof privateJobSchema>
+
+export const companySchema = z.object({
+  name: z.string().min(1, "Company name is required"),
+  slug: z.string().min(1, "Slug is required"),
+  logo: z.string().nullable().optional(),
+  website: z.string().nullable().optional(),
+  description: z.string().nullable().optional(),
+})
+
+export type CompanyInput = z.infer<typeof companySchema>
 
 export type SearchInput = z.infer<typeof searchSchema>

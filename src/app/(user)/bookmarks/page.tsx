@@ -42,12 +42,23 @@ interface BookmarkedAdmitCard {
   status: string | null
 }
 
+interface BookmarkedPrivateJob {
+  id: string
+  title: string
+  slug: string
+  company: { name: string }
+  location: string | null
+  salary: string | null
+  status: string
+}
+
 interface BookmarkItem {
   id: string
   createdAt: string
   job: BookmarkedJob | null
   result: BookmarkedResult | null
   admitCard: BookmarkedAdmitCard | null
+  privateJob: BookmarkedPrivateJob | null
 }
 
 export default function BookmarksPage() {
@@ -102,6 +113,7 @@ export default function BookmarksPage() {
   const savedJobs = bookmarks.filter((b) => b.job)
   const savedResults = bookmarks.filter((b) => b.result)
   const savedAdmitCards = bookmarks.filter((b) => b.admitCard)
+  const savedPrivateJobs = bookmarks.filter((b) => b.privateJob)
 
   if (status === "loading" || isLoading) {
     return (
@@ -137,6 +149,9 @@ export default function BookmarksPage() {
             </TabsTrigger>
             <TabsTrigger value="admitCards">
               Saved Admit Cards ({savedAdmitCards.length})
+            </TabsTrigger>
+            <TabsTrigger value="privateJobs">
+              Private Jobs ({savedPrivateJobs.length})
             </TabsTrigger>
           </TabsList>
 
@@ -209,6 +224,30 @@ export default function BookmarksPage() {
               </div>
             )}
           </TabsContent>
+
+          <TabsContent value="privateJobs">
+            {savedPrivateJobs.length === 0 ? (
+              <EmptyState type="private jobs" />
+            ) : (
+              <div className="space-y-4">
+                {savedPrivateJobs.map((bookmark) => (
+                  <BookmarkCard
+                    key={bookmark.id}
+                    id={bookmark.id}
+                    title={bookmark.privateJob!.title}
+                    slug={bookmark.privateJob!.slug}
+                    department={bookmark.privateJob!.company.name}
+                    location={bookmark.privateJob!.location}
+                    date={null}
+                    status={bookmark.privateJob!.status}
+                    href={`/private-jobs/${bookmark.privateJob!.slug}`}
+                    onRemove={removeBookmark}
+                    isRemoving={removingId === bookmark.id}
+                  />
+                ))}
+              </div>
+            )}
+          </TabsContent>
         </Tabs>
       </motion.div>
     </div>
@@ -245,7 +284,7 @@ interface BookmarkCardProps {
   isRemoving: boolean
 }
 
-function BookmarkCard({ id, title, department, date, status, href, onRemove, isRemoving }: BookmarkCardProps) {
+function BookmarkCard({ id, title, department, location, date, status, href, onRemove, isRemoving }: BookmarkCardProps) {
   return (
     <motion.div layout initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
       <Card className="group relative border-gray-200 transition-colors hover:border-teal-200">
@@ -272,6 +311,12 @@ function BookmarkCard({ id, title, department, date, status, href, onRemove, isR
               {title}
             </h3>
             <div className="flex items-center gap-4 text-sm text-gray-500">
+              {location && (
+                <span className="inline-flex items-center gap-1">
+                  <MapPin className="h-3.5 w-3.5" />
+                  {location}
+                </span>
+              )}
               {date && (
                 <span className="inline-flex items-center gap-1">
                   <Calendar className="h-3.5 w-3.5" />

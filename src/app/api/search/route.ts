@@ -35,7 +35,7 @@ export async function GET(request: NextRequest) {
     if (state) (jobWhere as Record<string, unknown>).stateId = state
     if (status) (jobWhere as Record<string, unknown>).status = status
 
-    const [jobs, results, admitCards, answerKeys] = await Promise.all([
+    const [jobs, results, admitCards, answerKeys, privateJobs] = await Promise.all([
       prisma.job.findMany({
         where: jobWhere,
         select: { ...searchSelect, department: { select: { name: true } } },
@@ -60,12 +60,25 @@ export async function GET(request: NextRequest) {
         orderBy: { createdAt: "desc" },
         take: limit,
       }),
+      prisma.privateJob.findMany({
+        where: q
+          ? {
+              OR: [
+                { title: { contains: q, mode: "insensitive" as const } },
+                { company: { name: { contains: q, mode: "insensitive" as const } } },
+              ],
+            }
+          : {},
+        select: { id: true, title: true, slug: true, company: { select: { name: true } }, createdAt: true },
+        orderBy: { createdAt: "desc" },
+        take: limit,
+      }),
     ])
 
     return NextResponse.json(
       {
         success: true,
-        data: { jobs, results, admitCards, answerKeys },
+        data: { jobs, results, admitCards, answerKeys, privateJobs },
       },
       {
         headers: {

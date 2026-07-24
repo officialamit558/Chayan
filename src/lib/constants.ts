@@ -18,6 +18,7 @@ export const siteConfig = {
 export const mainNav = [
   { title: "Home", href: "/" },
   { title: "Jobs", href: "/jobs" },
+  { title: "Private Jobs", href: "/private-jobs" },
   { title: "Results", href: "/results" },
   { title: "Admit Cards", href: "/admit-cards" },
   { title: "Answer Keys", href: "/answer-keys" },
@@ -32,6 +33,7 @@ export const footerLinks = [
     title: "Quick Links",
     links: [
       { label: "Latest Jobs", href: "/jobs" },
+      { label: "Private Jobs", href: "/private-jobs" },
       { label: "Exam Results", href: "/results" },
       { label: "Admit Cards", href: "/admit-cards" },
       { label: "Answer Keys", href: "/answer-keys" },

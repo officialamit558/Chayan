@@ -10,6 +10,7 @@ interface BookmarkButtonProps {
   jobId?: string | null
   resultId?: string | null
   admitCardId?: string | null
+  privateJobId?: string | null
   size?: "sm" | "icon" | "default"
   variant?: "ghost" | "outline"
   className?: string
@@ -19,6 +20,7 @@ export function BookmarkButton({
   jobId,
   resultId,
   admitCardId,
+  privateJobId,
   size = "icon",
   variant = "ghost",
   className = "",
@@ -40,6 +42,7 @@ export function BookmarkButton({
         if (jobId) params.set("jobId", jobId)
         if (resultId) params.set("resultId", resultId)
         if (admitCardId) params.set("admitCardId", admitCardId)
+        if (privateJobId) params.set("privateJobId", privateJobId)
         const res = await fetch(`/api/bookmarks/check?${params}`)
         const json = await res.json()
         setIsBookmarked(json.bookmarked)
@@ -49,7 +52,7 @@ export function BookmarkButton({
       }
     }
     checkBookmark()
-  }, [session, jobId, resultId, admitCardId])
+  }, [session, jobId, resultId, admitCardId, privateJobId])
 
   const handleToggle = async (e: React.MouseEvent) => {
     e.preventDefault()
@@ -67,6 +70,7 @@ export function BookmarkButton({
         if (jobId) params.set("jobId", jobId)
         if (resultId) params.set("resultId", resultId)
         if (admitCardId) params.set("admitCardId", admitCardId)
+        if (privateJobId) params.set("privateJobId", privateJobId)
         const res = await fetch(`/api/bookmarks/check?${params}`)
         const json = await res.json()
         if (json.id) {
@@ -77,7 +81,7 @@ export function BookmarkButton({
         const res = await fetch("/api/bookmarks", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ jobId, resultId, admitCardId }),
+          body: JSON.stringify({ jobId, resultId, admitCardId, privateJobId }),
         })
         if (res.ok) setIsBookmarked(true)
       }

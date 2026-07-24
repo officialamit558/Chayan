@@ -22,6 +22,7 @@ export async function GET(request: NextRequest) {
           job: { include: { department: true, category: true, state: true } },
           result: { include: { department: true, category: true } },
           admitCard: { include: { department: true, category: true } },
+          privateJob: { include: { company: true } },
         },
         orderBy: { createdAt: "desc" },
         skip,
@@ -59,11 +60,11 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const { jobId, resultId, admitCardId } = validation.data
+    const { jobId, resultId, admitCardId, privateJobId } = validation.data
 
-    if (!jobId && !resultId && !admitCardId) {
+    if (!jobId && !resultId && !admitCardId && !privateJobId) {
       return NextResponse.json(
-        { success: false, error: "Must provide jobId, resultId, or admitCardId" },
+        { success: false, error: "Must provide jobId, resultId, admitCardId, or privateJobId" },
         { status: 400 }
       )
     }
@@ -74,6 +75,7 @@ export async function POST(request: NextRequest) {
         ...(jobId ? { jobId } : {}),
         ...(resultId ? { resultId } : {}),
         ...(admitCardId ? { admitCardId } : {}),
+        ...(privateJobId ? { privateJobId } : {}),
       },
     })
 
@@ -87,6 +89,7 @@ export async function POST(request: NextRequest) {
         ...(jobId ? { jobId } : {}),
         ...(resultId ? { resultId } : {}),
         ...(admitCardId ? { admitCardId } : {}),
+        ...(privateJobId ? { privateJobId } : {}),
       },
     })
 
