@@ -15,7 +15,9 @@
 
 # next.js
 /.next/
+/src/.next/
 /out/
+src/tsconfig.json
 
 # production
 /build
