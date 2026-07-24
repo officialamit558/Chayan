@@ -32,6 +32,16 @@ export async function POST(request: NextRequest) {
     const buffer = Buffer.from(await file.arrayBuffer())
     const parsed = await parseResumeBuffer(buffer, file.type)
 
+    await prisma.user.upsert({
+      where: { id: session.user.id },
+      update: {},
+      create: {
+        id: session.user.id,
+        email: session.user.email || `user-${session.user.id}@placeholder.local`,
+        name: session.user.name || "User",
+      },
+    })
+
     const resume = await prisma.resume.upsert({
       where: { userId: session.user.id },
       update: {
