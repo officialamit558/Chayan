@@ -1,10 +1,12 @@
-import { PrismaClient, Role, JobStatus } from '@prisma/client';
+import { PrismaClient, Role, JobStatus, JobType } from '@prisma/client';
 import bcrypt from 'bcryptjs';
 import slugify from 'slugify';
 
 const prisma = new PrismaClient();
 
 async function main() {
+  await prisma.privateJob.deleteMany();
+  await prisma.company.deleteMany();
   await prisma.jobView.deleteMany();
   await prisma.comment.deleteMany();
   await prisma.bookmark.deleteMany();
@@ -863,6 +865,167 @@ async function main() {
       await prisma.blogPost.create({ data: post })
     }
   }
+
+  // Seed Private Job Companies
+  const companies = await Promise.all([
+    prisma.company.create({ data: { name: 'Google', slug: 'google', website: 'https://careers.google.com', description: 'Google is an American multinational technology company specializing in internet-related services and products.' } }),
+    prisma.company.create({ data: { name: 'Microsoft', slug: 'microsoft', website: 'https://careers.microsoft.com', description: 'Microsoft Corporation is an American multinational technology corporation producing computer software, consumer electronics, and personal computers.' } }),
+    prisma.company.create({ data: { name: 'Amazon', slug: 'amazon', website: 'https://amazon.jobs', description: 'Amazon is an American multinational technology company focusing on e-commerce, cloud computing, digital streaming, and artificial intelligence.' } }),
+    prisma.company.create({ data: { name: 'Flipkart', slug: 'flipkart', website: 'https://www.flipkartcareers.com', description: 'Flipkart is an Indian e-commerce company headquartered in Bangalore, Karnataka.' } }),
+    prisma.company.create({ data: { name: 'Swiggy', slug: 'swiggy', website: 'https://careers.swiggy.com', description: 'Swiggy is an Indian online food ordering and delivery platform.' } }),
+    prisma.company.create({ data: { name: 'Tata Consultancy Services', slug: 'tcs', website: 'https://www.tcs.com/careers', description: 'TCS is an Indian multinational information technology services and consulting company.' } }),
+    prisma.company.create({ data: { name: 'Infosys', slug: 'infosys', website: 'https://www.infosys.com/careers', description: 'Infosys is an Indian multinational information technology company that provides business consulting, information technology and outsourcing services.' } }),
+    prisma.company.create({ data: { name: 'Zomato', slug: 'zomato', website: 'https://www.zomato.com/careers', description: 'Zomato is an Indian multinational restaurant aggregator and food delivery company.' } }),
+    prisma.company.create({ data: { name: 'Paytm', slug: 'paytm', website: 'https://paytm.com/careers', description: 'Paytm is an Indian multinational fintech company specializing in digital payments and financial services.' } }),
+    prisma.company.create({ data: { name: 'BYJU\'s', slug: 'byjus', website: 'https://byjus.com/careers', description: "BYJU's is an Indian multinational educational technology company headquartered in Bangalore." } }),
+  ])
+
+  const [google, microsoft, amazon, flipkart, swiggy, tcs, infosys, zomato, paytm, byjus] = companies
+
+  await prisma.privateJob.createMany({
+    data: [
+      {
+        title: 'Software Engineer III',
+        slug: 'google-software-engineer-iii-2026',
+        companyId: google.id,
+        type: JobType.FULL_TIME,
+        category: 'Engineering',
+        description: '<h2>About the Job</h2><p>Google is looking for experienced Software Engineers to build next-generation technologies that change how billions of users connect, explore, and interact with information. As a Software Engineer, you will work on a specific project critical to Google\'s needs with opportunities to switch teams and projects as you and our fast-paced business grow and evolve.</p><h2>Responsibilities</h2><ul><li>Design, develop, test, deploy, maintain and improve software</li><li>Manage individual project priorities, deadlines and deliverables</li><li>Collaborate with cross-functional teams to define and implement features</li></ul><h2>Qualifications</h2><p>Bachelor\'s degree in Computer Science or related field, 3+ years of software development experience, proficiency in Java, C++, or Python.</p>',
+        location: 'Bangalore, Karnataka',
+        salary: '₹30,00,000 - ₹50,00,000 / year',
+        experience: '3-6 years',
+        applicationUrl: 'https://careers.google.com/jobs',
+        lastDate: daysFromNow(60),
+        status: 'ACTIVE',
+      },
+      {
+        title: 'Senior Software Engineer - Azure Cloud',
+        slug: 'microsoft-senior-software-engineer-azure-2026',
+        companyId: microsoft.id,
+        type: JobType.FULL_TIME,
+        category: 'Engineering',
+        description: '<h2>About the Role</h2><p>Microsoft Azure is seeking a Senior Software Engineer to design and build scalable cloud services. You will be part of the Azure Core team working on next-generation infrastructure that powers millions of businesses worldwide.</p><h2>Responsibilities</h2><ul><li>Design and implement distributed systems for Azure platform</li><li>Write high-quality, maintainable code</li><li>Mentor junior engineers and conduct code reviews</li></ul><h2>Qualifications</h2><p>BS/MS in Computer Science, 5+ years experience in backend development, strong understanding of distributed systems and cloud computing.</p>',
+        location: 'Hyderabad, Telangana',
+        salary: '₹35,00,000 - ₹60,00,000 / year',
+        experience: '5-8 years',
+        applicationUrl: 'https://careers.microsoft.com',
+        lastDate: daysFromNow(45),
+        status: 'ACTIVE',
+      },
+      {
+        title: 'Operations Manager - Fulfillment Center',
+        slug: 'amazon-operations-manager-2026',
+        companyId: amazon.id,
+        type: JobType.FULL_TIME,
+        category: 'Operations',
+        description: '<h2>About the Role</h2><p>Amazon is seeking an Operations Manager to lead and manage a team of Area Managers in our Fulfillment Center. You will be responsible for driving operational excellence, improving productivity, and ensuring customer satisfaction.</p><h2>Responsibilities</h2><ul><li>Manage and mentor a team of Area Managers</li><li>Drive continuous improvement initiatives using Lean and Six Sigma</li><li>Analyze operational metrics and implement improvement plans</li></ul><h2>Qualifications</h2><p>Bachelor\'s degree in Engineering or related field, 5+ years of operations management experience, strong analytical and problem-solving skills.</p>',
+        location: 'Mumbai, Maharashtra',
+        salary: '₹18,00,000 - ₹28,00,000 / year',
+        experience: '5-10 years',
+        applicationUrl: 'https://amazon.jobs',
+        lastDate: daysFromNow(30),
+        status: 'ACTIVE',
+      },
+      {
+        title: 'Product Manager - Marketplace',
+        slug: 'flipkart-product-manager-2026',
+        companyId: flipkart.id,
+        type: JobType.FULL_TIME,
+        category: 'Product',
+        description: '<h2>About the Role</h2><p>Flipkart is looking for a Product Manager to drive the vision, strategy, and execution of our marketplace platform. You will work with engineering, design, and business teams to build products that delight millions of customers.</p><h2>Responsibilities</h2><ul><li>Define product roadmap and prioritize features</li><li>Work closely with engineering and design teams</li><li>Analyze market trends and competitor products</li></ul><h2>Qualifications</h2><p>MBA from a top-tier institute, 3-5 years of product management experience, strong analytical and communication skills.</p>',
+        location: 'Bangalore, Karnataka',
+        salary: '₹25,00,000 - ₹40,00,000 / year',
+        experience: '3-5 years',
+        applicationUrl: 'https://www.flipkartcareers.com',
+        lastDate: daysFromNow(45),
+        status: 'ACTIVE',
+      },
+      {
+        title: 'Data Scientist - Recommendations',
+        slug: 'swiggy-data-scientist-2026',
+        companyId: swiggy.id,
+        type: JobType.FULL_TIME,
+        category: 'Data Science',
+        description: '<h2>About the Role</h2><p>Swiggy is seeking a Data Scientist to join our Recommendations team. You will build ML models that power personalized food recommendations for millions of users across India.</p><h2>Responsibilities</h2><ul><li>Design and implement machine learning models for recommendation systems</li><li>Analyze large-scale user behavior data</li><li>A/B test and optimize model performance</li></ul><h2>Qualifications</h2><p>M.Tech/PhD in Computer Science or related field, strong expertise in ML and deep learning, proficiency in Python and SQL.</p>',
+        location: 'Bangalore, Karnataka',
+        salary: '₹22,00,000 - ₹38,00,000 / year',
+        experience: '2-5 years',
+        applicationUrl: 'https://careers.swiggy.com',
+        lastDate: daysFromNow(35),
+        status: 'ACTIVE',
+      },
+      {
+        title: 'Cloud Engineer - GCP',
+        slug: 'tcs-cloud-engineer-gcp-2026',
+        companyId: tcs.id,
+        type: JobType.FULL_TIME,
+        category: 'Engineering',
+        description: '<h2>About the Role</h2><p>TCS is hiring Cloud Engineers with expertise in Google Cloud Platform to join our cloud transformation practice. You will work with Fortune 500 clients to design and implement cloud-native solutions.</p><h2>Responsibilities</h2><ul><li>Design and implement GCP infrastructure using Terraform</li><li>Migrate on-premises workloads to GCP</li><li>Optimize cloud costs and performance</li></ul><h2>Qualifications</h2><p>Bachelor\'s degree in Computer Science, GCP certification preferred, 3+ years of cloud engineering experience.</p>',
+        location: 'Multiple Locations, India',
+        salary: '₹12,00,000 - ₹22,00,000 / year',
+        experience: '3-7 years',
+        applicationUrl: 'https://www.tcs.com/careers',
+        lastDate: daysFromNow(50),
+        status: 'ACTIVE',
+      },
+      {
+        title: 'Business Analyst - Financial Services',
+        slug: 'infosys-business-analyst-2026',
+        companyId: infosys.id,
+        type: JobType.FULL_TIME,
+        category: 'Consulting',
+        description: '<h2>About the Role</h2><p>Infosys is seeking a Business Analyst to join our Financial Services practice. You will work with leading banks and financial institutions to drive digital transformation initiatives.</p><h2>Responsibilities</h2><ul><li>Gather and document business requirements</li><li>Create functional specifications and user stories</li><li>Facilitate stakeholder communication and project delivery</li></ul><h2>Qualifications</h2><p>MBA or Bachelor\'s degree in related field, 2-4 years of business analysis experience in financial services, knowledge of Agile methodologies.</p>',
+        location: 'Pune, Maharashtra',
+        salary: '₹10,00,000 - ₹18,00,000 / year',
+        experience: '2-4 years',
+        applicationUrl: 'https://www.infosys.com/careers',
+        lastDate: daysFromNow(40),
+        status: 'ACTIVE',
+      },
+      {
+        title: 'Software Engineer Intern',
+        slug: 'zomato-software-engineer-intern-2026',
+        companyId: zomato.id,
+        type: JobType.INTERNSHIP,
+        category: 'Engineering',
+        description: '<h2>About the Internship</h2><p>Zomato is looking for passionate Software Engineer Interns to join our engineering team. This is a 3-month paid internship program with the opportunity for a full-time conversion based on performance.</p><h2>Responsibilities</h2><ul><li>Build and maintain features for Zomato\'s platform</li><li>Write clean, testable code</li><li>Participate in code reviews and team standups</li></ul><h2>Qualifications</h2><p>Currently pursuing B.Tech/M.Tech in Computer Science (3rd/4th year), strong DSA fundamentals, proficiency in at least one programming language.</p>',
+        location: 'Gurgaon, Haryana',
+        salary: '₹50,000 / month stipend',
+        experience: '0-1 years',
+        applicationUrl: 'https://www.zomato.com/careers',
+        lastDate: daysFromNow(25),
+        status: 'ACTIVE',
+      },
+      {
+        title: 'UI/UX Designer - Contract',
+        slug: 'paytm-ui-ux-designer-contract-2026',
+        companyId: paytm.id,
+        type: JobType.CONTRACT,
+        category: 'Design',
+        description: '<h2>About the Role</h2><p>Paytm is hiring a UI/UX Designer on a 6-month contract basis to work on our consumer mobile apps. You will design intuitive and delightful user experiences for millions of users.</p><h2>Responsibilities</h2><ul><li>Create user flows, wireframes, and high-fidelity mockups</li><li>Conduct user research and usability testing</li><li>Collaborate with product managers and engineers</li></ul><h2>Qualifications</h2><p>Bachelor\'s degree in Design or related field, 2+ years of UI/UX design experience, proficiency in Figma and Adobe Creative Suite.</p>',
+        location: 'Noida, Uttar Pradesh',
+        salary: '₹8,00,000 - ₹12,00,000 / year (contract)',
+        experience: '2-4 years',
+        applicationUrl: 'https://paytm.com/careers',
+        lastDate: daysFromNow(20),
+        status: 'ACTIVE',
+      },
+      {
+        title: 'Content Developer - Part Time',
+        slug: 'byjus-content-developer-part-time-2026',
+        companyId: byjus.id,
+        type: JobType.PART_TIME,
+        category: 'Content',
+        description: '<h2>About the Role</h2><p>BYJU\'S is looking for part-time Content Developers to create engaging educational content for K-12 students. This is a work-from-home position with flexible hours.</p><h2>Responsibilities</h2><ul><li>Develop curriculum-aligned content for Math and Science subjects</li><li>Create interactive learning materials and assessments</li><li>Review and update existing content for quality improvement</li></ul><h2>Qualifications</h2><p>Bachelor\'s or Master\'s degree in relevant subject, teaching or content development experience preferred, excellent written communication skills.</p>',
+        location: 'Remote / Bangalore, Karnataka',
+        salary: '₹4,00,000 - ₹7,00,000 / year (part-time)',
+        experience: '1-3 years',
+        applicationUrl: 'https://byjus.com/careers',
+        lastDate: daysFromNow(30),
+        status: 'ACTIVE',
+      },
+    ],
+  })
 
   console.log('Database seeded successfully!');
 }
