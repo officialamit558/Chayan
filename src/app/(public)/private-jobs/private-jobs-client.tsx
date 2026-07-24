@@ -12,6 +12,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Pagination } from "@/components/ui/pagination"
 import { Skeleton } from "@/components/ui/skeleton"
 import { BookmarkButton } from "@/components/layout/BookmarkButton"
+import { JobRecommendations } from "@/components/jobs/JobRecommendations"
 
 interface Company {
   id: string; name: string; logo?: string | null
@@ -116,6 +117,10 @@ export function PrivateJobsClient() {
               </Button>
             ))}
           </div>
+        </div>
+
+        <div className="mb-10">
+          <JobRecommendations />
         </div>
 
         {loading ? (
