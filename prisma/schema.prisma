@@ -83,6 +83,8 @@ model User {
   notificationPreference   NotificationPreference?
   userNotification         UserNotification[]
   resume                   Resume?
+  accounts                 Account[]
+  sessions                 Session[]
 
   @@index([email])
   @@index([role])

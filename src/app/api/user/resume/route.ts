@@ -32,18 +32,24 @@ export async function POST(request: NextRequest) {
     const buffer = Buffer.from(await file.arrayBuffer())
     const parsed = await parseResumeBuffer(buffer, file.type)
 
-    await prisma.user.upsert({
-      where: { id: session.user.id },
-      update: {},
-      create: {
-        id: session.user.id,
-        email: session.user.email || `user-${session.user.id}@placeholder.local`,
-        name: session.user.name || "User",
-      },
-    })
+    let userId = session.user.id
+    let user = await prisma.user.findUnique({ where: { id: userId } })
+    if (!user && session.user.email) {
+      user = await prisma.user.findUnique({ where: { email: session.user.email } })
+      if (user) userId = user.id
+    }
+    if (!user) {
+      user = await prisma.user.create({
+        data: {
+          id: userId,
+          email: session.user.email || `user-${userId}@placeholder.local`,
+          name: session.user.name || "User",
+        },
+      })
+    }
 
     const resume = await prisma.resume.upsert({
-      where: { userId: session.user.id },
+      where: { userId },
       update: {
         fileName: file.name,
         fileType: file.type,
@@ -54,7 +60,7 @@ export async function POST(request: NextRequest) {
         experience: String(parsed.experience),
       },
       create: {
-        userId: session.user.id,
+        userId,
         fileName: file.name,
         fileType: file.type,
         fileSize: file.size,
@@ -91,8 +97,15 @@ export async function GET() {
       return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 })
     }
 
+    let userId = session.user.id
+    let user = await prisma.user.findUnique({ where: { id: userId } })
+    if (!user && session.user.email) {
+      user = await prisma.user.findUnique({ where: { email: session.user.email } })
+      if (user) userId = user.id
+    }
+
     const resume = await prisma.resume.findUnique({
-      where: { userId: session.user.id },
+      where: { userId },
     })
 
     if (!resume) {
