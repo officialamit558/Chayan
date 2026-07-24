@@ -119,7 +119,7 @@ export function ResumeUpload({ onResumeChange }: { onResumeChange?: () => void }
               <Briefcase className="h-4 w-4" />
               {resume.experience > 0 ? `${resume.experience} years` : "Entry level"}
             </div>
-            {resume.locations.length > 0 && (
+            {(resume.locations || []).length > 0 && (
               <div className="flex items-center gap-2 text-gray-600 col-span-2">
                 <MapPin className="h-4 w-4" />
                 {resume.locations.join(", ")}

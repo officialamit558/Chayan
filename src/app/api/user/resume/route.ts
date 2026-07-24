@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server"
 import { auth } from "@/lib/auth"
 import { prisma } from "@/lib/prisma"
 import { parseResumeBuffer } from "@/lib/resume-parser"
+import { extractLocations } from "@/lib/skills"
 
 export async function POST(request: NextRequest) {
   try {
@@ -122,6 +123,7 @@ export async function GET() {
         skills: JSON.parse(resume.skills || "[]"),
         education: resume.education,
         experience: resume.experience,
+        locations: extractLocations(resume.rawText),
         createdAt: resume.createdAt,
         updatedAt: resume.updatedAt,
       },
