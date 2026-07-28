@@ -35,26 +35,33 @@ import { SearchDialog, useSearchDialog } from "./SearchDialog"
 import { LogoSmall } from "@/components/layout/LogoSmall"
 import { NotificationBell } from "./NotificationBell"
 
-function DateDisplay() {
-  const [dateStr, setDateStr] = React.useState("")
+function DateTimeDisplay() {
+  const [display, setDisplay] = React.useState("")
 
   React.useEffect(() => {
     const update = () => {
       const now = new Date()
-      setDateStr(now.toLocaleDateString("en-IN", {
+      const d = now.toLocaleDateString("en-IN", {
         weekday: "long",
         year: "numeric",
         month: "long",
         day: "numeric",
-      }))
+      })
+      const t = now.toLocaleTimeString("en-IN", {
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+        hour12: true,
+      })
+      setDisplay(`${d} | ${t}`)
     }
     update()
-    const id = setInterval(update, 60000)
+    const id = setInterval(update, 1000)
     return () => clearInterval(id)
   }, [])
 
-  if (!dateStr) return null
-  return <span className="text-xs text-blue-200 font-medium">{dateStr}</span>
+  if (!display) return null
+  return <span className="text-xs text-blue-200/80 font-medium tabular-nums">{display}</span>
 }
 
 function NavLink({ href, children }: { href: string; children: React.ReactNode }) {
@@ -71,6 +78,60 @@ function NavLink({ href, children }: { href: string; children: React.ReactNode }
       )}
     >
       {children}
+    </Link>
+  )
+}
+
+function NavDropdown({
+  label,
+  isActive,
+  children,
+}: {
+  label: string
+  isActive: boolean
+  children: React.ReactNode
+}) {
+  const [open, setOpen] = React.useState(false)
+
+  return (
+    <div
+      className="relative"
+      onMouseEnter={() => setOpen(true)}
+      onMouseLeave={() => setOpen(false)}
+    >
+      <button
+        className={cn(
+          "relative px-3.5 py-2.5 text-sm font-semibold tracking-wide transition-all duration-200 rounded-md inline-flex items-center gap-1",
+          isActive
+            ? "text-blue-700 dark:text-blue-300 bg-blue-50/80 dark:bg-blue-950/40"
+            : "text-gray-700 hover:text-blue-600 hover:bg-blue-50/60 dark:text-gray-300 dark:hover:text-blue-300 dark:hover:bg-blue-950/40"
+        )}
+      >
+        {label}
+        <ChevronDown
+          className={cn(
+            "h-3.5 w-3.5 transition-transform duration-200",
+            open && "rotate-180"
+          )}
+        />
+      </button>
+      {open && (
+        <div className="absolute top-full left-0 mt-0 w-48 bg-white dark:bg-gray-950 rounded-lg shadow-lg border border-gray-200 dark:border-gray-800 py-1.5 z-50 animate-in fade-in slide-in-from-top-1 duration-150">
+          {children}
+        </div>
+      )}
+    </div>
+  )
+}
+
+function DropdownItem({ href, icon: Icon, label }: { href: string; icon: React.ElementType; label: string }) {
+  return (
+    <Link
+      href={href}
+      className="flex items-center gap-2.5 px-3.5 py-2 text-sm font-medium text-gray-700 hover:text-blue-600 hover:bg-blue-50/80 dark:text-gray-300 dark:hover:text-blue-300 dark:hover:bg-blue-950/40 transition-colors rounded-md mx-1"
+    >
+      <Icon className="h-4 w-4" />
+      {label}
     </Link>
   )
 }
@@ -102,10 +163,11 @@ export function Header() {
       >
         <div className="bg-[#1e3a5f] dark:bg-[#0f1f3d] border-b border-[#2a4a75]">
           <div className="mx-auto max-w-7xl px-4 flex items-center justify-between h-9">
-            <span className="text-xs text-blue-200/80 font-medium hidden sm:block">
-              Welcome to Chayan — Your Trusted Government Job Portal
+            <div className="w-[200px] hidden sm:block" />
+            <span className="text-xs text-blue-200/80 font-medium text-center">
+              Welcome to Chayan{session?.user?.name ? `, ${session.user.name}` : ""}
             </span>
-            <DateDisplay />
+            <DateTimeDisplay />
           </div>
         </div>
 
@@ -119,83 +181,21 @@ export function Header() {
             <nav className="hidden lg:flex items-center gap-1">
               <NavLink href="/">Home</NavLink>
 
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button
-                    variant="ghost"
-                    className={cn(
-                      "relative px-3.5 py-2.5 text-sm font-semibold tracking-wide transition-all duration-200 rounded-md inline-flex items-center gap-1",
-                      jobsActive
-                        ? "text-blue-700 dark:text-blue-300 bg-blue-50/80 dark:bg-blue-950/40"
-                        : "text-gray-700 hover:text-blue-600 hover:bg-blue-50/60 dark:text-gray-300 dark:hover:text-blue-300 dark:hover:bg-blue-950/40"
-                    )}
-                  >
-                    Jobs
-                    <ChevronDown className="h-3.5 w-3.5" />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="center" className="w-48">
-                  <DropdownMenuItem asChild>
-                    <Link href="/jobs" className="flex items-center gap-2 cursor-pointer">
-                      <Briefcase className="h-4 w-4" />
-                      Gov Jobs
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link href="/private-jobs" className="flex items-center gap-2 cursor-pointer">
-                      <Building2 className="h-4 w-4" />
-                      Private Jobs
-                    </Link>
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
+              <NavDropdown label="Jobs" isActive={jobsActive}>
+                <DropdownItem href="/jobs" icon={Briefcase} label="Gov Jobs" />
+                <DropdownItem href="/private-jobs" icon={Building2} label="Private Jobs" />
+              </NavDropdown>
 
               <NavLink href="/results">Results</NavLink>
               <NavLink href="/admit-cards">Admit Cards</NavLink>
               <NavLink href="/answer-keys">Answer Keys</NavLink>
 
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button
-                    variant="ghost"
-                    className={cn(
-                      "relative px-3.5 py-2.5 text-sm font-semibold tracking-wide transition-all duration-200 rounded-md inline-flex items-center gap-1",
-                      moreActive
-                        ? "text-blue-700 dark:text-blue-300 bg-blue-50/80 dark:bg-blue-950/40"
-                        : "text-gray-700 hover:text-blue-600 hover:bg-blue-50/60 dark:text-gray-300 dark:hover:text-blue-300 dark:hover:bg-blue-950/40"
-                    )}
-                  >
-                    More
-                    <ChevronDown className="h-3.5 w-3.5" />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="center" className="w-48">
-                  <DropdownMenuItem asChild>
-                    <Link href="/syllabus" className="flex items-center gap-2 cursor-pointer">
-                      <BookOpen className="h-4 w-4" />
-                      Syllabus
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link href="/admissions" className="flex items-center gap-2 cursor-pointer">
-                      <GraduationCap className="h-4 w-4" />
-                      Admissions
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link href="/blog" className="flex items-center gap-2 cursor-pointer">
-                      <Newspaper className="h-4 w-4" />
-                      Blog
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link href="/notifications" className="flex items-center gap-2 cursor-pointer">
-                      <Bell className="h-4 w-4" />
-                      Notifications
-                    </Link>
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
+              <NavDropdown label="More" isActive={moreActive}>
+                <DropdownItem href="/syllabus" icon={BookOpen} label="Syllabus" />
+                <DropdownItem href="/admissions" icon={GraduationCap} label="Admissions" />
+                <DropdownItem href="/blog" icon={Newspaper} label="Blog" />
+                <DropdownItem href="/notifications" icon={Bell} label="Notifications" />
+              </NavDropdown>
             </nav>
 
             <div className="flex items-center gap-1">
