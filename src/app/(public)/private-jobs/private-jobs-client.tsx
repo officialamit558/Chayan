@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback } from "react"
 import { motion } from "framer-motion"
 import Link from "next/link"
-import { Search, AlertCircle, Calendar, MapPin, IndianRupee, Briefcase, ExternalLink, X } from "lucide-react"
+import { Search, AlertCircle, Calendar, MapPin, IndianRupee, Briefcase, ExternalLink, X, Building2 } from "lucide-react"
 import { formatDate } from "@/lib/utils"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
@@ -13,10 +13,9 @@ import { Pagination } from "@/components/ui/pagination"
 import { Skeleton } from "@/components/ui/skeleton"
 import { BookmarkButton } from "@/components/layout/BookmarkButton"
 import { JobRecommendations } from "@/components/jobs/JobRecommendations"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 
-interface Company {
-  id: string; name: string; logo?: string | null
-}
+interface Company { id: string; name: string; logo?: string | null }
 
 interface PrivateJobData {
   id: string; title: string; slug: string; type: string; category?: string | null
@@ -26,9 +25,9 @@ interface PrivateJobData {
   company: Company; createdAt: string
 }
 
-interface PaginationData {
-  page: number; total: number; totalPages: number
-}
+interface PaginationData { page: number; total: number; totalPages: number }
+
+interface FilterOption { id: string; name: string }
 
 const typeLabels: Record<string, string> = {
   FULL_TIME: "Full-Time", PART_TIME: "Part-Time", INTERNSHIP: "Internship", CONTRACT: "Contract",
@@ -42,7 +41,26 @@ export function PrivateJobsClient() {
   const [search, setSearch] = useState("")
   const [debouncedSearch, setDebouncedSearch] = useState("")
   const [typeFilter, setTypeFilter] = useState("")
+  const [companyFilter, setCompanyFilter] = useState("")
+  const [locationFilter, setLocationFilter] = useState("")
   const [page, setPage] = useState(1)
+
+  const [companies, setCompanies] = useState<FilterOption[]>([])
+  const [locations, setLocations] = useState<string[]>([])
+  const [types, setTypes] = useState<string[]>([])
+
+  useEffect(() => {
+    fetch("/api/private-jobs/filters")
+      .then(r => r.json())
+      .then(d => {
+        if (d.success) {
+          setCompanies(d.data.companies || [])
+          setLocations(d.data.locations || [])
+          setTypes(d.data.types || [])
+        }
+      })
+      .catch(() => {})
+  }, [])
 
   useEffect(() => {
     const timer = setTimeout(() => setDebouncedSearch(search), 300)
@@ -56,6 +74,8 @@ export function PrivateJobsClient() {
       const params = new URLSearchParams()
       if (debouncedSearch) params.set("search", debouncedSearch)
       if (typeFilter) params.set("type", typeFilter)
+      if (companyFilter) params.set("companyId", companyFilter)
+      if (locationFilter) params.set("location", locationFilter)
       params.set("page", String(page))
       params.set("limit", "12")
 
@@ -73,13 +93,24 @@ export function PrivateJobsClient() {
     } finally {
       setLoading(false)
     }
-  }, [debouncedSearch, typeFilter, page])
+  }, [debouncedSearch, typeFilter, companyFilter, locationFilter, page])
 
   useEffect(() => {
     const controller = new AbortController()
     fetchJobs(controller.signal)
     return () => controller.abort()
   }, [fetchJobs])
+
+  const clearFilters = () => {
+    setSearch("")
+    setDebouncedSearch("")
+    setTypeFilter("")
+    setCompanyFilter("")
+    setLocationFilter("")
+    setPage(1)
+  }
+
+  const hasActiveFilters = search || typeFilter || companyFilter || locationFilter
 
   return (
     <div className="container mx-auto max-w-7xl px-4 py-8">
@@ -89,7 +120,7 @@ export function PrivateJobsClient() {
           Full-time, part-time, internships, and contract positions from top companies.
         </p>
 
-        <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center">
+        <div className="mb-6 space-y-4">
           <div className="relative flex-1 max-w-md">
             <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
             <Input
@@ -104,18 +135,52 @@ export function PrivateJobsClient() {
               </button>
             )}
           </div>
-          <div className="flex flex-wrap gap-2">
-            {(["", "FULL_TIME", "PART_TIME", "INTERNSHIP", "CONTRACT"] as const).map((t) => (
-              <Button
-                key={t}
-                variant={typeFilter === t ? "default" : "outline"}
-                size="sm"
-                onClick={() => { setTypeFilter(t); setPage(1) }}
-                className={typeFilter === t ? "bg-teal-600 hover:bg-teal-700" : ""}
-              >
-                {t ? typeLabels[t] : "All"}
+
+          <div className="flex flex-wrap items-center gap-3">
+            <Select value={companyFilter} onValueChange={(v) => { setCompanyFilter(v); setPage(1) }}>
+              <SelectTrigger className="w-44">
+                <Building2 className="h-3.5 w-3.5 mr-1 text-gray-400" />
+                <SelectValue placeholder="All Companies" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Companies</SelectItem>
+                {companies.map(c => (
+                  <SelectItem key={c.id} value={c.id}>{c.name}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+
+            <Select value={locationFilter} onValueChange={(v) => { setLocationFilter(v); setPage(1) }}>
+              <SelectTrigger className="w-44">
+                <MapPin className="h-3.5 w-3.5 mr-1 text-gray-400" />
+                <SelectValue placeholder="All Locations" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Locations</SelectItem>
+                {locations.map(l => (
+                  <SelectItem key={l} value={l}>{l}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+
+            <Select value={typeFilter} onValueChange={(v) => { setTypeFilter(v); setPage(1) }}>
+              <SelectTrigger className="w-44">
+                <Briefcase className="h-3.5 w-3.5 mr-1 text-gray-400" />
+                <SelectValue placeholder="All Types" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Types</SelectItem>
+                {types.map(t => (
+                  <SelectItem key={t} value={t}>{typeLabels[t] || t}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+
+            {hasActiveFilters && (
+              <Button variant="ghost" size="sm" onClick={clearFilters} className="text-gray-500">
+                <X className="h-4 w-4 mr-1" /> Clear Filters
               </Button>
-            ))}
+            )}
           </div>
         </div>
 
@@ -145,7 +210,12 @@ export function PrivateJobsClient() {
           <Card><CardContent className="flex flex-col items-center py-16">
             <Briefcase className="mb-4 h-12 w-12 text-gray-300" />
             <h3 className="mb-2 text-lg font-semibold">No private jobs found</h3>
-            <p className="text-sm text-gray-500">Try adjusting your search or check back later.</p>
+            <p className="text-sm text-gray-500">Try adjusting your search or filters.</p>
+            {hasActiveFilters && (
+              <Button variant="outline" size="sm" onClick={clearFilters} className="mt-4">
+                Clear All Filters
+              </Button>
+            )}
           </CardContent></Card>
         ) : (
           <>
@@ -155,14 +225,14 @@ export function PrivateJobsClient() {
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {jobs.map((job) => (
                 <motion.div key={job.id} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3 }}>
-                  <Card className="h-full border-gray-200 transition-colors hover:border-teal-300 hover:shadow-md">
+                  <Card className="h-full border-gray-200 bg-white transition-all duration-200 hover:shadow-md hover:-translate-y-0.5">
                     <CardHeader>
                       <div className="flex items-start justify-between gap-2">
                         <Badge variant="outline" className="text-xs">{typeLabels[job.type]}</Badge>
                         <BookmarkButton privateJobId={job.id} variant="ghost" />
                       </div>
                       <CardTitle className="text-base leading-snug">{job.title}</CardTitle>
-                      <p className="text-sm font-medium text-teal-700">{job.company.name}</p>
+                      <p className="text-sm font-medium text-blue-700">{job.company.name}</p>
                     </CardHeader>
                     <CardContent>
                       <div className="mb-4 space-y-2 text-sm text-gray-600">

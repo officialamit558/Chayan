@@ -66,8 +66,8 @@ export async function GET(request: NextRequest) {
 
     recommendations.sort((a, b) => b.matchScore - a.matchScore)
 
-    const topMatches = recommendations.filter(r => r.matchScore >= 50)
-    const otherJobs = recommendations.filter(r => r.matchScore < 50)
+    const topMatches = recommendations.filter(r => r.matchScore >= 30)
+    const otherJobs = recommendations.filter(r => r.matchScore < 30 && r.matchScore > 0)
 
     return NextResponse.json({
       success: true,

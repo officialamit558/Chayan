@@ -30,13 +30,14 @@ export function JobRecommendations() {
       const res = await fetch("/api/private-jobs/recommendations")
       const json = await res.json()
       if (json.success) {
-        if (json.data.length === 0 && json.message) {
-          setMessage(json.message)
-          setHasResume(false)
-        } else {
+        if (json.data?.topMatches) {
           setRecs(json.data)
           setHasResume(true)
           setMessage("")
+        } else {
+          setMessage(json.message || "Upload your resume to get job recommendations")
+          setHasResume(false)
+          setRecs(null)
         }
       }
     } catch {
@@ -60,14 +61,13 @@ export function JobRecommendations() {
 
   if (!hasResume) {
     return (
-      <Card className="border-2 border-dashed border-teal-200 bg-teal-50/50">
+      <Card className="border-2 border-dashed border-blue-200 bg-blue-50/50">
         <CardContent className="py-8">
           <div className="flex flex-col items-center text-center">
-            <Target className="mb-3 h-10 w-10 text-teal-500" />
+            <Target className="mb-3 h-10 w-10 text-blue-500" />
             <h3 className="mb-2 text-lg font-semibold text-gray-900">Personalized Job Recommendations</h3>
             <p className="mb-6 max-w-md text-sm text-gray-600">
-              Upload your resume and our AI-powered system will analyze your skills, experience, and education to
-              recommend the best matching private jobs for you.
+              Upload your resume and we&apos;ll match your skills, experience, and education with the best private jobs for you.
             </p>
             <div className="w-full max-w-md">
               <ResumeUpload onResumeChange={fetchRecs} />
@@ -97,7 +97,7 @@ export function JobRecommendations() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <Sparkles className="h-5 w-5 text-teal-600" />
+          <Sparkles className="h-5 w-5 text-blue-600" />
           <h2 className="text-xl font-bold text-gray-900">
             Recommended for You
             <span className="ml-2 text-sm font-normal text-gray-500">({recs.matchCount} matches)</span>
@@ -117,17 +117,17 @@ export function JobRecommendations() {
             transition={{ delay: i * 0.05 }}
           >
             <Link href={`/private-jobs/${job.slug}`}>
-              <Card className="group h-full cursor-pointer border-teal-100 transition-all hover:border-teal-300 hover:shadow-md">
+              <Card className="group h-full cursor-pointer border-blue-100 transition-all hover:border-blue-300 hover:shadow-md">
                 <CardContent className="p-5">
                   <div className="mb-3 flex items-start justify-between">
                     <div className="min-w-0 flex-1">
                       <div className="flex items-center gap-2">
-                        <Badge className="bg-teal-600 text-white">
+                        <Badge className="bg-blue-600 text-white">
                           {job.matchScore}% Match
                         </Badge>
                         <Badge variant="outline" className="text-xs">{job.type}</Badge>
                       </div>
-                      <h3 className="mt-2 text-base font-semibold text-gray-900 group-hover:text-teal-700">
+                      <h3 className="mt-2 text-base font-semibold text-gray-900 group-hover:text-blue-700">
                         {job.title}
                       </h3>
                       <p className="text-sm text-gray-600">{job.company.name}</p>
@@ -135,7 +135,7 @@ export function JobRecommendations() {
                   </div>
                   <div className="mb-3 flex flex-wrap gap-1">
                     {job.matchedSkills.slice(0, 4).map(s => (
-                      <Badge key={s} variant="secondary" className="bg-teal-50 text-xs text-teal-700">
+                      <Badge key={s} variant="secondary" className="bg-blue-50 text-xs text-blue-700">
                         {s}
                       </Badge>
                     ))}
@@ -146,7 +146,7 @@ export function JobRecommendations() {
                   <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-gray-500">
                     {job.location && <span>{job.location}</span>}
                     {job.experience && <span>{job.experience}</span>}
-                    {job.salary && <span className="text-teal-600">{job.salary}</span>}
+                    {job.salary && <span className="text-blue-600">{job.salary}</span>}
                   </div>
                 </CardContent>
               </Card>
@@ -157,7 +157,7 @@ export function JobRecommendations() {
 
       {recs.otherJobs.length > 0 && (
         <details className="group">
-          <summary className="cursor-pointer text-sm font-medium text-gray-500 hover:text-teal-600">
+          <summary className="cursor-pointer text-sm font-medium text-gray-500 hover:text-blue-600">
             Show other {recs.otherJobs.length} available jobs
           </summary>
           <div className="mt-4 grid gap-4 md:grid-cols-2">
@@ -171,7 +171,7 @@ export function JobRecommendations() {
                           <Badge variant="outline" className="text-xs">{job.matchScore}%</Badge>
                           <Badge variant="outline" className="text-xs">{job.type}</Badge>
                         </div>
-                        <h3 className="mt-1 text-sm font-semibold text-gray-900 group-hover:text-teal-700">
+                        <h3 className="mt-1 text-sm font-semibold text-gray-900 group-hover:text-blue-700">
                           {job.title}
                         </h3>
                         <p className="text-xs text-gray-600">{job.company.name}</p>

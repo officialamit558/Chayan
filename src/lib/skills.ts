@@ -26,6 +26,41 @@ export const SKILLS = [
   "Team Leadership", "Project Management", "Communication", "Problem Solving",
   // Domain Specific
   "Blockchain", "IoT", "Cybersecurity", "DevOps", "SRE", "Data Engineering",
+  // Business & Management
+  "Sales", "Marketing", "Business Development", "Operations", "Supply Chain",
+  "Logistics", "Procurement", "Inventory Management", "Quality Assurance",
+  "Customer Service", "Customer Support", "Account Management", "Key Account Management",
+  "Business Analysis", "Management Consulting", "Strategy", "Corporate Strategy",
+  "Risk Management", "Compliance", "Audit", "Internal Audit",
+  // Finance & Accounting
+  "Financial Analysis", "Financial Planning", "Budgeting", "Forecasting",
+  "Accounting", "Taxation", "GST", "Tally", "QuickBooks", "SAP",
+  "Investment Banking", "Equity Research", "Portfolio Management",
+  "Insurance", "Underwriting", "Claims Management",
+  // Human Resources
+  "Recruitment", "Talent Acquisition", "HR Operations", "Payroll",
+  "Performance Management", "Employee Relations", "Learning & Development",
+  "Compensation & Benefits", "HR Analytics",
+  // Marketing & Communications
+  "Digital Marketing", "SEO", "SEM", "Content Marketing", "Social Media",
+  "Email Marketing", "Brand Management", "Public Relations", "Media Planning",
+  "Market Research", "Product Marketing", "Growth Hacking",
+  // Design & Creative
+  "UI Design", "UX Design", "Graphic Design", "Motion Design", "Illustration",
+  "Video Editing", "Photography", "Copywriting", "Content Writing",
+  // Healthcare & Pharma
+  "Nursing", "Pharmacy", "Clinical Research", "Medical Coding", "Healthcare Management",
+  "Biotechnology", "Lab Testing", "Quality Control",
+  // Education & Training
+  "Teaching", "Curriculum Development", "Instructional Design", "Training & Development",
+  "Academic Research", "E-Learning",
+  // Legal
+  "Legal Research", "Contract Management", "Corporate Law", "Litigation",
+  "Intellectual Property", "Legal Compliance",
+  // Others
+  "Data Entry", "Administration", "Office Management", "Executive Assistant",
+  "Receptionist", "Front Desk", "Security", "Housekeeping",
+  "Driving", "Transportation", "Warehouse Operations",
   // Education keywords
   "B.Tech", "M.Tech", "BCA", "MCA", "MBA", "B.Sc", "M.Sc", "PhD", "BE", "ME",
   "Bachelor", "Master", "Diploma", "Graduate", "Post Graduate",

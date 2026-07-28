@@ -11,6 +11,8 @@ export async function GET(request: NextRequest) {
     const search = searchParams.get("search") || ""
     const type = searchParams.get("type") || ""
     const status = searchParams.get("status") || ""
+    const companyId = searchParams.get("companyId") || ""
+    const location = searchParams.get("location") || ""
     const skip = (page - 1) * limit
 
     const where: Record<string, unknown> = {}
@@ -22,6 +24,8 @@ export async function GET(request: NextRequest) {
     }
     if (type) where.type = type
     if (status) where.status = status
+    if (companyId) where.companyId = companyId
+    if (location) where.location = { contains: location, mode: "insensitive" as const }
 
     const [items, total] = await Promise.all([
       prisma.privateJob.findMany({
