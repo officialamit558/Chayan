@@ -121,20 +121,11 @@ export function HeroSlider() {
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_transparent_0%,_rgba(10,22,40,0.4)_100%)]" />
 
       <div className="relative z-10 mx-auto flex h-full max-w-7xl flex-col items-center justify-center px-4 sm:px-6 lg:px-8">
-        <div className="mb-2 inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-3.5 py-1 text-xs text-white/60 backdrop-blur-sm">
-          <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
-          Trusted by job seekers across India
-        </div>
-
-        <h1 className="mb-3 text-center text-3xl font-bold tracking-tight text-white sm:text-4xl lg:text-5xl">
+        <h1 className="mb-6 text-center text-3xl font-bold tracking-tight text-white sm:text-4xl lg:text-5xl">
           Your Gateway to
           <br />
           <span className="text-amber-400">Career Opportunities</span>
         </h1>
-        <p className="mb-10 max-w-xl text-center text-sm text-white/50 sm:text-base">
-          Latest job notifications, exam results, admit cards & answer keys from government, private, and public sector organizations
-        </p>
-
         <div className="grid grid-cols-2 gap-8 sm:gap-12 sm:grid-cols-4">
           {stats ? stats.map((s, i) => <CountUp key={s.label} {...s} delay={i * 100} />) : (
             <>
