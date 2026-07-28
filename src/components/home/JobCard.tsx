@@ -78,47 +78,45 @@ export function JobCard({
       <Link href={`/apply/${slug}`} className="block">
         <Card
           className={cn(
-            "group relative overflow-hidden border-gray-200 transition-colors hover:border-teal-300 hover:shadow-md",
+            "group border-gray-200 bg-white transition-all duration-200 hover:shadow-md hover:-translate-y-0.5",
             className
           )}
         >
-          <div className="absolute inset-0 bg-gradient-to-r from-teal-50/50 to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
-          <CardContent className="relative p-5">
+          <CardContent className="p-5">
             <div className="flex items-start justify-between gap-3">
               <div className="min-w-0 flex-1">
-                <div className="mb-2 flex flex-wrap items-center gap-2">
-                  <Badge variant="secondary" className="text-xs">
+                <div className="mb-2.5 flex flex-wrap items-center gap-2">
+                  <Badge variant="secondary" className="text-[11px] font-medium px-2 py-0.5">
                     {department}
                   </Badge>
                   <span
                     className={cn(
-                      "inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold",
+                      "inline-flex items-center rounded-full px-2 py-0.5 text-[11px] font-semibold",
                       getStatusColor(status)
                     )}
                   >
                     {statusLabel[status]}
                   </span>
-
                 </div>
-                <h3 className="mb-3 text-base font-semibold leading-snug text-gray-900 group-hover:text-teal-700 transition-colors line-clamp-2">
+                <h3 className="mb-3 text-sm font-semibold leading-snug text-gray-900 group-hover:text-blue-700 transition-colors line-clamp-2">
                   {title}
                 </h3>
-                <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-gray-600">
+                <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5 text-xs text-gray-500">
                   {location && (
                     <span className="inline-flex items-center gap-1">
-                      <MapPin className="h-3.5 w-3.5 text-gray-400" />
+                      <MapPin className="h-3 w-3 text-gray-400" />
                       {location}
                     </span>
                   )}
                   {totalVacancies != null && (
                     <span className="inline-flex items-center gap-1">
-                      <Users className="h-3.5 w-3.5 text-gray-400" />
+                      <Users className="h-3 w-3 text-gray-400" />
                       {totalVacancies} Vacanc{totalVacancies === 1 ? "y" : "ies"}
                     </span>
                   )}
                   {lastDateToApply && (
                     <span className="inline-flex items-center gap-1">
-                      <Calendar className="h-3.5 w-3.5 text-gray-400" />
+                      <Calendar className="h-3 w-3 text-gray-400" />
                       <span
                         className={cn(isLastDateUrgent && "font-medium text-red-600")}
                       >
@@ -127,7 +125,7 @@ export function JobCard({
                     </span>
                   )}
                   <span className="inline-flex items-center gap-1">
-                    <IndianRupee className="h-3.5 w-3.5 text-gray-400" />
+                    <IndianRupee className="h-3 w-3 text-gray-400" />
                     {formatSalary(salary)}
                   </span>
                 </div>
@@ -137,12 +135,12 @@ export function JobCard({
                 <Button
                   variant="ghost"
                   size="icon"
-                  className="h-8 w-8 text-gray-400 hover:text-teal-500"
+                  className="h-7 w-7 text-gray-300 hover:text-blue-500"
                   onClick={handleShare}
                   disabled={isSharing}
                   aria-label="Share"
                 >
-                  <Share2 className="h-4 w-4" />
+                  <Share2 className="h-3.5 w-3.5" />
                 </Button>
               </div>
             </div>
@@ -155,18 +153,18 @@ export function JobCard({
 
 export function JobCardSkeleton() {
   return (
-    <Card className="overflow-hidden border-gray-200">
+    <Card className="overflow-hidden border-gray-200 bg-white">
       <CardContent className="p-5">
         <div className="mb-3 flex gap-2">
-          <div className="h-5 w-20 animate-pulse rounded-full bg-gray-200" />
-          <div className="h-5 w-16 animate-pulse rounded-full bg-gray-200" />
+          <div className="h-4 w-20 animate-pulse rounded-full bg-gray-100" />
+          <div className="h-4 w-14 animate-pulse rounded-full bg-gray-100" />
         </div>
-        <div className="mb-3 h-5 w-3/4 animate-pulse rounded bg-gray-200" />
+        <div className="mb-3 h-4 w-3/4 animate-pulse rounded bg-gray-100" />
         <div className="flex flex-wrap gap-4">
-          <div className="h-4 w-24 animate-pulse rounded bg-gray-200" />
-          <div className="h-4 w-20 animate-pulse rounded bg-gray-200" />
-          <div className="h-4 w-28 animate-pulse rounded bg-gray-200" />
-          <div className="h-4 w-24 animate-pulse rounded bg-gray-200" />
+          <div className="h-3 w-20 animate-pulse rounded bg-gray-100" />
+          <div className="h-3 w-16 animate-pulse rounded bg-gray-100" />
+          <div className="h-3 w-24 animate-pulse rounded bg-gray-100" />
+          <div className="h-3 w-20 animate-pulse rounded bg-gray-100" />
         </div>
       </CardContent>
     </Card>

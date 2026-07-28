@@ -19,16 +19,16 @@ interface ExamItem {
 }
 
 const GRADIENTS = [
-  "from-purple-500 to-indigo-600",
-  "from-teal-500 to-teal-600",
-  "from-orange-500 to-red-600",
-  "from-green-500 to-teal-600",
-  "from-pink-500 to-rose-600",
-  "from-red-500 to-amber-600",
-  "from-cyan-500 to-sky-600",
-  "from-emerald-500 to-green-600",
+  "from-blue-700 to-blue-900",
+  "from-sky-600 to-blue-700",
   "from-amber-500 to-orange-600",
-  "from-indigo-500 to-purple-600",
+  "from-emerald-600 to-green-700",
+  "from-violet-600 to-purple-700",
+  "from-rose-600 to-pink-700",
+  "from-cyan-600 to-sky-700",
+  "from-indigo-600 to-blue-800",
+  "from-orange-500 to-red-600",
+  "from-emerald-500 to-green-600",
 ]
 
 function getGradient(name: string): string {
@@ -82,7 +82,7 @@ export function PopularExams({ className }: { className?: string }) {
           </div>
           <Link
             href="/jobs"
-            className="group hidden items-center gap-1 text-sm font-medium text-teal-600 hover:text-teal-700 sm:flex"
+            className="group hidden items-center gap-1 text-sm font-medium text-blue-600 hover:text-blue-700 sm:flex"
           >
             View All
             <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
@@ -127,7 +127,7 @@ export function PopularExams({ className }: { className?: string }) {
                         </div>
                         <div className="p-4">
                           <div className="flex items-center justify-between text-sm">
-                            <span className="flex items-center gap-1 font-medium text-teal-600 group-hover:text-teal-700">
+                            <span className="flex items-center gap-1 font-medium text-blue-600 group-hover:text-blue-700">
                               View Jobs
                               <ExternalLink className="h-3.5 w-3.5" />
                             </span>
@@ -145,7 +145,7 @@ export function PopularExams({ className }: { className?: string }) {
         <div className="mt-6 text-center sm:hidden">
           <Link
             href="/jobs"
-            className="inline-flex items-center gap-1 text-sm font-medium text-teal-600 hover:text-teal-700"
+            className="inline-flex items-center gap-1 text-sm font-medium text-blue-600 hover:text-blue-700"
           >
             Browse All Exams
             <ArrowRight className="h-4 w-4" />

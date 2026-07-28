@@ -49,7 +49,7 @@ export function TrendingNotifications() {
   }, [])
 
   return (
-    <section className={cn("bg-gray-50 py-16")}>
+    <section className={cn("bg-muted/50 py-16")}>
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mb-6 flex items-center justify-between">
           <div className="flex items-center gap-2">
@@ -62,7 +62,7 @@ export function TrendingNotifications() {
           </div>
           <Link
             href="/notifications"
-            className="flex items-center gap-1 text-sm font-medium text-teal-600 hover:text-teal-700"
+            className="flex items-center gap-1 text-sm font-medium text-blue-600 hover:text-blue-700"
           >
             View All
             <ArrowRight className="h-4 w-4" />

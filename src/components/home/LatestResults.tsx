@@ -5,6 +5,7 @@ import Link from "next/link"
 import { ArrowRight, Download, Calendar, Building2 } from "lucide-react"
 import { BookmarkButton } from "@/components/layout/BookmarkButton"
 import { cn, formatDate } from "@/lib/utils"
+import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Skeleton } from "@/components/ui/skeleton"
@@ -44,7 +45,7 @@ export function LatestResults() {
   }, [])
 
   return (
-    <section className={cn("bg-gray-50 py-16")}>
+    <section className={cn("bg-muted/50 py-16")}>
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mb-8 flex items-center justify-between">
           <div>
@@ -57,7 +58,7 @@ export function LatestResults() {
           </div>
           <Link
             href="/results"
-            className="group hidden items-center gap-1 text-sm font-medium text-teal-600 hover:text-teal-700 sm:flex"
+            className="group hidden items-center gap-1 text-sm font-medium text-blue-600 hover:text-blue-700 sm:flex"
           >
             View All
             <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
@@ -87,10 +88,10 @@ export function LatestResults() {
           <div className="grid gap-5 sm:grid-cols-2">
             {results.map((result) => (
               <div key={result.id}>
-                <Card className="group border-gray-200 transition-all hover:border-teal-300 hover:shadow-md">
+                <Card className="group border-gray-200 transition-all hover:border-blue-300 hover:shadow-md">
                   <CardContent className="p-5">
                     <Link href={`/result/${result.slug}`}>
-                      <h3 className="mb-2 text-base font-semibold text-gray-900 line-clamp-2 transition-colors group-hover:text-teal-700">
+                      <h3 className="mb-2 text-base font-semibold text-gray-900 line-clamp-2 transition-colors group-hover:text-blue-700">
                         {result.title}
                       </h3>
                     </Link>
@@ -125,7 +126,7 @@ export function LatestResults() {
         <div className="mt-6 text-center sm:hidden">
           <Link
             href="/results"
-            className="inline-flex items-center gap-1 text-sm font-medium text-teal-600 hover:text-teal-700"
+            className="inline-flex items-center gap-1 text-sm font-medium text-blue-600 hover:text-blue-700"
           >
             View All Results
             <ArrowRight className="h-4 w-4" />

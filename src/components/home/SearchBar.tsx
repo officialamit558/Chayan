@@ -26,13 +26,13 @@ export function SearchBar() {
               placeholder="Search for jobs, results, exams..."
               value={searchQuery}
               onChange={e => setSearchQuery(e.target.value)}
-              className="h-14 w-full rounded-xl border border-gray-200 bg-white pl-12 pr-4 text-base shadow-lg focus-visible:ring-2 focus-visible:ring-amber-400"
+              className="h-14 w-full rounded-xl border border-gray-200 bg-white pl-12 pr-4 text-base shadow-lg focus-visible:ring-2 focus-visible:ring-amber-400/60"
             />
           </div>
           <Button
             type="submit"
             size="lg"
-            className="h-14 rounded-xl bg-amber-500 px-8 text-base font-semibold text-gray-900 shadow-lg hover:bg-amber-400"
+            className="h-14 rounded-xl bg-amber-500 px-8 text-base font-semibold text-white shadow-lg hover:bg-amber-400"
           >
             <Search className="mr-2 h-5 w-5" />
             Search
