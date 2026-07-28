@@ -127,12 +127,12 @@ export function HeroSlider() {
         </div>
 
         <h1 className="mb-3 text-center text-3xl font-bold tracking-tight text-white sm:text-4xl lg:text-5xl">
-          Your Trusted Source for
+          Your Gateway to
           <br />
-          <span className="text-amber-400">Government Job Updates</span>
+          <span className="text-amber-400">Career Opportunities</span>
         </h1>
         <p className="mb-10 max-w-xl text-center text-sm text-white/50 sm:text-base">
-          Latest job notifications, exam results, admit cards & answer keys from central and state governments
+          Latest job notifications, exam results, admit cards & answer keys from government, private, and public sector organizations
         </p>
 
         <div className="grid grid-cols-2 gap-8 sm:gap-12 sm:grid-cols-4">
