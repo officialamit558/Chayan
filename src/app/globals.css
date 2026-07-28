@@ -95,16 +95,3 @@ body {
 .animate-fade-in-up {
   animation: fadeInUp 0.6s ease-out both;
 }
-
-@keyframes ticker {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(-50%);
-  }
-}
-
-.animate-ticker {
-  animation: ticker 30s linear infinite;
-}

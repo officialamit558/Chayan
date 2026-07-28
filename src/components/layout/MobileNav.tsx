@@ -7,6 +7,7 @@ import { useSession, signOut } from "next-auth/react"
 import {
   Home,
   Briefcase,
+  Building2,
   Award,
   CreditCard,
   FileText,
@@ -32,6 +33,7 @@ import { LogoSmall } from "@/components/layout/LogoSmall"
 const navIconMap: Record<string, React.ElementType> = {
   Home,
   Jobs: Briefcase,
+  "Private Jobs": Building2,
   Results: Award,
   "Admit Cards": CreditCard,
   "Answer Keys": FileText,
@@ -39,6 +41,8 @@ const navIconMap: Record<string, React.ElementType> = {
   Admissions: GraduationCap,
   Notifications: Bell,
 }
+
+// "Gov Jobs" uses Jobs' href (/jobs) — not a separate mainNav entry
 
 export function MobileNav() {
   const pathname = usePathname()
@@ -80,7 +84,7 @@ export function MobileNav() {
                       className={cn(
                         "flex items-center gap-3 rounded-md px-3 py-2.5 text-sm font-medium transition-colors",
                         isActive
-                          ? "bg-teal-50 text-teal-700 dark:bg-teal-950 dark:text-teal-300"
+                          ? "bg-blue-50 text-blue-700 dark:bg-blue-950 dark:text-blue-300"
                           : "text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800"
                       )}
                     >
@@ -166,7 +170,7 @@ export function MobileNav() {
                   <SheetClose asChild>
                     <Link
                       href="/register"
-                      className="flex items-center gap-3 rounded-md px-3 py-2.5 text-sm font-medium text-teal-600 transition-colors hover:bg-teal-50 dark:text-teal-400 dark:hover:bg-teal-950"
+                      className="flex items-center gap-3 rounded-md px-3 py-2.5 text-sm font-medium text-blue-600 transition-colors hover:bg-blue-50 dark:text-blue-400 dark:hover:bg-blue-950"
                     >
                       <UserPlus className="h-4 w-4" />
                       Register

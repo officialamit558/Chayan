@@ -9,11 +9,16 @@ import {
   User,
   LogOut,
   Bookmark,
-  Megaphone,
   LayoutDashboard,
+  ChevronDown,
+  Briefcase,
+  Building2,
+  BookOpen,
+  GraduationCap,
+  Bell,
+  Newspaper,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
-import { mainNav } from "@/lib/constants"
 import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
@@ -30,14 +35,45 @@ import { SearchDialog, useSearchDialog } from "./SearchDialog"
 import { LogoSmall } from "@/components/layout/LogoSmall"
 import { NotificationBell } from "./NotificationBell"
 
-const tickerItems = [
-  "SSC CGL 2025 Tier I Results Announced - Check Now",
-  "UPSC Civil Services 2025 Prelims Admit Card Released",
-  "IBPS RRB PO 2025 Notification Out - Apply by August 15",
-  "Railway RRB Group D 2025 Result Declared",
-  "CTET July 2025 Answer Key Available for Download",
-  "BPSC 68th Combined Exam Admit Card Released",
-]
+function DateDisplay() {
+  const [dateStr, setDateStr] = React.useState("")
+
+  React.useEffect(() => {
+    const update = () => {
+      const now = new Date()
+      setDateStr(now.toLocaleDateString("en-IN", {
+        weekday: "long",
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      }))
+    }
+    update()
+    const id = setInterval(update, 60000)
+    return () => clearInterval(id)
+  }, [])
+
+  if (!dateStr) return null
+  return <span className="text-xs text-blue-200 font-medium">{dateStr}</span>
+}
+
+function NavLink({ href, children }: { href: string; children: React.ReactNode }) {
+  const pathname = usePathname()
+  const isActive = href === "/" ? pathname === "/" : pathname.startsWith(href)
+  return (
+    <Link
+      href={href}
+      className={cn(
+        "relative px-3.5 py-2.5 text-sm font-semibold tracking-wide transition-all duration-200 rounded-md",
+        isActive
+          ? "text-blue-700 dark:text-blue-300 bg-blue-50/80 dark:bg-blue-950/40"
+          : "text-gray-700 hover:text-blue-600 hover:bg-blue-50/60 dark:text-gray-300 dark:hover:text-blue-300 dark:hover:bg-blue-950/40"
+      )}
+    >
+      {children}
+    </Link>
+  )
+}
 
 export function Header() {
   const pathname = usePathname()
@@ -51,6 +87,9 @@ export function Header() {
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
 
+  const jobsActive = pathname.startsWith("/jobs") || pathname.startsWith("/private-jobs")
+  const moreActive = pathname.startsWith("/syllabus") || pathname.startsWith("/admissions") || pathname.startsWith("/notifications") || pathname.startsWith("/blog")
+
   return (
     <>
       <header
@@ -61,33 +100,12 @@ export function Header() {
             : "bg-white dark:bg-gray-950"
         )}
       >
-        <div className="bg-teal-600 dark:bg-teal-700 overflow-hidden">
-          <div className="relative flex items-center mx-auto max-w-7xl px-4 py-1.5">
-            <Megaphone className="h-4 w-4 shrink-0 text-yellow-300 mr-2" />
-            <div className="overflow-hidden flex-1">
-              <div className="flex animate-ticker whitespace-nowrap">
-                <div className="flex gap-8 shrink-0">
-                  {tickerItems.map((item, i) => (
-                    <span
-                      key={i}
-                      className="text-xs text-white/90 font-medium whitespace-nowrap"
-                    >
-                      {item}
-                    </span>
-                  ))}
-                </div>
-                <div className="flex gap-8 shrink-0">
-                  {tickerItems.map((item, i) => (
-                    <span
-                      key={`dup-${i}`}
-                      className="text-xs text-white/90 font-medium whitespace-nowrap"
-                    >
-                      {item}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            </div>
+        <div className="bg-[#1e3a5f] dark:bg-[#0f1f3d] border-b border-[#2a4a75]">
+          <div className="mx-auto max-w-7xl px-4 flex items-center justify-between h-9">
+            <span className="text-xs text-blue-200/80 font-medium hidden sm:block">
+              Welcome to Chayan — Your Trusted Government Job Portal
+            </span>
+            <DateDisplay />
           </div>
         </div>
 
@@ -98,30 +116,86 @@ export function Header() {
               <LogoSmall />
             </div>
 
-            <nav className="hidden lg:flex items-center gap-0.5">
-              {mainNav.map((link) => {
-                const isActive =
-                  link.href === "/"
-                    ? pathname === "/"
-                    : pathname.startsWith(link.href)
-                return (
-                  <Link
-                    key={link.href}
-                    href={link.href}
+            <nav className="hidden lg:flex items-center gap-1">
+              <NavLink href="/">Home</NavLink>
+
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    variant="ghost"
                     className={cn(
-                      "relative px-3.5 py-2.5 text-sm font-semibold tracking-wide transition-all duration-200",
-                      isActive
-                        ? "text-teal-700 dark:text-teal-300"
-                        : "text-gray-700 hover:text-teal-600 hover:bg-teal-50/60 dark:text-gray-300 dark:hover:text-teal-300 dark:hover:bg-teal-950/40"
+                      "relative px-3.5 py-2.5 text-sm font-semibold tracking-wide transition-all duration-200 rounded-md inline-flex items-center gap-1",
+                      jobsActive
+                        ? "text-blue-700 dark:text-blue-300 bg-blue-50/80 dark:bg-blue-950/40"
+                        : "text-gray-700 hover:text-blue-600 hover:bg-blue-50/60 dark:text-gray-300 dark:hover:text-blue-300 dark:hover:bg-blue-950/40"
                     )}
                   >
-                    {link.title}
-                    {isActive && (
-                      <span className="absolute bottom-0 left-0 right-0 h-1 bg-teal-600 dark:bg-teal-400 rounded-full" />
+                    Jobs
+                    <ChevronDown className="h-3.5 w-3.5" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="center" className="w-48">
+                  <DropdownMenuItem asChild>
+                    <Link href="/jobs" className="flex items-center gap-2 cursor-pointer">
+                      <Briefcase className="h-4 w-4" />
+                      Gov Jobs
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link href="/private-jobs" className="flex items-center gap-2 cursor-pointer">
+                      <Building2 className="h-4 w-4" />
+                      Private Jobs
+                    </Link>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+
+              <NavLink href="/results">Results</NavLink>
+              <NavLink href="/admit-cards">Admit Cards</NavLink>
+              <NavLink href="/answer-keys">Answer Keys</NavLink>
+
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    className={cn(
+                      "relative px-3.5 py-2.5 text-sm font-semibold tracking-wide transition-all duration-200 rounded-md inline-flex items-center gap-1",
+                      moreActive
+                        ? "text-blue-700 dark:text-blue-300 bg-blue-50/80 dark:bg-blue-950/40"
+                        : "text-gray-700 hover:text-blue-600 hover:bg-blue-50/60 dark:text-gray-300 dark:hover:text-blue-300 dark:hover:bg-blue-950/40"
                     )}
-                  </Link>
-                )
-              })}
+                  >
+                    More
+                    <ChevronDown className="h-3.5 w-3.5" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="center" className="w-48">
+                  <DropdownMenuItem asChild>
+                    <Link href="/syllabus" className="flex items-center gap-2 cursor-pointer">
+                      <BookOpen className="h-4 w-4" />
+                      Syllabus
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link href="/admissions" className="flex items-center gap-2 cursor-pointer">
+                      <GraduationCap className="h-4 w-4" />
+                      Admissions
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link href="/blog" className="flex items-center gap-2 cursor-pointer">
+                      <Newspaper className="h-4 w-4" />
+                      Blog
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link href="/notifications" className="flex items-center gap-2 cursor-pointer">
+                      <Bell className="h-4 w-4" />
+                      Notifications
+                    </Link>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             </nav>
 
             <div className="flex items-center gap-1">
@@ -129,7 +203,7 @@ export function Header() {
                 variant="ghost"
                 size="icon"
                 onClick={() => setSearchOpen(true)}
-                className="text-gray-600 dark:text-gray-400 hover:text-teal-600 dark:hover:text-teal-400"
+                className="text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400"
               >
                 <Search className="h-5 w-5" />
                 <span className="sr-only">Search</span>
@@ -152,7 +226,7 @@ export function Header() {
                           src={session.user.image ?? ""}
                           alt={session.user.name ?? "User"}
                         />
-                        <AvatarFallback className="text-xs bg-teal-100 text-teal-700">
+                        <AvatarFallback className="text-xs bg-blue-100 text-blue-700">
                           {session.user.name?.charAt(0)?.toUpperCase() ?? "U"}
                         </AvatarFallback>
                       </Avatar>
@@ -202,10 +276,10 @@ export function Header() {
                 </DropdownMenu>
               ) : (
                 <div className="hidden sm:flex items-center gap-2">
-                  <Button variant="outline" size="sm" className="border-teal-600 text-teal-600 hover:bg-teal-50 hover:text-teal-700 dark:border-teal-400 dark:text-teal-400 dark:hover:bg-teal-950/50" asChild>
+                  <Button variant="outline" size="sm" className="border-blue-600 text-blue-600 hover:bg-blue-50 hover:text-blue-700 dark:border-blue-400 dark:text-blue-400 dark:hover:bg-blue-950/50" asChild>
                     <Link href="/login">Login</Link>
                   </Button>
-                  <Button size="sm" className="bg-teal-600 hover:bg-teal-700 text-white" asChild>
+                  <Button size="sm" className="bg-blue-600 hover:bg-blue-700 text-white" asChild>
                     <Link href="/register">Register</Link>
                   </Button>
                 </div>
