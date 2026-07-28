@@ -10,7 +10,7 @@ const LatestAdmitCards = dynamic(() => import("@/components/home/LatestAdmitCard
 const TrendingNotifications = dynamic(() => import("@/components/home/TrendingNotifications").then(m => ({ default: m.TrendingNotifications })))
 const JobsByQualification = dynamic(() => import("@/components/home/JobsByQualification").then(m => ({ default: m.JobsByQualification })))
 const JobsByState = dynamic(() => import("@/components/home/JobsByState").then(m => ({ default: m.JobsByState })))
-const JobsByDepartment = dynamic(() => import("@/components/home/JobsByDepartment").then(m => ({ default: m.JobsByDepartment })))
+const LatestPrivateJobs = dynamic(() => import("@/components/home/LatestPrivateJobs").then(m => ({ default: m.LatestPrivateJobs })))
 const PopularExams = dynamic(() => import("@/components/home/PopularExams").then(m => ({ default: m.PopularExams })))
 const FAQ = dynamic(() => import("@/components/home/FAQ").then(m => ({ default: m.FAQ })))
 const Newsletter = dynamic(() => import("@/components/layout/Newsletter").then(m => ({ default: m.Newsletter })))
@@ -40,7 +40,7 @@ export default function HomePage() {
       <JobsByQualification />
       <AdBanner format="horizontal" />
       <JobsByState />
-      <JobsByDepartment />
+      <LatestPrivateJobs />
       <AdBanner format="horizontal" />
       <PopularExams />
       <FAQ />
