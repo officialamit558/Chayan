@@ -18,7 +18,7 @@ import {
   Table, TableBody, TableCell, TableHead, TableHeader, TableRow,
 } from "@/components/ui/table"
 import {
-  Dialog, DialogContent, DialogHeader, DialogTitle,
+  Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription,
 } from "@/components/ui/dialog"
 import {
   Form, FormControl, FormField, FormItem, FormLabel, FormMessage,
@@ -28,7 +28,7 @@ import { toast } from "@/components/ui/toast"
 import { formatDate, slugify } from "@/lib/utils"
 import { ImageUpload } from "@/components/admin/ImageUpload"
 import { RichEditor } from "@/components/admin/RichEditor"
-import { Plus, Pencil, Trash2, Search, Eye, EyeOff, Image } from "lucide-react"
+import { Plus, Pencil, Trash2, Search, Eye, EyeOff, Image, Send } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
 
 interface BlogItem {
@@ -197,57 +197,101 @@ export default function AdminBlog() {
       </Card>
 
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-        <DialogContent className="max-h-[90vh] overflow-y-auto max-w-2xl">
-          <DialogHeader>
-            <DialogTitle>{editingId ? "Edit Post" : "New Blog Post"}</DialogTitle>
+        <DialogContent className="!flex !max-w-[95vw] !max-h-[95vh] flex-col p-0 gap-0">
+          <DialogHeader className="flex flex-row items-center justify-between border-b px-6 py-4 shrink-0">
+            <div>
+              <DialogTitle className="text-xl">{editingId ? "Edit Post" : "New Blog Post"}</DialogTitle>
+              <DialogDescription>Create and manage your blog content</DialogDescription>
+            </div>
           </DialogHeader>
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
-                <FormField control={form.control} name="title" render={({ field }) => (
-                  <FormItem><FormLabel>Title</FormLabel><FormControl><Input {...field} onChange={(e) => { field.onChange(e); if (!editingId) form.setValue("slug", slugify(e.target.value)) }} /></FormControl><FormMessage /></FormItem>
-                )} />
-                <FormField control={form.control} name="slug" render={({ field }) => (
-                  <FormItem><FormLabel>Slug</FormLabel><FormControl><Input {...field} /></FormControl><FormMessage /></FormItem>
-                )} />
+            <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-1 overflow-hidden">
+              <div className="flex flex-1 flex-col overflow-hidden">
+                <div className="flex-1 overflow-y-auto p-6">
+                  <FormField control={form.control} name="title" render={({ field }) => (
+                    <FormItem className="mb-4">
+                      <FormControl>
+                        <input
+                          {...field}
+                          placeholder="Post title..."
+                          onChange={(e) => { field.onChange(e); if (!editingId) form.setValue("slug", slugify(e.target.value)) }}
+                          className="w-full border-0 bg-transparent text-3xl font-bold outline-none placeholder:text-gray-400 focus:outline-none focus:ring-0"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )} />
+                  <FormField control={form.control} name="content" render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <RichEditor value={field.value || ""} onChange={(val) => field.onChange(val || null)} placeholder="Start writing..." />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )} />
+                </div>
               </div>
-              <div className="grid grid-cols-2 gap-4">
-                <FormField control={form.control} name="author" render={({ field }) => (
-                  <FormItem><FormLabel>Author</FormLabel><FormControl><Input {...field} value={field.value || ""} onChange={(e) => field.onChange(e.target.value || null)} /></FormControl><FormMessage /></FormItem>
-                )} />
-                <FormField control={form.control} name="tags" render={({ field }) => (
-                  <FormItem><FormLabel>Tags (comma separated)</FormLabel><FormControl><Input {...field} value={field.value || ""} onChange={(e) => field.onChange(e.target.value || null)} placeholder="exam-tips, ssc, govt-jobs" /></FormControl><FormMessage /></FormItem>
-                )} />
-              </div>
-              <FormField control={form.control} name="image" render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Featured Image</FormLabel>
-                  <FormControl>
-                    <ImageUpload value={field.value} onChange={field.onChange} folder="chayan/blog" />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )} />
-              <FormField control={form.control} name="excerpt" render={({ field }) => (
-                <FormItem><FormLabel>Excerpt (short summary)</FormLabel><FormControl><Textarea {...field} value={field.value || ""} onChange={(e) => field.onChange(e.target.value || null)} rows={2} /></FormControl><FormMessage /></FormItem>
-              )} />
-              <FormField control={form.control} name="content" render={({ field }) => (
-                <FormItem><FormLabel>Content</FormLabel><FormControl><RichEditor value={field.value || ""} onChange={(val) => field.onChange(val || null)} placeholder="Write your blog content here..." /></FormControl><FormMessage /></FormItem>
-              )} />
-              <FormField control={form.control} name="published" render={({ field }) => (
-                <FormItem className="flex items-center gap-3">
-                  <FormLabel className="mb-0">Published</FormLabel>
-                  <FormControl>
-                    <Switch checked={field.value} onCheckedChange={field.onChange} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )} />
-              <div className="flex justify-end gap-2">
-                <Button type="button" variant="outline" onClick={() => setDialogOpen(false)}>Cancel</Button>
-                <Button type="submit" disabled={createMutation.isPending || updateMutation.isPending}>
-                  {editingId ? "Update" : "Create"} Post
-                </Button>
+              <div className="w-80 shrink-0 overflow-y-auto border-l bg-gray-50 p-6 dark:bg-gray-900/50">
+                <div className="space-y-5">
+                  <FormField control={form.control} name="slug" render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-xs font-semibold uppercase tracking-wider text-gray-500">Slug</FormLabel>
+                      <FormControl><Input {...field} className="text-sm" /></FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )} />
+                  <FormField control={form.control} name="author" render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-xs font-semibold uppercase tracking-wider text-gray-500">Author</FormLabel>
+                      <FormControl><Input {...field} value={field.value || ""} onChange={(e) => field.onChange(e.target.value || null)} placeholder="Chayan" className="text-sm" /></FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )} />
+                  <FormField control={form.control} name="tags" render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-xs font-semibold uppercase tracking-wider text-gray-500">Tags</FormLabel>
+                      <FormControl><Input {...field} value={field.value || ""} onChange={(e) => field.onChange(e.target.value || null)} placeholder="exam-tips, ssc, govt-jobs" className="text-sm" /></FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )} />
+                  <FormField control={form.control} name="image" render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-xs font-semibold uppercase tracking-wider text-gray-500">Featured Image</FormLabel>
+                      <FormControl>
+                        <ImageUpload value={field.value} onChange={field.onChange} folder="chayan/blog" className="!p-3" />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )} />
+                  <FormField control={form.control} name="excerpt" render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-xs font-semibold uppercase tracking-wider text-gray-500">Excerpt</FormLabel>
+                      <FormControl><Textarea {...field} value={field.value || ""} onChange={(e) => field.onChange(e.target.value || null)} rows={3} className="text-sm" placeholder="Brief summary for listings..." /></FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )} />
+                  <FormField control={form.control} name="published" render={({ field }) => (
+                    <FormItem className="flex items-center justify-between rounded-lg border bg-white p-3 dark:border-gray-700 dark:bg-gray-800">
+                      <div>
+                        <FormLabel className="text-sm font-medium">Published</FormLabel>
+                        <p className="text-xs text-gray-500">{field.value ? "Visible to readers" : "Saved as draft"}</p>
+                      </div>
+                      <FormControl>
+                        <Switch checked={field.value} onCheckedChange={field.onChange} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )} />
+                  <div className="flex flex-col gap-2 pt-2">
+                    <Button type="submit" disabled={createMutation.isPending || updateMutation.isPending} className="w-full">
+                      <Send className="mr-2 h-4 w-4" />
+                      {editingId ? "Update Post" : "Publish Post"}
+                    </Button>
+                    <Button type="button" variant="outline" onClick={() => setDialogOpen(false)} className="w-full">
+                      Cancel
+                    </Button>
+                  </div>
+                </div>
               </div>
             </form>
           </Form>
