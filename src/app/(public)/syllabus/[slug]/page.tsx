@@ -1,13 +1,10 @@
 import { notFound } from "next/navigation"
-import Link from "next/link"
 import type { Metadata } from "next"
 import { prisma } from "@/lib/prisma"
 import { formatDate, getBaseUrl } from "@/lib/utils"
 import { BreadcrumbNav } from "@/components/layout/BreadcrumbNav"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import { FileText } from "lucide-react"
+import { AdBanner } from "@/components/ads/AdBanner"
+import { DocumentDetail } from "@/components/documents/DocumentDetail"
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params
@@ -69,72 +66,35 @@ export default async function SyllabusDetailPage({ params }: { params: Promise<{
         className="mb-6"
       />
 
-      <Card className="mb-8">
-        <CardHeader>
-          <div className="mb-2 flex flex-wrap items-center gap-2">
-            <Badge variant="secondary">{syllabus.department.name}</Badge>
-            {syllabus.category && <Badge>{syllabus.category.name}</Badge>}
-          </div>
-          <CardTitle className="text-2xl sm:text-3xl">{syllabus.title}</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-6">
-          {syllabus.description && (
-            <div className="whitespace-pre-line text-gray-700">{syllabus.description}</div>
-          )}
+      <AdBanner format="horizontal" className="mb-8" />
 
-          {syllabus.subjects && (
-            <div>
-              <p className="mb-2 text-sm font-medium text-gray-500">Subjects / Topics</p>
-              <div className="whitespace-pre-line text-gray-900">{syllabus.subjects}</div>
-            </div>
-          )}
+      <DocumentDetail
+        kind="syllabus"
+        title={syllabus.title}
+        department={syllabus.department.name}
+        category={syllabus.category.name}
+        description={syllabus.description}
+        rows={[
+          { label: "Department", value: syllabus.department.name },
+          { label: "Category", value: syllabus.category.name },
+          { label: "Status", value: syllabus.status },
+        ]}
+        linkRows={syllabus.job ? [{ label: "Related Job", value: syllabus.job.title, href: `/jobs/${syllabus.job.slug}` }] : []}
+        list={syllabus.subjects
+          ? { label: "Subjects / Topics", items: syllabus.subjects.split("\n").map((s) => s.trim()).filter(Boolean) }
+          : null}
+        downloadUrl={syllabus.pdfUrl}
+        downloadLabel="Download Syllabus PDF"
+        relatedTitle="Related Syllabus"
+        relatedItems={relatedSyllabus.map((rs) => ({
+          href: `/syllabus/${rs.slug}`,
+          title: rs.title,
+          department: rs.department.name,
+          meta: rs.subjects ? `${rs.subjects.split("\n")[0].slice(0, 80)}${rs.subjects.includes("\n") ? "…" : ""}` : null,
+        }))}
+      />
 
-          <div className="grid gap-4 sm:grid-cols-2">
-            <div>
-              <p className="text-sm font-medium text-gray-500">Department</p>
-              <p className="text-gray-900">{syllabus.department.name}</p>
-            </div>
-            {syllabus.job && (
-              <div>
-                <p className="text-sm font-medium text-gray-500">Related Job</p>
-                <Link href={`/jobs/${syllabus.job.slug}`} className="text-teal-600 hover:text-teal-700">
-                  {syllabus.job.title}
-                </Link>
-              </div>
-            )}
-          </div>
-
-          {syllabus.pdfUrl && (
-            <Button asChild>
-              <a href={syllabus.pdfUrl} target="_blank" rel="noopener noreferrer">
-                <FileText className="mr-2 h-4 w-4" />
-                Download Syllabus PDF
-              </a>
-            </Button>
-          )}
-        </CardContent>
-      </Card>
-
-      {relatedSyllabus.length > 0 && (
-        <section>
-          <h2 className="mb-6 text-xl font-bold text-gray-900">Related Syllabus</h2>
-          <div className="grid gap-4 sm:grid-cols-2">
-            {relatedSyllabus.map((rs) => (
-              <Link key={rs.id} href={`/syllabus/${rs.slug}`}>
-                <Card className="h-full border-gray-200 transition-colors hover:border-teal-300 hover:shadow-md">
-                  <CardHeader>
-                    <Badge variant="secondary" className="mb-2 text-xs w-fit">{rs.department.name}</Badge>
-                    <CardTitle className="text-base">{rs.title}</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-sm text-gray-500">{rs.subjects ? `${rs.subjects.slice(0, 100)}...` : ""}</p>
-                  </CardContent>
-                </Card>
-              </Link>
-            ))}
-          </div>
-        </section>
-      )}
+      <AdBanner format="horizontal" className="mt-8" />
     </div>
   )
 }

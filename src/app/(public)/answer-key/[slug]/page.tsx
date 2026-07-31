@@ -1,13 +1,10 @@
 import { notFound } from "next/navigation"
-import Link from "next/link"
 import type { Metadata } from "next"
 import { prisma } from "@/lib/prisma"
 import { formatDate, getBaseUrl } from "@/lib/utils"
 import { BreadcrumbNav } from "@/components/layout/BreadcrumbNav"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import { FileText } from "lucide-react"
+import { AdBanner } from "@/components/ads/AdBanner"
+import { DocumentDetail } from "@/components/documents/DocumentDetail"
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params
@@ -69,65 +66,32 @@ export default async function AnswerKeyDetailPage({ params }: { params: Promise<
         className="mb-6"
       />
 
-      <Card className="mb-8">
-        <CardHeader>
-          <div className="mb-2 flex flex-wrap items-center gap-2">
-            <Badge variant="secondary">{answerKey.department.name}</Badge>
-            {answerKey.category && <Badge>{answerKey.category.name}</Badge>}
-          </div>
-          <CardTitle className="text-2xl sm:text-3xl">{answerKey.title}</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-6">
-          {answerKey.description && (
-            <div className="whitespace-pre-line text-gray-700">{answerKey.description}</div>
-          )}
+      <AdBanner format="horizontal" className="mb-8" />
 
-          <div className="grid gap-4 sm:grid-cols-2">
-            <div>
-              <p className="text-sm font-medium text-gray-500">Department</p>
-              <p className="text-gray-900">{answerKey.department.name}</p>
-            </div>
-            {answerKey.job && (
-              <div>
-                <p className="text-sm font-medium text-gray-500">Related Job</p>
-                <Link href={`/jobs/${answerKey.job.slug}`} className="text-teal-600 hover:text-teal-700">
-                  {answerKey.job.title}
-                </Link>
-              </div>
-            )}
-          </div>
+      <DocumentDetail
+        kind="answer-key"
+        title={answerKey.title}
+        department={answerKey.department.name}
+        category={answerKey.category.name}
+        description={answerKey.description}
+        rows={[
+          { label: "Department", value: answerKey.department.name },
+          { label: "Category", value: answerKey.category.name },
+          { label: "Status", value: answerKey.status },
+        ]}
+        linkRows={answerKey.job ? [{ label: "Related Job", value: answerKey.job.title, href: `/jobs/${answerKey.job.slug}` }] : []}
+        downloadUrl={answerKey.pdfUrl}
+        downloadLabel="Download Answer Key PDF"
+        relatedTitle="Related Answer Keys"
+        relatedItems={relatedKeys.map((rk) => ({
+          href: `/answer-key/${rk.slug}`,
+          title: rk.title,
+          department: rk.department.name,
+          meta: rk.status || null,
+        }))}
+      />
 
-          {answerKey.pdfUrl && (
-            <Button asChild>
-              <a href={answerKey.pdfUrl} target="_blank" rel="noopener noreferrer">
-                <FileText className="mr-2 h-4 w-4" />
-                Download Answer Key PDF
-              </a>
-            </Button>
-          )}
-        </CardContent>
-      </Card>
-
-      {relatedKeys.length > 0 && (
-        <section>
-          <h2 className="mb-6 text-xl font-bold text-gray-900">Related Answer Keys</h2>
-          <div className="grid gap-4 sm:grid-cols-2">
-            {relatedKeys.map((rk) => (
-              <Link key={rk.id} href={`/answer-key/${rk.slug}`}>
-                <Card className="h-full border-gray-200 transition-colors hover:border-teal-300 hover:shadow-md">
-                  <CardHeader>
-                    <Badge variant="secondary" className="mb-2 text-xs w-fit">{rk.department.name}</Badge>
-                    <CardTitle className="text-base">{rk.title}</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-sm text-gray-500">{rk.description ? `${rk.description.slice(0, 100)}...` : ""}</p>
-                  </CardContent>
-                </Card>
-              </Link>
-            ))}
-          </div>
-        </section>
-      )}
+      <AdBanner format="horizontal" className="mt-8" />
     </div>
   )
 }

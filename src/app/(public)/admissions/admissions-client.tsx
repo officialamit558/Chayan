@@ -3,7 +3,8 @@
 import { useState, useEffect, useCallback } from "react"
 import { motion } from "framer-motion"
 import Link from "next/link"
-import { Search, AlertCircle, Download, FileText, Calendar, IndianRupee, X } from "lucide-react"
+import { Search, AlertCircle, Download, FileText, Calendar, IndianRupee, X, GraduationCap } from "lucide-react"
+import { SectionHero } from "@/components/layout/SectionHero"
 import { formatDate } from "@/lib/utils"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
@@ -79,10 +80,13 @@ export function AdmissionsClient() {
   return (
     <div className="container mx-auto max-w-7xl px-4 py-8">
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
-        <h1 className="mb-2 text-3xl font-bold text-gray-900">Admissions</h1>
-        <p className="mb-8 text-gray-600">
-          Latest government admission notifications for various courses and programs.
-        </p>
+        <SectionHero
+          icon={GraduationCap}
+          badge="Admissions"
+          title="Admissions"
+          subtitle="Latest government admission notifications for various courses and programs."
+          count={pagination?.total}
+        />
 
         <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center">
           <div className="relative flex-1 max-w-md">

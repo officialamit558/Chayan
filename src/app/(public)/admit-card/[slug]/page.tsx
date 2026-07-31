@@ -1,15 +1,10 @@
 import { notFound } from "next/navigation"
-import Link from "next/link"
 import type { Metadata } from "next"
 import { prisma } from "@/lib/prisma"
 import { formatDate, getBaseUrl } from "@/lib/utils"
 import { BreadcrumbNav } from "@/components/layout/BreadcrumbNav"
 import { AdBanner } from "@/components/ads/AdBanner"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import { FileText } from "lucide-react"
-import { BookmarkButton } from "@/components/layout/BookmarkButton"
+import { DocumentDetail } from "@/components/documents/DocumentDetail"
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params
@@ -73,78 +68,34 @@ export default async function AdmitCardDetailPage({ params }: { params: Promise<
 
       <AdBanner format="horizontal" className="mb-8" />
 
-      <Card className="mb-8">
-        <CardHeader>
-          <div className="mb-2 flex flex-wrap items-center gap-2">
-            <Badge variant="secondary">{admitCard.department.name}</Badge>
-            {admitCard.category && <Badge>{admitCard.category.name}</Badge>}
-          </div>
-          <CardTitle className="text-2xl sm:text-3xl">{admitCard.title}</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-6">
-          {admitCard.description && (
-            <div className="whitespace-pre-line text-gray-700">{admitCard.description}</div>
-          )}
+      <DocumentDetail
+        kind="admit-card"
+        title={admitCard.title}
+        department={admitCard.department.name}
+        category={admitCard.category.name}
+        description={admitCard.description}
+        rows={[
+          { label: "Exam Date", value: admitCard.examDate ? formatDate(admitCard.examDate) : null },
+          { label: "Department", value: admitCard.department.name },
+          { label: "Category", value: admitCard.category.name },
+          { label: "Status", value: admitCard.status },
+        ]}
+        linkRows={admitCard.job ? [{ label: "Related Job", value: admitCard.job.title, href: `/jobs/${admitCard.job.slug}` }] : []}
+        downloadUrl={admitCard.downloadUrl}
+        downloadLabel="Download Admit Card"
+        countdownDate={admitCard.examDate ? admitCard.examDate.toISOString() : null}
+        countdownLabel="Exam Date"
+        bookmarkId={{ type: "admit-card", id: admitCard.id }}
+        relatedTitle="Related Admit Cards"
+        relatedItems={relatedCards.map((rc) => ({
+          href: `/admit-card/${rc.slug}`,
+          title: rc.title,
+          department: rc.department.name,
+          meta: rc.examDate ? `Exam Date: ${formatDate(rc.examDate)}` : null,
+        }))}
+      />
 
-          <div className="grid gap-4 sm:grid-cols-2">
-            {admitCard.examDate && (
-              <div>
-                <p className="text-sm font-medium text-gray-500">Exam Date</p>
-                <p className="text-gray-900">{formatDate(admitCard.examDate)}</p>
-              </div>
-            )}
-            <div>
-              <p className="text-sm font-medium text-gray-500">Department</p>
-              <p className="text-gray-900">{admitCard.department.name}</p>
-            </div>
-            {admitCard.job && (
-              <div>
-                <p className="text-sm font-medium text-gray-500">Related Job</p>
-                <Link href={`/jobs/${admitCard.job.slug}`} className="text-teal-600 hover:text-teal-700">
-                  {admitCard.job.title}
-                </Link>
-              </div>
-            )}
-          </div>
-
-          <div className="flex items-center gap-3">
-            <BookmarkButton admitCardId={admitCard.id} variant="outline" />
-            {admitCard.downloadUrl && (
-              <Button size="lg" asChild>
-                <a href={admitCard.downloadUrl} target="_blank" rel="noopener noreferrer">
-                  <FileText className="mr-2 h-5 w-5" />
-                  Download Admit Card
-                </a>
-              </Button>
-            )}
-          </div>
-        </CardContent>
-      </Card>
-
-      <AdBanner format="horizontal" />
-
-      {relatedCards.length > 0 && (
-        <section>
-          <h2 className="mb-6 text-xl font-bold text-gray-900">Related Admit Cards</h2>
-          <div className="grid gap-4 sm:grid-cols-2">
-            {relatedCards.map((rc) => (
-              <Link key={rc.id} href={`/admit-card/${rc.slug}`}>
-                <Card className="h-full border-gray-200 transition-colors hover:border-teal-300 hover:shadow-md">
-                  <CardHeader>
-                    <Badge variant="secondary" className="mb-2 text-xs w-fit">{rc.department.name}</Badge>
-                    <CardTitle className="text-base">{rc.title}</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-sm text-gray-500">
-                      {rc.examDate ? `Exam Date: ${formatDate(rc.examDate)}` : ""}
-                    </p>
-                  </CardContent>
-                </Card>
-              </Link>
-            ))}
-          </div>
-        </section>
-      )}
+      <AdBanner format="horizontal" className="mt-8" />
     </div>
   )
 }

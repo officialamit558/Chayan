@@ -100,6 +100,7 @@ export default async function ApplyJobPage({ params }: { params: Promise<{ slug:
       <AdBanner format="horizontal" className="mb-8" />
 
       <JobDetailContent
+        jobId={job.id}
         title={job.title}
         department={job.department.name}
         departmentId={job.department.id}
@@ -132,12 +133,12 @@ export default async function ApplyJobPage({ params }: { params: Promise<{ slug:
           <div className="grid gap-4 sm:grid-cols-2">
             {relatedJobs.map((rj) => (
               <Link key={rj.id} href={`/apply/${rj.slug}`}>
-                <Card className="h-full border-gray-200 transition-colors hover:border-teal-300 hover:shadow-md">
+                <Card className="group h-full border-gray-200 transition-all hover:-translate-y-0.5 hover:border-blue-300 hover:shadow-md dark:border-gray-700">
                   <CardHeader>
                     <div className="flex items-start justify-between gap-2">
                       <div>
-                        <Badge variant="secondary" className="mb-2 text-xs">{rj.department.name}</Badge>
-                        <CardTitle className="text-base">{rj.title}</CardTitle>
+                        <Badge variant="secondary" className="mb-2 bg-blue-50 text-xs text-blue-700 dark:bg-blue-900 dark:text-blue-300">{rj.department.name}</Badge>
+                        <CardTitle className="text-base group-hover:text-blue-700">{rj.title}</CardTitle>
                       </div>
                     </div>
                   </CardHeader>
@@ -145,7 +146,7 @@ export default async function ApplyJobPage({ params }: { params: Promise<{ slug:
                     <div className="space-y-1 text-sm text-gray-600">
                       {rj.location && <p>Location: {rj.location}</p>}
                       {rj.lastDate && <p>Last Date: {formatDate(rj.lastDate)}</p>}
-                      {rj.totalVacancies && <p>Vacancies: {rj.totalVacancies}</p>}
+                      {rj.totalVacancies && <p>Vacancies: {rj.totalVacancies.toLocaleString("en-IN")}</p>}
                     </div>
                   </CardContent>
                 </Card>

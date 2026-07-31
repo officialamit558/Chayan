@@ -3,7 +3,8 @@
 import { useState, useEffect, useCallback } from "react"
 import { motion } from "framer-motion"
 import Link from "next/link"
-import { Search, AlertCircle, Download, FileText, X } from "lucide-react"
+import { Search, AlertCircle, Download, FileText, X, KeyRound } from "lucide-react"
+import { SectionHero } from "@/components/layout/SectionHero"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -75,10 +76,13 @@ export function AnswerKeysClient() {
   return (
     <div className="container mx-auto max-w-7xl px-4 py-8">
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
-        <h1 className="mb-2 text-3xl font-bold text-gray-900">Answer Keys</h1>
-        <p className="mb-8 text-gray-600">
-          Download official answer keys for government exams.
-        </p>
+        <SectionHero
+          icon={KeyRound}
+          badge="Answer Keys"
+          title="Answer Keys"
+          subtitle="Download official answer keys for government exams and verify your answers."
+          count={pagination?.total}
+        />
 
         <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center">
           <div className="relative flex-1 max-w-md">

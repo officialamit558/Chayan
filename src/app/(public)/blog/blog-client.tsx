@@ -3,7 +3,8 @@
 import { useState, useEffect, useCallback } from "react"
 import { motion } from "framer-motion"
 import Link from "next/link"
-import { Search, AlertCircle, Calendar, Clock, ArrowRight, X } from "lucide-react"
+import { Search, AlertCircle, Calendar, Clock, ArrowRight, X, Newspaper } from "lucide-react"
+import { SectionHero } from "@/components/layout/SectionHero"
 import { formatDate } from "@/lib/utils"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
@@ -62,10 +63,13 @@ export function BlogClient() {
   return (
     <div className="container mx-auto max-w-7xl px-4 py-8">
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
-        <h1 className="mb-2 text-3xl font-bold text-gray-900">Chayan Blog</h1>
-        <p className="mb-8 text-gray-600">
-          Exam preparation guides, government job tips, and latest updates.
-        </p>
+        <SectionHero
+          icon={Newspaper}
+          badge="Blog"
+          title="Chayan Blog"
+          subtitle="Exam preparation guides, government job tips, and the latest updates."
+          count={pagination?.total}
+        />
 
         <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center">
           <div className="relative flex-1 max-w-md">

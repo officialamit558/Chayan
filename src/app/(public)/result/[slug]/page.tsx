@@ -1,15 +1,10 @@
 import { notFound } from "next/navigation"
-import Link from "next/link"
 import type { Metadata } from "next"
 import { prisma } from "@/lib/prisma"
 import { formatDate, getBaseUrl } from "@/lib/utils"
 import { BreadcrumbNav } from "@/components/layout/BreadcrumbNav"
 import { AdBanner } from "@/components/ads/AdBanner"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import { FileText } from "lucide-react"
-import { BookmarkButton } from "@/components/layout/BookmarkButton"
+import { DocumentDetail } from "@/components/documents/DocumentDetail"
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params
@@ -84,80 +79,32 @@ export default async function ResultDetailPage({ params }: { params: Promise<{ s
 
       <AdBanner format="horizontal" className="mb-8" />
 
-      <Card className="mb-8">
-        <CardHeader>
-          <div className="mb-2 flex flex-wrap items-center gap-2">
-            <Badge variant="secondary">{result.department.name}</Badge>
-            {result.category && <Badge>{result.category.name}</Badge>}
-          </div>
-          <CardTitle className="text-2xl sm:text-3xl">{result.title}</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-6">
-          {result.description && (
-            <div className="whitespace-pre-line text-gray-700">{result.description}</div>
-          )}
+      <DocumentDetail
+        kind="result"
+        title={result.title}
+        department={result.department.name}
+        category={result.category.name}
+        description={result.description}
+        rows={[
+          { label: "Result Date", value: result.resultDate ? formatDate(result.resultDate) : null },
+          { label: "Department", value: result.department.name },
+          { label: "Category", value: result.category.name },
+          { label: "Status", value: result.status },
+        ]}
+        linkRows={result.job ? [{ label: "Related Job", value: result.job.title, href: `/jobs/${result.job.slug}` }] : []}
+        downloadUrl={result.pdfUrl}
+        downloadLabel="Download Result PDF"
+        bookmarkId={{ type: "result", id: result.id }}
+        relatedTitle="Related Results"
+        relatedItems={relatedResults.map((rr) => ({
+          href: `/result/${rr.slug}`,
+          title: rr.title,
+          department: rr.department.name,
+          meta: rr.resultDate ? `Result Date: ${formatDate(rr.resultDate)}` : null,
+        }))}
+      />
 
-          <div className="grid gap-4 sm:grid-cols-2">
-            {result.resultDate && (
-              <div>
-                <p className="text-sm font-medium text-gray-500">Result Date</p>
-                <p className="text-gray-900">{formatDate(result.resultDate)}</p>
-              </div>
-            )}
-            {result.department && (
-              <div>
-                <p className="text-sm font-medium text-gray-500">Department</p>
-                <p className="text-gray-900">{result.department.name}</p>
-              </div>
-            )}
-            {result.job && (
-              <div>
-                <p className="text-sm font-medium text-gray-500">Related Job</p>
-                <Link href={`/jobs/${result.job.slug}`} className="text-teal-600 hover:text-teal-700">
-                  {result.job.title}
-                </Link>
-              </div>
-            )}
-          </div>
-
-          <div className="flex items-center gap-3">
-            <BookmarkButton resultId={result.id} variant="outline" />
-            {result.pdfUrl && (
-              <Button asChild>
-                <a href={result.pdfUrl} target="_blank" rel="noopener noreferrer">
-                  <FileText className="mr-2 h-4 w-4" />
-                  Download Result PDF
-                </a>
-              </Button>
-            )}
-          </div>
-        </CardContent>
-      </Card>
-
-      <AdBanner format="horizontal" />
-
-      {relatedResults.length > 0 && (
-        <section>
-          <h2 className="mb-6 text-xl font-bold text-gray-900">Related Results</h2>
-          <div className="grid gap-4 sm:grid-cols-2">
-            {relatedResults.map((rr) => (
-              <Link key={rr.id} href={`/result/${rr.slug}`}>
-                <Card className="h-full border-gray-200 transition-colors hover:border-teal-300 hover:shadow-md">
-                  <CardHeader>
-                    <Badge variant="secondary" className="mb-2 text-xs w-fit">{rr.department.name}</Badge>
-                    <CardTitle className="text-base">{rr.title}</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-sm text-gray-500">
-                      {rr.resultDate ? `Result Date: ${formatDate(rr.resultDate)}` : ""}
-                    </p>
-                  </CardContent>
-                </Card>
-              </Link>
-            ))}
-          </div>
-        </section>
-      )}
+      <AdBanner format="horizontal" className="mt-8" />
     </div>
   )
 }
