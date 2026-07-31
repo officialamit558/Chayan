@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useRef } from "react"
+import { useState, useRef, useEffect } from "react"
 import { Upload, FileText, CheckCircle, X, Loader2, Briefcase, GraduationCap, MapPin } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -25,13 +25,15 @@ export function ResumeUpload({ onResumeChange }: { onResumeChange?: () => void }
   const [dragOver, setDragOver] = useState(false)
   const inputRef = useRef<HTMLInputElement>(null)
 
-  useState(() => {
+  useEffect(() => {
+    let cancelled = false
     fetch("/api/user/resume")
       .then(r => r.json())
-      .then(d => { if (d.success && d.data) setResume(d.data) })
+      .then(d => { if (!cancelled && d.success && d.data) setResume(d.data) })
       .catch(() => {})
-      .finally(() => setLoading(false))
-  })
+      .finally(() => { if (!cancelled) setLoading(false) })
+    return () => { cancelled = true }
+  }, [])
 
   const handleFile = async (file: File) => {
     const allowed = ["application/pdf", "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "text/plain"]

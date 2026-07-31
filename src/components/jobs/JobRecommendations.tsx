@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react"
 import Link from "next/link"
 import { motion } from "framer-motion"
-import { Sparkles, Briefcase, TrendingUp, Target, RefreshCw } from "lucide-react"
+import { Sparkles, Briefcase, TrendingUp, Target, RefreshCw, FileUp } from "lucide-react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -23,6 +23,7 @@ export function JobRecommendations() {
   const [loading, setLoading] = useState(true)
   const [hasResume, setHasResume] = useState(false)
   const [message, setMessage] = useState("")
+  const [showChangeResume, setShowChangeResume] = useState(false)
 
   const fetchRecs = async () => {
     setLoading(true)
@@ -103,10 +104,26 @@ export function JobRecommendations() {
             <span className="ml-2 text-sm font-normal text-gray-500">({recs.matchCount} matches)</span>
           </h2>
         </div>
-        <Button variant="ghost" size="sm" onClick={fetchRecs}>
-          <RefreshCw className="mr-1 h-4 w-4" /> Refresh
-        </Button>
+        <div className="flex items-center gap-1">
+          <Button variant="outline" size="sm" onClick={() => setShowChangeResume(!showChangeResume)}>
+            <FileUp className="mr-1 h-4 w-4" /> {showChangeResume ? "Hide Resume" : "Change Resume"}
+          </Button>
+          <Button variant="ghost" size="sm" onClick={fetchRecs}>
+            <RefreshCw className="mr-1 h-4 w-4" /> Refresh
+          </Button>
+        </div>
       </div>
+
+      {showChangeResume && (
+        <div className="max-w-xl">
+          <ResumeUpload
+            onResumeChange={() => {
+              setShowChangeResume(false)
+              fetchRecs()
+            }}
+          />
+        </div>
+      )}
 
       <div className="grid gap-4 md:grid-cols-2">
         {recs.topMatches.slice(0, 6).map((job, i) => (
