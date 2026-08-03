@@ -6,9 +6,10 @@ import { formatDate, getBaseUrl } from "@/lib/utils"
 import { BreadcrumbNav } from "@/components/layout/BreadcrumbNav"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Calendar, Eye, Clock3, Tag } from "lucide-react"
+import { Calendar, Eye, Clock3, Tag, FileText } from "lucide-react"
 import { AdBanner } from "@/components/ads/AdBanner"
 import { ShareButtons } from "@/components/blog/ShareButtons"
+import { ViewTracker } from "@/components/blog/ViewTracker"
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params
@@ -27,11 +28,16 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
 export default async function BlogDetailPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
-  const post = await prisma.blogPost.findUnique({ where: { slug } })
+  const post = await prisma.blogPost.findUnique({
+    where: { slug },
+    include: { category: true },
+  })
   if (!post || !post.published) notFound()
 
   const relatedPosts = await prisma.blogPost.findMany({
-    where: { id: { not: post.id }, published: true },
+    where: post.categoryId
+      ? { id: { not: post.id }, published: true, categoryId: post.categoryId }
+      : { id: { not: post.id }, published: true },
     take: 3,
     orderBy: { createdAt: "desc" },
   })
@@ -66,6 +72,7 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ slu
 
   return (
     <div className="container mx-auto max-w-4xl px-4 py-8">
+      <ViewTracker slug={post.slug} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadCrumbLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleLd) }} />
 
@@ -97,6 +104,16 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ slu
               </div>
             </div>
           </div>
+          {post.category && (
+            <div className="mt-4 flex items-center gap-2">
+              <Link
+                href={`/blog/topic/${post.category.slug}`}
+                className="inline-flex items-center gap-1.5 rounded-full bg-blue-50 px-3 py-1 text-xs font-semibold text-blue-700 transition-colors hover:bg-blue-100 dark:bg-blue-950 dark:text-blue-300 dark:hover:bg-blue-900"
+              >
+                <FileText className="h-3 w-3" /> {post.category.name}
+              </Link>
+            </div>
+          )}
           {tags.length > 0 && (
             <div className="mt-4 flex flex-wrap gap-2">
               {tags.map((tag) => (

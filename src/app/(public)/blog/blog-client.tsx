@@ -3,15 +3,25 @@
 import { useState, useEffect, useCallback } from "react"
 import { motion } from "framer-motion"
 import Link from "next/link"
-import { Search, AlertCircle, Calendar, Clock, ArrowRight, X, Newspaper } from "lucide-react"
+import { Search, AlertCircle, Calendar, Clock, ArrowRight, X, Newspaper, Eye, Flame } from "lucide-react"
 import { SectionHero } from "@/components/layout/SectionHero"
 import { formatDate } from "@/lib/utils"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
+import { Badge } from "@/components/ui/badge"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Pagination } from "@/components/ui/pagination"
 import { Skeleton } from "@/components/ui/skeleton"
 import { AdBanner } from "@/components/ads/AdBanner"
+
+interface BlogCategory {
+  id: string
+  name: string
+  slug: string
+  description: string | null
+  icon: string | null
+  color: string | null
+}
 
 interface BlogPost {
   id: string
@@ -21,18 +31,36 @@ interface BlogPost {
   author: string | null
   image: string | null
   tags: string | null
+  categoryId: string | null
+  category: { id: string; name: string; slug: string; color: string | null } | null
   published: boolean
   views: number
+  content?: string | null
   createdAt: string
+}
+
+const readingTime = (content?: string | null): number => {
+  if (!content) return 2
+  return Math.max(1, Math.round(content.replace(/<[^>]+>/g, " ").trim().split(/\s+/).length / 200))
 }
 
 export function BlogClient() {
   const [posts, setPosts] = useState<BlogPost[]>([])
+  const [popular, setPopular] = useState<BlogPost[]>([])
+  const [categories, setCategories] = useState<BlogCategory[]>([])
   const [pagination, setPagination] = useState<{ page: number; total: number; totalPages: number } | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState("")
   const [search, setSearch] = useState("")
+  const [activeCategory, setActiveCategory] = useState<string | null>(null)
   const [page, setPage] = useState(1)
+
+  useEffect(() => {
+    fetch("/api/blog-categories")
+      .then((res) => res.json())
+      .then((json) => { if (json.success) setCategories(json.data) })
+      .catch(() => {})
+  }, [])
 
   const fetchPosts = useCallback(async () => {
     setLoading(true)
@@ -40,6 +68,7 @@ export function BlogClient() {
     try {
       const params = new URLSearchParams()
       if (search) params.set("search", search)
+      if (activeCategory) params.set("category", activeCategory)
       params.set("published", "true")
       params.set("page", String(page))
       params.set("limit", "12")
@@ -56,9 +85,17 @@ export function BlogClient() {
     } finally {
       setLoading(false)
     }
-  }, [search, page])
+  }, [search, activeCategory, page])
 
   useEffect(() => { fetchPosts() }, [fetchPosts])
+
+  useEffect(() => {
+    if (activeCategory || search) { setPopular([]); return }
+    fetch("/api/blog?sort=popular&published=true&limit=4")
+      .then((res) => res.json())
+      .then((json) => { if (json.success) setPopular(json.data) })
+      .catch(() => {})
+  }, [activeCategory, search])
 
   return (
     <div className="container mx-auto max-w-7xl px-4 py-8">
@@ -67,11 +104,11 @@ export function BlogClient() {
           icon={Newspaper}
           badge="Blog"
           title="Chayan Blog"
-          subtitle="Exam preparation guides, government job tips, and the latest updates."
+          subtitle="Guides on careers, AI, money, learning and productivity — plus exam and job updates."
           count={pagination?.total}
         />
 
-        <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center">
+        <div className="mb-6 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
           <div className="relative flex-1 max-w-md">
             <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
             <Input
@@ -91,6 +128,55 @@ export function BlogClient() {
             )}
           </div>
         </div>
+
+        {categories.length > 0 && (
+          <div className="mb-6 flex flex-wrap gap-2">
+            <button
+              type="button"
+              onClick={() => { setActiveCategory(null); setPage(1) }}
+              className={`rounded-full px-3.5 py-1.5 text-xs font-semibold transition-colors ${
+                !activeCategory
+                  ? "bg-blue-600 text-white"
+                  : "border border-gray-200 bg-white text-gray-600 hover:border-blue-300 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300"
+              }`}
+            >
+              All Topics
+            </button>
+            {categories.map((cat) => (
+              <button
+                key={cat.id}
+                type="button"
+                onClick={() => { setActiveCategory(activeCategory === cat.slug ? null : cat.slug); setPage(1) }}
+                className={`rounded-full px-3.5 py-1.5 text-xs font-semibold transition-colors ${
+                  activeCategory === cat.slug
+                    ? "bg-blue-600 text-white"
+                    : "border border-gray-200 bg-white text-gray-600 hover:border-blue-300 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300"
+                }`}
+              >
+                {cat.name}
+              </button>
+            ))}
+          </div>
+        )}
+
+        {popular.length > 0 && (
+          <section className="mb-8">
+            <h2 className="mb-3 flex items-center gap-2 text-base font-bold text-gray-900 dark:text-gray-100">
+              <Flame className="h-4 w-4 text-orange-500" /> Trending on Chayan
+            </h2>
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              {popular.map((post) => (
+                <Link key={post.id} href={`/blog/${post.slug}`} className="group rounded-xl border border-gray-200 bg-white p-4 transition-all hover:-translate-y-0.5 hover:border-orange-300 hover:shadow-md dark:border-gray-700 dark:bg-gray-800">
+                  <div className="mb-2 flex items-center gap-2 text-xs text-gray-400">
+                    {post.category && <Badge variant="secondary" className="text-[10px]">{post.category.name}</Badge>}
+                    <span className="flex items-center gap-1"><Eye className="h-3 w-3" /> {post.views}</span>
+                  </div>
+                  <h3 className="line-clamp-2 text-sm font-semibold leading-snug text-gray-900 group-hover:text-orange-600 dark:text-gray-100">{post.title}</h3>
+                </Link>
+              ))}
+            </div>
+          </section>
+        )}
 
         <AdBanner format="horizontal" />
 
@@ -120,8 +206,8 @@ export function BlogClient() {
           <Card>
             <CardContent className="flex flex-col items-center py-16">
               <Search className="mb-4 h-12 w-12 text-gray-300" />
-              <h3 className="mb-2 text-lg font-semibold text-gray-900">No articles yet</h3>
-              <p className="text-sm text-gray-500">Check back soon for new blog posts.</p>
+              <h3 className="mb-2 text-lg font-semibold text-gray-900">No articles found</h3>
+              <p className="text-sm text-gray-500">Try a different search or category.</p>
             </CardContent>
           </Card>
         ) : (
@@ -137,33 +223,35 @@ export function BlogClient() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.3 }}
                 >
-                  <Link href={`/blog/${post.slug}`}>
-                    <Card className="h-full border-gray-200 transition-all hover:border-teal-300 hover:shadow-md">
+                  <Link href={`/blog/${post.slug}`} className="group flex h-full flex-col">
+                    <Card className="flex h-full flex-col overflow-hidden border-gray-200 transition-all hover:-translate-y-0.5 hover:border-blue-300 hover:shadow-lg hover:shadow-blue-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:border-blue-700 dark:hover:shadow-none">
                       {post.image && (
-                        <div className="overflow-hidden rounded-t-lg">
-                          <img src={post.image} alt={post.title} className="h-40 w-full object-cover" />
+                        <div className="aspect-video w-full overflow-hidden">
+                          <img src={post.image} alt={post.title} className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105" />
                         </div>
                       )}
                       <CardHeader className={post.image ? "pt-4" : ""}>
-                        <div className="mb-2 flex items-center gap-3 text-xs text-gray-400">
-                          <span className="flex items-center gap-1">
-                            <Calendar className="h-3 w-3" />
-                            {formatDate(post.createdAt)}
-                          </span>
-                          {post.author && (
-                            <span className="flex items-center gap-1">
-                              <Clock className="h-3 w-3" />
-                              {post.author}
-                            </span>
+                        <div className="mb-2 flex flex-wrap items-center gap-2 text-xs text-gray-400">
+                          {post.category && (
+                            <Link href={`/blog/topic/${post.category.slug}`} onClick={(e) => e.stopPropagation()} className="rounded-full bg-blue-50 px-2 py-0.5 font-semibold text-blue-700 hover:bg-blue-100 dark:bg-blue-950 dark:text-blue-300">
+                              {post.category.name}
+                            </Link>
                           )}
                         </div>
-                        <CardTitle className="text-lg leading-snug">{post.title}</CardTitle>
+                        <CardTitle className="line-clamp-2 text-lg leading-snug text-gray-900 group-hover:text-blue-700 dark:text-gray-100">{post.title}</CardTitle>
                       </CardHeader>
-                      <CardContent>
+                      <CardContent className="mt-auto">
                         {post.excerpt && (
-                          <p className="mb-4 text-sm text-gray-600 line-clamp-3">{post.excerpt}</p>
+                          <p className="mb-4 line-clamp-3 text-sm text-gray-600 dark:text-gray-400">{post.excerpt}</p>
                         )}
-                        <div className="flex items-center text-sm font-medium text-teal-600">
+                        <div className="flex items-center justify-between text-xs text-gray-400">
+                          <span className="flex items-center gap-3">
+                            <span className="flex items-center gap-1"><Calendar className="h-3.5 w-3.5" /> {formatDate(post.createdAt)}</span>
+                            <span className="flex items-center gap-1"><Clock className="h-3.5 w-3.5" /> {readingTime(post.content)} min</span>
+                          </span>
+                          <span className="flex items-center gap-1"><Eye className="h-3.5 w-3.5" /> {post.views}</span>
+                        </div>
+                        <div className="mt-3 flex items-center text-sm font-medium text-blue-600 group-hover:text-blue-700 dark:text-blue-400">
                           Read More <ArrowRight className="ml-1 h-3 w-3" />
                         </div>
                       </CardContent>
