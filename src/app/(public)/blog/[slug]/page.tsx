@@ -10,6 +10,10 @@ import { Calendar, Eye, Clock3, Tag, FileText } from "lucide-react"
 import { AdBanner } from "@/components/ads/AdBanner"
 import { ShareButtons } from "@/components/blog/ShareButtons"
 import { ViewTracker } from "@/components/blog/ViewTracker"
+import { ReadingProgress } from "@/components/blog/ReadingProgress"
+import { TableOfContents } from "@/components/blog/TableOfContents"
+import { AuthorCard } from "@/components/blog/AuthorCard"
+import { NewsletterCTA } from "@/components/blog/NewsletterCTA"
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params
@@ -72,6 +76,7 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ slu
 
   return (
     <div className="container mx-auto max-w-4xl px-4 py-8">
+      <ReadingProgress />
       <ViewTracker slug={post.slug} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadCrumbLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleLd) }} />
@@ -86,7 +91,14 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ slu
 
       <AdBanner format="horizontal" className="mb-8" />
 
-      <article>
+      <div className="grid gap-8 lg:grid-cols-[280px_1fr]">
+        <aside className="order-2 lg:order-1">
+          <div className="lg:sticky lg:top-24">
+            <TableOfContents />
+          </div>
+        </aside>
+
+        <article className="order-1 min-w-0 lg:order-2">
         <header className="mb-8">
           <h1 className="mb-5 text-3xl font-bold leading-tight tracking-tight text-gray-900 sm:text-4xl">{post.title}</h1>
           <div className="flex flex-wrap items-center gap-4">
@@ -152,7 +164,12 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ slu
             {tags.length > 0 ? tags.slice(0, 3).join(" · ") : "Career Guidance"}
           </div>
         </div>
+
+        <AuthorCard name={authorName} category={post.category?.name} />
       </article>
+      </div>
+
+      <NewsletterCTA topic={post.category?.name} />
 
       {relatedPosts.length > 0 && (
         <section className="mt-12">
