@@ -13,6 +13,7 @@ const JobsByState = dynamic(() => import("@/components/home/JobsByState").then(m
 const LatestPrivateJobs = dynamic(() => import("@/components/home/LatestPrivateJobs").then(m => ({ default: m.LatestPrivateJobs })))
 const PopularExams = dynamic(() => import("@/components/home/PopularExams").then(m => ({ default: m.PopularExams })))
 const FAQ = dynamic(() => import("@/components/home/FAQ").then(m => ({ default: m.FAQ })))
+const LatestBlog = dynamic(() => import("@/components/home/LatestBlog").then(m => ({ default: m.LatestBlog })))
 const Newsletter = dynamic(() => import("@/components/layout/Newsletter").then(m => ({ default: m.Newsletter })))
 
 export default function HomePage() {
@@ -21,29 +22,30 @@ export default function HomePage() {
       <HeroSlider />
       <SearchBar />
       <QuickLinks />
-      <AdBanner format="horizontal" />
+      <AdBanner slot="homeTop" format="horizontal" />
       <LatestJobs />
-      <AdBanner format="horizontal" />
+      <AdBanner slot="homeMid" format="horizontal" />
       <div className="container mx-auto px-4">
         <div className="grid gap-8 lg:grid-cols-[1fr_320px]">
           <div className="space-y-16">
             <LatestResults />
-            <AdBanner format="horizontal" />
+            <AdBanner slot="homeMid" format="horizontal" />
             <LatestAdmitCards />
           </div>
           <div className="space-y-8">
             <TrendingNotifications />
-            <AdBanner format="rectangle" />
+            <AdBanner slot="sidebar" format="rectangle" />
           </div>
         </div>
       </div>
       <JobsByQualification />
-      <AdBanner format="horizontal" />
+      <AdBanner slot="homeBottom" format="horizontal" />
       <JobsByState />
       <LatestPrivateJobs />
-      <AdBanner format="horizontal" />
+      <AdBanner slot="homeBottom" format="horizontal" />
       <PopularExams />
       <FAQ />
+      <LatestBlog />
       <Newsletter />
     </>
   )

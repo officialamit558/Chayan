@@ -17,16 +17,33 @@ import { NewsletterCTA } from "@/components/blog/NewsletterCTA"
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params
-  const post = await prisma.blogPost.findUnique({ where: { slug } })
+  const post = await prisma.blogPost.findUnique({ where: { slug }, include: { category: true } })
   if (!post) return { title: "Post Not Found" }
 
   const baseUrl = getBaseUrl()
+  const keywords = post.tags ? post.tags.split(",").map((t) => t.trim()).filter(Boolean) : undefined
+  const ogImage = `${baseUrl}/blog/${post.slug}/opengraph-image`
   return {
     title: post.title,
     description: post.excerpt || post.title,
+    keywords,
     alternates: { canonical: `${baseUrl}/blog/${post.slug}` },
-    twitter: { card: "summary_large_image", title: `${post.title} | Chayan Blog`, description: post.excerpt || post.title },
-    openGraph: { title: post.title, description: post.excerpt || post.title },
+    openGraph: {
+      title: post.title,
+      description: post.excerpt || post.title,
+      type: "article",
+      publishedTime: post.createdAt.toISOString(),
+      modifiedTime: post.updatedAt.toISOString(),
+      section: post.category?.name,
+      tags: keywords,
+      images: [{ url: ogImage, width: 1200, height: 630, alt: post.title }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${post.title} | Chayan Blog`,
+      description: post.excerpt || post.title,
+      images: [ogImage],
+    },
   }
 }
 
@@ -61,6 +78,10 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ slu
     "@type": "Article",
     headline: post.title,
     description: post.excerpt,
+    keywords: post.tags || undefined,
+    articleSection: post.category?.name,
+    mainEntityOfPage: { "@type": "WebPage", "@id": `${getBaseUrl()}/blog/${post.slug}` },
+    image: post.image ? [post.image, `${getBaseUrl()}/blog/${post.slug}/opengraph-image`] : undefined,
     author: { "@type": "Person", name: post.author || "Chayan Team" },
     datePublished: post.createdAt,
     dateModified: post.updatedAt,
@@ -89,7 +110,7 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ slu
         className="mb-6"
       />
 
-      <AdBanner format="horizontal" className="mb-8" />
+      <AdBanner slot="blogTop" format="horizontal" className="mb-8" />
 
       <div className="grid gap-8 lg:grid-cols-[280px_1fr]">
         <aside className="order-2 lg:order-1">
@@ -147,7 +168,7 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ slu
           </p>
         )}
 
-        <AdBanner format="horizontal" />
+        <AdBanner slot="blogInArticle" format="horizontal" />
 
         {post.content && (
           <div className="prose prose-gray max-w-none prose-headings:text-gray-900 prose-p:text-gray-700 prose-a:text-blue-600 prose-strong:text-gray-900 prose-ul:list-disc prose-ol:list-decimal prose-h2:text-2xl prose-h3:text-xl mt-6">
@@ -155,7 +176,7 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ slu
           </div>
         )}
 
-        <AdBanner format="horizontal" className="mt-8" />
+        <AdBanner slot="blogBottom" format="horizontal" className="mt-8" />
 
         <div className="mt-8 flex flex-wrap items-center justify-between gap-4 border-t border-gray-200 pt-6">
           <ShareButtons title={post.title} url={`${getBaseUrl()}/blog/${post.slug}`} />

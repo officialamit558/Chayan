@@ -1,16 +1,16 @@
 "use client"
 
 import { cn } from "@/lib/utils"
-import { adsenseConfig } from "@/lib/constants"
+import { adsenseConfig, adSlots, type AdSlotKey } from "@/lib/constants"
 import { useEffect, useRef } from "react"
 
 interface AdBannerProps {
-  slot?: string
+  slot?: AdSlotKey
   format?: "auto" | "rectangle" | "horizontal" | "vertical"
   className?: string
 }
 
-export function AdBanner({ slot = "1234567890", format = "auto", className }: AdBannerProps) {
+export function AdBanner({ slot = "default", format = "auto", className }: AdBannerProps) {
   const adRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -61,7 +61,7 @@ export function AdBanner({ slot = "1234567890", format = "auto", className }: Ad
           className="adsbygoogle"
           style={{ display: "block" }}
           data-ad-client={adsenseConfig.publisherId}
-          data-ad-slot={slot}
+          data-ad-slot={adSlots[slot]}
           data-ad-format={format}
           data-full-width-responsive="true"
         />

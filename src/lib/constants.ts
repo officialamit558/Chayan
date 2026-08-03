@@ -3,6 +3,20 @@ export const adsenseConfig = {
   enabled: !!process.env.NEXT_PUBLIC_ADSENSE_PUBLISHER_ID,
 }
 
+export const adSlots = {
+  default: "1234567890",
+  homeTop: "1234567891",
+  homeMid: "1234567892",
+  homeBottom: "1234567893",
+  sidebar: "1234567894",
+  listInline: "1234567895",
+  blogTop: "1234567896",
+  blogInArticle: "1234567897",
+  blogBottom: "1234567898",
+} as const
+
+export type AdSlotKey = keyof typeof adSlots
+
 export const siteConfig = {
   name: "Chayan",
   description: "Select right. serve right. Your trusted government job portal. Latest notifications, results, admit cards, answer keys and more.",

@@ -178,7 +178,7 @@ export function BlogClient() {
           </section>
         )}
 
-        <AdBanner format="horizontal" />
+        <AdBanner slot="listInline" format="horizontal" />
 
         {loading ? (
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">

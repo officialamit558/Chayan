@@ -56,7 +56,7 @@ export default async function BlogTagPage({ params }: PageProps) {
         className="mb-6"
       />
 
-      <AdBanner format="horizontal" className="mb-8" />
+      <AdBanner slot="listInline" format="horizontal" className="mb-8" />
 
       <header className="mb-8 flex items-center gap-4">
         <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-blue-100 dark:bg-blue-900">
@@ -86,7 +86,7 @@ export default async function BlogTagPage({ params }: PageProps) {
         ))}
       </div>
 
-      <AdBanner format="horizontal" className="mt-10" />
+      <AdBanner slot="listInline" format="horizontal" className="mt-10" />
     </div>
   )
 }

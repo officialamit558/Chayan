@@ -55,7 +55,7 @@ export default async function BlogCategoryPage({ params }: PageProps) {
         className="mb-6"
       />
 
-      <AdBanner format="horizontal" className="mb-8" />
+      <AdBanner slot="listInline" format="horizontal" className="mb-8" />
 
       <header className="relative mb-8 overflow-hidden rounded-2xl bg-gradient-to-br from-[#1e3a5f] via-blue-800 to-blue-700 p-6 text-white shadow-lg sm:p-8">
         <div className="pointer-events-none absolute -right-16 -top-16 h-64 w-64 rounded-full bg-white/10 blur-2xl" />
@@ -102,7 +102,7 @@ export default async function BlogCategoryPage({ params }: PageProps) {
         </div>
       )}
 
-      <AdBanner format="horizontal" className="mt-10" />
+      <AdBanner slot="listInline" format="horizontal" className="mt-10" />
 
       <div className="mt-6 text-center">
         <Link href="/blog" className="text-sm font-semibold text-blue-600 hover:text-blue-700 dark:text-blue-400">
