@@ -117,6 +117,7 @@ function ToolBtn({
     <button
       type="button"
       title={title}
+      onMouseDown={(e) => e.preventDefault()}
       onClick={onClick}
       disabled={disabled}
       className={cn(
@@ -147,6 +148,7 @@ function Dropdown({
     <div className="relative">
       <button
         type="button"
+        onMouseDown={(e) => e.preventDefault()}
         onClick={onToggle}
         className={cn(
           "flex h-8 w-8 shrink-0 items-center justify-center rounded text-sm transition-colors",
@@ -177,6 +179,7 @@ function DropItem({ onClick, children }: { onClick: () => void; children: React.
   return (
     <button
       type="button"
+      onMouseDown={(e) => e.preventDefault()}
       onClick={onClick}
       className="flex w-full items-center gap-2 rounded px-3 py-1.5 text-left text-sm hover:bg-gray-100 dark:hover:bg-gray-800"
     >
@@ -378,6 +381,7 @@ export function RichEditor({ value, onChange, placeholder }: RichEditorProps) {
                 key={opt.value}
                 type="button"
                 title={opt.title}
+                onMouseDown={(e) => e.preventDefault()}
                 onClick={() => updateImageAttr("align", opt.value === imgAttrs.align ? "center" : opt.value)}
                 className={cn(
                   "flex h-7 w-7 items-center justify-center rounded text-xs transition-colors",
@@ -414,6 +418,7 @@ export function RichEditor({ value, onChange, placeholder }: RichEditorProps) {
           <Divider />
           <button
             type="button"
+            onMouseDown={(e) => e.preventDefault()}
             onClick={() => {
               editor.chain().focus().deleteSelection().run()
             }}
@@ -537,7 +542,7 @@ export function RichEditor({ value, onChange, placeholder }: RichEditorProps) {
               placeholder="https://..."
               autoFocus
             />
-            <button type="button" onClick={applyLink} className="rounded bg-blue-600 px-2 py-1 text-xs text-white hover:bg-blue-700">Set</button>
+            <button type="button" onMouseDown={(e) => e.preventDefault()} onClick={applyLink} className="rounded bg-blue-600 px-2 py-1 text-xs text-white hover:bg-blue-700">Set</button>
           </div>
         )}
 
@@ -582,6 +587,7 @@ export function RichEditor({ value, onChange, placeholder }: RichEditorProps) {
             <button
               key={font.value}
               type="button"
+              onMouseDown={(e) => e.preventDefault()}
               onClick={() => {
                 const activeFont = editor.getAttributes("textStyle").fontFamily
                 if (activeFont === font.value) {
@@ -607,6 +613,7 @@ export function RichEditor({ value, onChange, placeholder }: RichEditorProps) {
             <button
               key={size.value}
               type="button"
+              onMouseDown={(e) => e.preventDefault()}
               onClick={() => {
                 const currentSize = editor.getAttributes("textStyle").fontSize
                 if (currentSize === size.value) {
@@ -633,6 +640,7 @@ export function RichEditor({ value, onChange, placeholder }: RichEditorProps) {
               <button
                 key={color}
                 type="button"
+                onMouseDown={(e) => e.preventDefault()}
                 onClick={() => {
                   const activeColor = editor.getAttributes("textStyle").color
                   if (activeColor === color) {
@@ -649,6 +657,7 @@ export function RichEditor({ value, onChange, placeholder }: RichEditorProps) {
             ))}
             <button
               type="button"
+              onMouseDown={(e) => e.preventDefault()}
               onClick={() => { editor.chain().focus().unsetColor().run(); setShowColors(false) }}
               className="col-span-6 mt-1 rounded bg-gray-100 px-2 py-1 text-xs text-gray-600 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400"
             >
@@ -664,6 +673,7 @@ export function RichEditor({ value, onChange, placeholder }: RichEditorProps) {
               <button
                 key={color}
                 type="button"
+                onMouseDown={(e) => e.preventDefault()}
                 onClick={() => {
                   editor.chain().focus().toggleHighlight({ color }).run()
                   setShowHighlight(false)
@@ -675,6 +685,7 @@ export function RichEditor({ value, onChange, placeholder }: RichEditorProps) {
             ))}
             <button
               type="button"
+              onMouseDown={(e) => e.preventDefault()}
               onClick={() => { editor.chain().focus().unsetHighlight().run(); setShowHighlight(false) }}
               className="col-span-5 mt-1 rounded bg-gray-100 px-2 py-1 text-xs text-gray-600 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-400"
             >
