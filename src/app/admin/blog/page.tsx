@@ -28,11 +28,27 @@ import { toast } from "@/components/ui/toast"
 import { formatDate, slugify } from "@/lib/utils"
 import { ImageUpload } from "@/components/admin/ImageUpload"
 import { RichEditor } from "@/components/admin/RichEditor"
+import {
+  Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
+} from "@/components/ui/select"
 import { Plus, Pencil, Trash2, Search, Eye, EyeOff, Image, Send } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
 
 interface BlogItem {
-  id: string; title: string; slug: string; excerpt: string | null; author: string | null; image: string | null; tags: string | null; published: boolean; views: number; createdAt: string
+  id: string; title: string; slug: string; excerpt: string | null; author: string | null; image: string | null; tags: string | null; categoryId: string | null; category: { id: string; name: string; slug: string; color: string | null } | null; published: boolean; views: number; createdAt: string
+}
+
+interface BlogCategoryItem {
+  id: string; name: string; slug: string; color: string | null
+}
+
+const CATEGORY_BADGE_CLASSES: Record<string, string> = {
+  blue: "bg-blue-100 text-blue-700",
+  teal: "bg-teal-100 text-teal-700",
+  violet: "bg-violet-100 text-violet-700",
+  green: "bg-green-100 text-green-700",
+  amber: "bg-amber-100 text-amber-700",
+  rose: "bg-rose-100 text-rose-700",
 }
 
 export default function AdminBlog() {
@@ -50,9 +66,16 @@ export default function AdminBlog() {
     queryFn: () => fetcher(`/api/blog?page=${page}&limit=10&search=${search}`),
   })
 
+  const { data: categoriesData } = useQuery<{ success: boolean; data: BlogCategoryItem[] }>({
+    queryKey: ["blog-categories"],
+    queryFn: () => fetcher("/api/blog-categories"),
+  })
+
+  const categories = categoriesData?.data || []
+
   const form = useForm<BlogPostInput>({
     resolver: zodResolver(blogPostSchema) as any,
-    defaultValues: { title: "", slug: "", excerpt: null, content: null, author: null, image: null, tags: null, published: false },
+    defaultValues: { title: "", slug: "", excerpt: null, content: null, author: null, image: null, tags: null, categoryId: null, published: false },
   })
 
   const createMutation = useMutation({
@@ -97,6 +120,7 @@ export default function AdminBlog() {
       author: post.author,
       image: post.image,
       tags: post.tags,
+      categoryId: post.categoryId,
       published: post.published,
     })
     setDialogOpen(true)
@@ -104,7 +128,7 @@ export default function AdminBlog() {
 
   const openCreate = () => {
     setEditingId(null)
-    form.reset({ title: "", slug: "", excerpt: null, content: null, author: null, image: null, tags: null, published: false })
+    form.reset({ title: "", slug: "", excerpt: null, content: null, author: null, image: null, tags: null, categoryId: null, published: false })
     setDialogOpen(true)
   }
 
@@ -134,6 +158,7 @@ export default function AdminBlog() {
                 <TableHeader>
                   <TableRow>
                     <TableHead>Title</TableHead>
+                    <TableHead>Category</TableHead>
                     <TableHead>Author</TableHead>
                     <TableHead>Status</TableHead>
                     <TableHead>Views</TableHead>
@@ -156,6 +181,15 @@ export default function AdminBlog() {
                             {post.image && <Image className="h-4 w-4 shrink-0 text-gray-400" />}
                             <span className="truncate">{post.title}</span>
                           </div>
+                        </TableCell>
+                        <TableCell>
+                          {post.category ? (
+                            <Badge className={CATEGORY_BADGE_CLASSES[post.category.color || ""] || "bg-blue-100 text-blue-700"}>
+                              {post.category.name}
+                            </Badge>
+                          ) : (
+                            <Badge variant="secondary">Uncategorized</Badge>
+                          )}
                         </TableCell>
                         <TableCell>{post.author || "Chayan"}</TableCell>
                         <TableCell>
@@ -181,7 +215,7 @@ export default function AdminBlog() {
                     ))}
                   </AnimatePresence>
                   {posts.length === 0 && (
-                    <TableRow><TableCell colSpan={6} className="text-center text-gray-500">No posts found</TableCell></TableRow>
+                    <TableRow><TableCell colSpan={7} className="text-center text-gray-500">No posts found</TableCell></TableRow>
                   )}
                 </TableBody>
               </Table>
@@ -251,6 +285,25 @@ export default function AdminBlog() {
                     <FormItem>
                       <FormLabel className="text-xs font-semibold uppercase tracking-wider text-gray-500">Tags</FormLabel>
                       <FormControl><Input {...field} value={field.value || ""} onChange={(e) => field.onChange(e.target.value || null)} placeholder="exam-tips, ssc, govt-jobs" className="text-sm" /></FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )} />
+                  <FormField control={form.control} name="categoryId" render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-xs font-semibold uppercase tracking-wider text-gray-500">Category</FormLabel>
+                      <FormControl>
+                        <Select value={field.value || ""} onValueChange={(val) => field.onChange(val === "none" ? null : val)}>
+                          <SelectTrigger className="text-sm">
+                            <SelectValue placeholder="Select a category" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="none">No category</SelectItem>
+                            {categories.map((cat) => (
+                              <SelectItem key={cat.id} value={cat.id}>{cat.name}</SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </FormControl>
                       <FormMessage />
                     </FormItem>
                   )} />

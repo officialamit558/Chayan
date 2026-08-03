@@ -11,6 +11,9 @@ export async function GET(request: NextRequest) {
     const limit = Math.min(100, Math.max(1, parseInt(searchParams.get("limit") || "10")))
     const search = searchParams.get("search") || ""
     const published = searchParams.get("published")
+    const category = searchParams.get("category") || ""
+    const tag = searchParams.get("tag") || ""
+    const sort = searchParams.get("sort") || "latest"
     const skip = (page - 1) * limit
 
     const where: Prisma.BlogPostWhereInput = {}
@@ -19,16 +22,26 @@ export async function GET(request: NextRequest) {
       where.OR = [
         { title: { contains: search, mode: "insensitive" } },
         { excerpt: { contains: search, mode: "insensitive" } },
+        { tags: { contains: search, mode: "insensitive" } },
       ]
     }
 
     if (published === "true") where.published = true
     if (published === "false") where.published = false
 
+    if (category) {
+      where.category = { slug: category }
+    }
+
+    if (tag) {
+      where.tags = { contains: tag, mode: "insensitive" }
+    }
+
     const [posts, total] = await Promise.all([
       prisma.blogPost.findMany({
         where,
-        orderBy: { createdAt: "desc" },
+        include: { category: true },
+        orderBy: sort === "popular" ? [{ views: "desc" }, { createdAt: "desc" }] : { createdAt: "desc" },
         skip,
         take: limit,
       }),
@@ -61,7 +74,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: false, error: validation.error.issues[0].message }, { status: 400 })
     }
 
-    const { title, slug, excerpt, content, author, image, tags, published } = validation.data
+    const { title, slug, excerpt, content, author, image, tags, categoryId, published } = validation.data
 
     const existing = await prisma.blogPost.findUnique({ where: { slug } })
     if (existing) {
@@ -77,6 +90,7 @@ export async function POST(request: NextRequest) {
         ...(author !== undefined && author !== null ? { author } : {}),
         ...(image !== undefined && image !== null ? { image } : {}),
         ...(tags !== undefined && tags !== null ? { tags } : {}),
+        ...(categoryId !== undefined && categoryId !== null ? { categoryId } : {}),
         published,
       },
     })

@@ -494,22 +494,38 @@ model Newsletter {
 }
 
 model BlogPost {
-  id        String   @id @default(cuid())
-  title     String
-  slug      String   @unique
-  excerpt   String?
-  content   String?
-  author    String   @default("Chayan Team")
-  image     String?
-  tags      String?
-  published Boolean  @default(false)
-  views     Int      @default(0)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id         String        @id @default(cuid())
+  title      String
+  slug       String        @unique
+  excerpt    String?
+  content    String?
+  author     String        @default("Chayan Team")
+  image      String?
+  tags       String?
+  categoryId String?
+  published  Boolean       @default(false)
+  views      Int           @default(0)
+  createdAt  DateTime      @default(now())
+  updatedAt  DateTime      @updatedAt
+  category   BlogCategory? @relation(fields: [categoryId], references: [id])
 
   @@index([slug])
   @@index([published])
   @@index([createdAt])
+  @@index([categoryId])
+}
+
+model BlogCategory {
+  id          String     @id @default(cuid())
+  name        String     @unique
+  slug        String     @unique
+  description String?
+  icon        String?
+  color       String?
+  createdAt   DateTime   @default(now())
+  posts       BlogPost[]
+
+  @@index([slug])
 }
 
 model JobView {

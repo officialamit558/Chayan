@@ -62,6 +62,21 @@ async function main() {
     console.log('  departments seeded');
   }
 
+  // ── Blog Categories (content pillars) ──
+  if ((await prisma.blogCategory.count()) === 0) {
+    await prisma.blogCategory.createMany({
+      data: [
+        { name: 'Jobs & Exams', slug: 'jobs-exams', description: 'Government jobs, notifications, exam schedules and preparation updates.', icon: 'Briefcase', color: 'blue' },
+        { name: 'Career & Skills', slug: 'career-skills', description: 'Career growth, resume writing, interviews, negotiation and professional development.', icon: 'TrendingUp', color: 'teal' },
+        { name: 'AI & Technology', slug: 'ai-technology', description: 'AI tools, prompt engineering, no-code, tech guides and digital productivity.', icon: 'Bot', color: 'violet' },
+        { name: 'Personal Finance', slug: 'personal-finance', description: 'Budgeting, saving, credit scores, investing basics and side income ideas.', icon: 'Wallet', color: 'green' },
+        { name: 'Study & Learning', slug: 'study-learning', description: 'Learning techniques, memory, focus, scholarships and study-abroad paths.', icon: 'GraduationCap', color: 'amber' },
+        { name: 'Productivity & Lifestyle', slug: 'productivity-lifestyle', description: 'Time management, habits, work-life balance and sustainable routines.', icon: 'Zap', color: 'rose' },
+      ],
+    });
+    console.log('  blog categories seeded');
+  }
+
   // ── Tags ──
   if ((await prisma.tag.count()) === 0) {
     await prisma.tag.createMany({
@@ -190,6 +205,75 @@ async function main() {
     console.log('  job views seeded');
   }
 
+  // ── Sample Blog Posts ──
+  if ((await prisma.blogPost.count()) === 0) {
+    const blogCat = Object.fromEntries((await prisma.blogCategory.findMany()).map(c => [c.name, c.id]));
+    const sample = (p: { title: string; slug: string; category: string; tags: string; excerpt: string; content: string; views: number; daysAgo: number }) => ({
+      title: p.title, slug: p.slug, excerpt: p.excerpt, content: p.content, author: 'Chayan Team', tags: p.tags,
+      categoryId: blogCat[p.category], published: true, views: p.views,
+      createdAt: daysAgo(p.daysAgo), updatedAt: daysAgo(p.daysAgo - 2),
+    });
+    await prisma.blogPost.createMany({
+      data: [
+        sample({
+          title: 'How to Prepare for a Government Exam in 90 Days',
+          slug: 'prepare-government-exam-in-90-days',
+          category: 'Jobs & Exams',
+          tags: 'exam-tips, government-jobs, study-plan',
+          excerpt: 'A realistic 90-day plan to crack any government exam with weekly milestones, study schedules and revision strategies.',
+          content: '<h2>Building your 90-day plan</h2><p>Most successful candidates follow a clear three-phase approach: build the baseline, practice relentlessly, and revise.</p><h2>Phase 1: Foundation</h2><ul><li>Complete the full syllabus once</li><li>Take a diagnostic mock to find weak areas</li></ul>',
+          views: 12400, daysAgo: 10,
+        }),
+        sample({
+          title: 'How to Write a Resume That Passes ATS in 2026',
+          slug: 'resume-that-passes-ats-2026',
+          category: 'Career & Skills',
+          tags: 'resume, ats, career, interview',
+          excerpt: 'Applicant tracking systems reject most resumes within seconds. Here is the exact structure that gets yours through.',
+          content: '<h2>What recruiters actually see</h2><p>Most companies run your resume through an ATS before it ever reaches a human. Keywords, structure and clean formatting are everything.</p><h2>The winning structure</h2>',
+          views: 9800, daysAgo: 7,
+        }),
+        sample({
+          title: '10 AI Tools That Save 5 Hours a Week',
+          slug: 'ai-tools-save-5-hours-week',
+          category: 'AI & Technology',
+          tags: 'ai, tools, productivity, automation',
+          excerpt: 'A practical roundup of the AI tools used by busy professionals to automate research, writing and meetings.',
+          content: '<h2>Where AI actually saves hours</h2><p>Not every AI tool is worth it. Focus on the ones that compress real workflows, not the demos.</p>',
+          views: 21200, daysAgo: 5,
+        }),
+        sample({
+          title: 'Zero to First Side Income: A Simple Money Plan',
+          slug: 'first-side-income-simple-plan',
+          category: 'Personal Finance',
+          tags: 'money, side-income, budget, investing',
+          excerpt: 'Ram starts small: a ₹5,000 emergency cushion, a bank-fixed budget and one repeatable skill. Here is his plan.',
+          content: '<h2>Start with the basics</h2><p>Everyone starts from zero. The plan is simple: track, save, then grow one skill at a time.</p>',
+          views: 17600, daysAgo: 8,
+        }),
+        sample({
+          title: 'Memory Techniques That Work for Competitive Exams',
+          slug: 'memory-techniques-competitive-exams',
+          category: 'Study & Learning',
+          tags: 'memory, study, exam, learning',
+          excerpt: 'Spaced repetition, memory palaces and active recall - explained for exam aspirants who want to remember more.',
+          content: '<h2>Active recall beats rereading</h2><p>Testing yourself is the single most effective way to remember facts for exams.</p>',
+          views: 8700, daysAgo: 6,
+        }),
+        sample({
+          title: 'The Morning Routine That Keeps You Calm and Focused',
+          slug: 'morning-routine-calm-focused',
+          category: 'Productivity & Lifestyle',
+          tags: 'routine, habits, focus, work-life',
+          excerpt: 'Small, sustainable habits that build focus over effort — a routine you can actually keep.',
+          content: '<h2>Design for the average day</h2><p>The best routine is the one that survives your worst day, not the one optimised for your best.</p>',
+          views: 5100, daysAgo: 4,
+        }),
+      ],
+    });
+    console.log('  sample blog posts seeded');
+  }
+
   // ── Private Jobs (idempotent) ──
   if ((await prisma.company.count()) === 0) {
     const companyData = [
@@ -242,6 +326,8 @@ async function main() {
     states: await prisma.state.count(),
     privateJobs: await prisma.privateJob.count(),
     companies: await prisma.company.count(),
+    blogCategories: await prisma.blogCategory.count(),
+    blogPosts: await prisma.blogPost.count(),
   };
   console.log('Seed complete:', counts);
 }

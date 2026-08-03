@@ -171,6 +171,7 @@ export const blogPostSchema = z.object({
   author: z.string().nullable().optional(),
   image: z.string().nullable().optional(),
   tags: z.string().nullable().optional(),
+  categoryId: z.string().nullable().optional(),
   published: z.boolean().default(false),
 })
 

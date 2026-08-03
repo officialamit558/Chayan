@@ -17,7 +17,7 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
       return NextResponse.json({ success: false, error: validation.error.issues[0].message }, { status: 400 })
     }
 
-    const { title, slug, excerpt, content, author, image, tags, published } = validation.data
+    const { title, slug, excerpt, content, author, image, tags, categoryId, published } = validation.data
 
     const existing = await prisma.blogPost.findUnique({ where: { id } })
     if (!existing) {
@@ -41,6 +41,7 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
         ...(author !== undefined && author !== null ? { author } : {}),
         ...(image !== undefined && image !== null ? { image } : {}),
         ...(tags !== undefined && tags !== null ? { tags } : {}),
+        ...(categoryId !== undefined && categoryId !== null ? { categoryId } : {}),
         published,
       },
     })
