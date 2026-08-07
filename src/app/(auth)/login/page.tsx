@@ -4,7 +4,7 @@ import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { signIn } from "next-auth/react"
-import { useRouter } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 import Link from "next/link"
 import { motion } from "framer-motion"
 import { Eye, EyeOff, Loader2 } from "lucide-react"
@@ -20,9 +20,23 @@ import { toast } from "@/components/ui/toast"
 
 export default function LoginPage() {
   const router = useRouter()
+  const searchParams = useSearchParams()
   const [showPassword, setShowPassword] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [isGoogleLoading, setIsGoogleLoading] = useState(false)
+
+  const authError = searchParams.get("error")
+  const errorMessage: Record<string, string> = {
+    OAuthAccountNotLinked: "This email is already registered with a password. Sign in with your email and password instead.",
+    OAuthSignin: "Something went wrong while signing in with Google. Please try again.",
+    OAuthCallback: "Google sign-in failed. Please check the authorization and try again.",
+    OAuthCreateAccount: "Could not create your account with Google. Please try again.",
+    AccessDenied: "Access was denied. Please allow required permissions.",
+    Configuration: "Sign-in is temporarily unavailable. Please try again later.",
+    Verification: "The sign-in link is invalid or expired.",
+    Default: "Sign-in failed. Please try again.",
+  }
+  const shownError = authError ? errorMessage[authError] || errorMessage.Default : null
 
   const {
     register,
@@ -74,6 +88,11 @@ export default function LoginPage() {
             <CardDescription>Sign in to your account to continue</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
+            {shownError && (
+              <div className="rounded-lg border border-red-200 bg-red-50 p-3 text-sm font-medium text-red-700 dark:border-red-800 dark:bg-red-950 dark:text-red-300">
+                {shownError}
+              </div>
+            )}
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
               <div className="space-y-2">
                 <Label htmlFor="email">Email</Label>
