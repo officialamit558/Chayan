@@ -12,6 +12,7 @@ import { ShareButtons } from "@/components/blog/ShareButtons"
 import { ViewTracker } from "@/components/blog/ViewTracker"
 import { ReadingProgress } from "@/components/blog/ReadingProgress"
 import { TableOfContents } from "@/components/blog/TableOfContents"
+import { BLOG_PROSE_CLASSES } from "@/lib/blog-prose"
 import { AuthorCard } from "@/components/blog/AuthorCard"
 import { NewsletterCTA } from "@/components/blog/NewsletterCTA"
 
@@ -171,12 +172,7 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ slu
         <AdBanner slot="blogInArticle" format="horizontal" />
 
         {post.content && (
-          <div className="prose prose-gray max-w-none
-            prose-h1:text-3xl prose-h2:text-2xl prose-h3:text-xl prose-h4:text-lg
-            prose-headings:text-gray-900 prose-p:text-gray-700 prose-a:text-blue-600 prose-strong:text-gray-900
-            prose-ul:list-disc prose-ol:list-decimal
-            prose-headings:mt-10 prose-headings:mb-4 prose-p:my-5 prose-p:leading-8 prose-li:my-2 prose-ul:my-6 prose-ol:my-6 prose-blockquote:my-8 prose-pre:my-8
-            mt-6">
+          <div className={`${BLOG_PROSE_CLASSES} mt-6`}>
             <div dangerouslySetInnerHTML={{ __html: post.content }} />
           </div>
         )}

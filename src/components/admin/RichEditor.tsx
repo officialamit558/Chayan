@@ -31,6 +31,7 @@ import {
   Pilcrow,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { BLOG_PROSE_CLASSES } from "@/lib/blog-prose"
 import { useCallback, useState, useRef, useEffect } from "react"
 import { toast } from "@/components/ui/toast"
 
@@ -709,7 +710,7 @@ export function RichEditor({ value, onChange, placeholder }: RichEditorProps) {
       <div className={cn("overflow-y-auto", fullscreen && "flex-1")}>
         <EditorContent
           editor={editor}
-          className="prose prose-sm max-w-none p-6 focus:outline-none dark:prose-invert"
+          className={`${BLOG_PROSE_CLASSES} p-6 focus:outline-none`}
         />
       </div>
 
